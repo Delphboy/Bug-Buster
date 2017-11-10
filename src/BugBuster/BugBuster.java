@@ -37,19 +37,6 @@ public class BugBuster extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
-		root = new Pane();
 
-		sceneGame = new Scene(root, 800, 600);
-		primaryStage.setScene(sceneGame);
-		primaryStage.setTitle("Bug Buster");
-
-		world = new Canvas(800, 600);
-		gc = world.getGraphicsContext2D();
-		Image welcomeScreenImg = new Image("resources/welcome-screen.png");
-		gc.drawImage(welcomeScreenImg, 0, 0);
-
-		root.getChildren().add(world);
-
-		primaryStage.show();
 	}
 }

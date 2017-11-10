@@ -1,4 +1,4 @@
-package BugBuster.Tiles;
+package BugBuster;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
