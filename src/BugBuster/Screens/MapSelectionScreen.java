@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class MapSelectionScreen extends Pane
 {
@@ -22,7 +23,8 @@ public class MapSelectionScreen extends Pane
 		graphicsContext.drawImage(backGroundImage, 0, 0);
 
 		// Create button to return to main menu
-		Button buttonReturnToMenu = new Button("Return to Main Menu");
+		Button buttonReturnToMenu = new Button("Return to Menu");
+		buttonReturnToMenu.setFont(new Font("Cooper Black", 16));
 		buttonReturnToMenu.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -31,28 +33,31 @@ public class MapSelectionScreen extends Pane
 				BugBuster.updateScene(new MainMenuScreen());
 			}
 		});
-		buttonReturnToMenu.setMinSize(140,30);
-		buttonReturnToMenu.setMaxSize(140, 30);
+		buttonReturnToMenu.setMinSize(160,40);
+		buttonReturnToMenu.setMaxSize(160, 40);
 		buttonReturnToMenu.setLayoutX(10);
 		buttonReturnToMenu.setLayoutY(10);
 
 		// Create a button to select the 1st map
 		Button buttonLeftMap = new Button("Left Map");
+		buttonLeftMap.setFont(new Font("Cooper Black", 24));
 		buttonLeftMap.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
 			{
 				System.out.println("Left Map Selected");
+				BugBuster.updateScene(new GameScreen());
 			}
 		});
-		buttonLeftMap.setMinSize(280, 60);
-		buttonLeftMap.setMaxSize(280, 60);
-		buttonLeftMap.setLayoutX(65);
-		buttonLeftMap.setLayoutY(485);
+		buttonLeftMap.setMinSize(200, 45);
+		buttonLeftMap.setMaxSize(200, 45);
+		buttonLeftMap.setLayoutX(115);
+		buttonLeftMap.setLayoutY(420);
 
 		// Create a button to select the 2nd map
 		Button buttonMiddleMap = new Button("Middle Map");
+		buttonMiddleMap.setFont(new Font("Cooper Black", 24));
 		buttonMiddleMap.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -61,13 +66,14 @@ public class MapSelectionScreen extends Pane
 				System.out.println("Middle Map Selected");
 			}
 		});
-		buttonMiddleMap.setMinSize(280, 60);
-		buttonMiddleMap.setMaxSize(280, 60);
-		buttonMiddleMap.setLayoutX(372);
-		buttonMiddleMap.setLayoutY(485);
+		buttonMiddleMap.setMinSize(200, 45);
+		buttonMiddleMap.setMaxSize(200, 45);
+		buttonMiddleMap.setLayoutX(424);
+		buttonMiddleMap.setLayoutY(420);
 
 		// Create a button to select the 3rd Map
 		Button buttonRightMap = new Button("Right Map");
+		buttonRightMap.setFont(new Font("Cooper Black", 24));
 		buttonRightMap.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -76,10 +82,10 @@ public class MapSelectionScreen extends Pane
 				System.out.println("Right Map Selected");
 			}
 		});
-		buttonRightMap.setMinSize(280, 60);
-		buttonRightMap.setMaxSize(280, 60);
-		buttonRightMap.setLayoutX(679);
-		buttonRightMap.setLayoutY(485);
+		buttonRightMap.setMinSize(200, 45);
+		buttonRightMap.setMaxSize(200, 45);
+		buttonRightMap.setLayoutX(733);
+		buttonRightMap.setLayoutY(420);
 
 		getChildren().addAll(canvas, buttonReturnToMenu, buttonLeftMap, buttonMiddleMap,
 				buttonRightMap);

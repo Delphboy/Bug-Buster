@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class MainMenuScreen extends Pane
 {
@@ -22,6 +23,7 @@ public class MainMenuScreen extends Pane
 		graphicsContext.drawImage(menuImage, 0, 0);
 
 		Button buttonStartGame = new Button("Start Game");
+		buttonStartGame.setFont(new Font("Cooper Black", 24));
 		buttonStartGame.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -36,6 +38,7 @@ public class MainMenuScreen extends Pane
 		buttonStartGame.setLayoutY(165);
 
 		Button buttonHowToPlay = new Button("How To Play");
+		buttonHowToPlay.setFont(new Font("Cooper Black", 24));
 		buttonHowToPlay.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -50,6 +53,7 @@ public class MainMenuScreen extends Pane
 		buttonHowToPlay.setLayoutY(300);
 
 		Button buttonExitGame = new Button("Exit Game");
+		buttonExitGame.setFont(new Font("Cooper Black", 24));
 		buttonExitGame.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override

@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class TutorialScreen extends Pane
 {
@@ -21,7 +22,8 @@ public class TutorialScreen extends Pane
 		Image backgroundImage = new Image("resources/tutorial-screen.png");
 		graphicsContext.drawImage(backgroundImage, 0, 0);
 
-		Button buttonReturnToMenu = new Button("Return to Main Menu");
+		Button buttonReturnToMenu = new Button("Return to Menu");
+		buttonReturnToMenu.setFont(new Font("Cooper Black", 16));
 		buttonReturnToMenu.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -30,8 +32,8 @@ public class TutorialScreen extends Pane
 				BugBuster.updateScene(new MainMenuScreen());
 			}
 		});
-		buttonReturnToMenu.setMinSize(140,30);
-		buttonReturnToMenu.setMaxSize(140, 30);
+		buttonReturnToMenu.setMinSize(160,40);
+		buttonReturnToMenu.setMaxSize(160, 40);
 		buttonReturnToMenu.setLayoutX(10);
 		buttonReturnToMenu.setLayoutY(10);
 

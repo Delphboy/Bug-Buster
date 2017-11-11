@@ -1,4 +1,4 @@
-package BugBuster;
+package BugBuster.GameObjects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

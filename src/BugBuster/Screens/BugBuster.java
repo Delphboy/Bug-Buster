@@ -16,12 +16,11 @@ public class BugBuster extends Application
 	Width and Height are public so they can be used elsewhere in the program. Change them here to
 	change them everywhere else.
 	 */
-	public static final int STAGE_WIDTH = 1024;
-	public static final int STAGE_HEIGHT = 768;
+	public static final int STAGE_WIDTH = 1050;
+	public static final int STAGE_HEIGHT = 650;
 
 	private static Stage window;
 	private static Scene scene;
-
 
 	/**
 	 * Set the
@@ -38,8 +37,9 @@ public class BugBuster extends Application
 		window.setResizable(false);
 		window.initStyle(StageStyle.UNDECORATED);
 
-		//by default, start the MainMenuScreen
+		//by default, start the MainMenuSc	reen
 		updateScene(new MainMenuScreen());
+//		updateScene(new GameScreen());
 
 		// Display the window to the user
 		window.show();
