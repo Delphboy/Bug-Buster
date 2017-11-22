@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 /**
  * Class provided by the assignment brief
  */
-class GameObject
+public class GameObject
 {
 	protected Image img;
 	protected double x, y;

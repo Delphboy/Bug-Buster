@@ -1,6 +1,9 @@
 package BugBuster.GameObjects.Towers;
 
-public class Tower
+import BugBuster.GameObjects.GameObject;
+import BugBuster.GameObjects.Pathogens.Pathogen;
+
+public class Tower extends GameObject implements TowerIF
 {
 	private String type;
 	private int tileLocX;
@@ -10,6 +13,7 @@ public class Tower
 
 	public Tower(String type, int tileLocX, int tileLocY, int radius, int damage)
 	{
+		super(null, 0 ,0);
 		this.type = type;
 		this.tileLocX = tileLocX;
 		this.tileLocY = tileLocY;
@@ -66,5 +70,23 @@ public class Tower
 				", radius=" + radius +
 				", damage=" + damage +
 				'}';
+	}
+
+	@Override
+	public void shoot(Pathogen enemy)
+	{
+
+	}
+
+	@Override
+	public Pathogen getTarget()
+	{
+		return null;
+	}
+
+	@Override
+	public void upgradeTower()
+	{
+
 	}
 }
