@@ -9,5 +9,6 @@ public interface TowerIF
 {
     void shoot(Pathogen enemy);
     Pathogen getTarget();
-    void upgradeTower();
+    void upgradeTowerRange();
+    void upgradeTowerDamage();
 }

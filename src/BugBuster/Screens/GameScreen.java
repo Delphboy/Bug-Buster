@@ -19,7 +19,7 @@ public class GameScreen extends Pane
 	{
 		towerShop = new TowerShopComponent();
 		towerStats = new TowerStatsComponent(
-				new Tower("Tower",70, 70, 400, 150));
+				new Tower("Tower",70, 70));
 		headerBar = new HeaderBarComponent(new Player());
 		worldView = new WorldViewComponent();
 

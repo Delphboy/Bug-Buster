@@ -2,6 +2,7 @@ package BugBuster.GameObjects.Towers;
 
 import BugBuster.GameObjects.GameObject;
 import BugBuster.GameObjects.Pathogens.Pathogen;
+import javafx.scene.image.Image;
 
 public class Tower extends GameObject implements TowerIF
 {
@@ -11,12 +12,10 @@ public class Tower extends GameObject implements TowerIF
 	private int radius;
 	private int damage;
 
-	public Tower(String type, int tileLocX, int tileLocY, int radius, int damage)
+	public Tower(String type, int radius, int damage)
 	{
 		super(null, 0 ,0);
 		this.type = type;
-		this.tileLocX = tileLocX;
-		this.tileLocY = tileLocY;
 		this.radius = radius;
 		this.damage = damage;
 	}
@@ -46,6 +45,11 @@ public class Tower extends GameObject implements TowerIF
 		return damage;
 	}
 
+	public Image getImage()
+	{
+		return img;
+	}
+
 	public void setType(String type)
 	{
 		this.type = type;
@@ -59,6 +63,11 @@ public class Tower extends GameObject implements TowerIF
 	public void setDamage(int damage)
 	{
 		this.damage = damage;
+	}
+
+	public void setImage(Image image)
+	{
+		this.img = image;
 	}
 
 	@Override
@@ -85,7 +94,13 @@ public class Tower extends GameObject implements TowerIF
 	}
 
 	@Override
-	public void upgradeTower()
+	public void upgradeTowerRange()
+	{
+
+	}
+
+	@Override
+	public void upgradeTowerDamage()
 	{
 
 	}
