@@ -37,7 +37,7 @@ public class BugBuster extends Application
 		window.setResizable(false);
 		window.initStyle(StageStyle.UNDECORATED);
 
-		//by default, start the MainMenuSc	reen
+		//by default, start the MainMenuScreen
 		updateScene(new MainMenuScreen());
 //		updateScene(new GameScreen());
 
