@@ -15,13 +15,15 @@ public class Tile
     Image tileImg;
     int posX;
     int posY;
+    boolean isWalkable;
 
-    public Tile(int posX, int posY, String imgLoc)
+    public Tile(int posX, int posY, String imgLoc, boolean isWalkable)
     {
         this.posX = posX;
         this.posY = posY;
         tileBoundary = new Rectangle(posX, posY, TILE_WIDTH, TILE_HEIGHT);
         tileImg = new Image(imgLoc);
+        this.isWalkable = isWalkable;
     }
 
     public int getPosX()

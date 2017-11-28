@@ -7,8 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-
 public class WorldViewComponent extends Pane implements ComponentIF
 {
 	Canvas canvas;
@@ -27,7 +25,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private void drawWorld(int mapNum)
 	{
-		ArrayList<Tile> worldMap = null;
+		Tile[][] worldMap = null;
 		switch (mapNum)
 		{
 			case 1:
@@ -35,24 +33,35 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				break;
 		}
 
-		for(Tile t : worldMap)
-		{
-			gc.drawImage(t.getTileImg(), t.getPosX(), t.getPosY(), t
-					.TILE_WIDTH, t.TILE_HEIGHT);
-		}
-	}
-
-	private ArrayList<Tile> loadMap1()
-	{
-		ArrayList<Tile> worldMap = new ArrayList<>();
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				worldMap.add(new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/test-tile.png"));
+				gc.drawImage(worldMap[i][j].getTileImg(), worldMap[i][j].getPosX(),
+						worldMap[i][j].getPosY(), worldMap[i][j].TILE_WIDTH,
+						worldMap[i][j].TILE_HEIGHT);
 			}
 		}
+	}
+
+	private Tile[][] loadMap1()
+	{
+		Tile[][] worldMap = new Tile[16][12];
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 12; j++)
+			{
+				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
+						.TILE_HEIGHT, "resources/cell-tile.png", false);
+			}
+		}
+
+		for (int i = 0; i < 16; i++)
+		{
+			worldMap[i][4] = new Tile(i * Tile.TILE_WIDTH, 4 * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", false);
+		}
+
 		return worldMap;
 	}
 

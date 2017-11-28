@@ -1,11 +1,8 @@
 package BugBuster.Screens;
 
 import BugBuster.Player;
-import BugBuster.Tower;
-import BugBuster.Screens.UIComponents.HeaderBarComponent;
-import BugBuster.Screens.UIComponents.TowerShopComponent;
-import BugBuster.Screens.UIComponents.TowerStatsComponent;
-import BugBuster.Screens.UIComponents.WorldViewComponent;
+import BugBuster.Screens.UIComponents.*;
+import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
 
 public class GameScreen extends Pane
@@ -13,6 +10,7 @@ public class GameScreen extends Pane
 	TowerShopComponent towerShop;
 	TowerStatsComponent towerStats;
 	HeaderBarComponent headerBar;
+	OptionsComponent optionsBar;
 	WorldViewComponent worldView;
 
 	public GameScreen()
@@ -20,7 +18,8 @@ public class GameScreen extends Pane
 		towerShop = new TowerShopComponent();
 		towerStats = new TowerStatsComponent(
 				new Tower("Tower",70, 70));
-		headerBar = new HeaderBarComponent(new Player());
+		optionsBar = new OptionsComponent();
+		headerBar = new HeaderBarComponent(Player.getInstance());
 		worldView = new WorldViewComponent();
 
 		headerBar.setMinSize(800,50);
@@ -28,10 +27,15 @@ public class GameScreen extends Pane
 		headerBar.setLayoutX(250);
 		headerBar.setLayoutY(0);
 
-		towerShop.setMinSize(250, 325);
-		towerShop.setMaxSize(250, 325);
+		optionsBar.setMinSize(250, 50);
+		optionsBar.setMaxSize(250, 50);
+		optionsBar.setLayoutX(0);
+		optionsBar.setLayoutY(0);
+
+		towerShop.setMinSize(250, 275);
+		towerShop.setMaxSize(250, 275);
 		towerShop.setLayoutX(0);
-		towerShop.setLayoutY(0);
+		towerShop.setLayoutY(50);
 
 		towerStats.setMinSize(250, 325);
 		towerStats.setMaxSize(250, 325);
@@ -43,6 +47,6 @@ public class GameScreen extends Pane
 		worldView.setLayoutX(250);
 		worldView.setLayoutY(50);
 
-		getChildren().addAll(towerShop, towerStats, headerBar, worldView);
+		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
 	}
 }

@@ -1,4 +1,6 @@
-package BugBuster;
+package BugBuster.Towers;
+
+import BugBuster.FactoryIF;
 
 /**
  * Created by stc765 on 28/11/17.

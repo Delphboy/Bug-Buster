@@ -2,20 +2,21 @@ package BugBuster.Screens.UIComponents;
 
 import BugBuster.Screens.BugBuster;
 import BugBuster.Screens.MainMenuScreen;
+import BugBuster.Towers.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
-public class TowerShopComponent extends ScrollPane
+
+public class OptionsComponent extends Pane implements ComponentIF
 {
 	Button mainMenuBtn;
 	Button startRoundBtn;
 
-	public TowerShopComponent()
+	public OptionsComponent()
 	{
 		setWidth(250);
 		setHeight(50);
@@ -52,6 +53,12 @@ public class TowerShopComponent extends ScrollPane
 			}
 		});
 
-		setContent(mainMenuBtn);
+		getChildren().addAll(startRoundBtn, mainMenuBtn);
+	}
+
+	@Override
+	public void update()
+	{
+
 	}
 }

@@ -1,4 +1,7 @@
-package BugBuster;
+package BugBuster.Pathogens;
+
+import BugBuster.FactoryIF;
+import BugBuster.Pathogens.Pathogen;
 
 /**
  * Created by stc765 on 28/11/17.
@@ -16,7 +19,7 @@ public class PathogenFactory implements FactoryIF
         switch(discriminator)
         {
             case 1:
-                createdPathogen = new Pathogen();
+                createdPathogen = new Pathogen(null, 10, 10);
                 break;
             default:
                 createdPathogen = null;
