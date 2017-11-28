@@ -1,13 +1,7 @@
 package BugBuster.Screens.UIComponents;
 
-import BugBuster.GameObjects.Towers.Tower;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-
-
-import java.beans.EventHandler;
 
 public class TowerShopComponent extends Pane
 {

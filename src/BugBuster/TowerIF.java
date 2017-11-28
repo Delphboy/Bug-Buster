@@ -1,6 +1,4 @@
-package BugBuster.GameObjects.Towers;
-
-import BugBuster.GameObjects.Pathogens.Pathogen;
+package BugBuster;
 
 /**
  * Created by stc765 on 22/11/17.

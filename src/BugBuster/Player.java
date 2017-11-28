@@ -1,4 +1,4 @@
-package BugBuster.GameObjects;
+package BugBuster;
 
 public class Player
 {

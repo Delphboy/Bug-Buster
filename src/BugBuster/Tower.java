@@ -1,7 +1,5 @@
-package BugBuster.GameObjects.Towers;
+package BugBuster;
 
-import BugBuster.GameObjects.GameObject;
-import BugBuster.GameObjects.Pathogens.Pathogen;
 import javafx.scene.image.Image;
 
 public class Tower extends GameObject implements TowerIF

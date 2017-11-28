@@ -1,6 +1,6 @@
 package BugBuster.Screens.UIComponents;
 
-import BugBuster.GameObjects.Towers.Tower;
+import BugBuster.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

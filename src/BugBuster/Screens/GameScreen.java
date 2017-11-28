@@ -1,7 +1,7 @@
 package BugBuster.Screens;
 
-import BugBuster.GameObjects.Player;
-import BugBuster.GameObjects.Towers.Tower;
+import BugBuster.Player;
+import BugBuster.Tower;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
 import BugBuster.Screens.UIComponents.TowerShopComponent;
 import BugBuster.Screens.UIComponents.TowerStatsComponent;
