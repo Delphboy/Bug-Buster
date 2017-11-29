@@ -39,6 +39,7 @@ public class TowerShopComponent extends Pane implements ComponentIF
 				{
 					System.out.println("MAKE A TOWER");
 					player.setCurrency(player.getCurrency() - 10);
+					
 					HeaderBarComponent.getInstance().update(); //update UI
 				}
 			}
