@@ -21,7 +21,18 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 
 	Player player;
 
-	public HeaderBarComponent(Player givenPlayer)
+	private static HeaderBarComponent instance;
+
+	public static HeaderBarComponent getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new HeaderBarComponent(Player.getInstance());
+		}
+		return instance;
+	}
+
+	private HeaderBarComponent(Player givenPlayer)
 	{
 		player = givenPlayer;
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
@@ -56,9 +67,10 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	@Override
 	public void update()
 	{
+		waveInfoLabel.setText(String.valueOf(player.getWavesComplete()) + "/10");
+		currencyLabel.setText(String.valueOf(player.getCurrency()));
 
-
-		// display empty hearts
+		// display hearts
 		for (int i = 1; i <= 10; i++)
 		{
 			if(i <= player.getHealth())

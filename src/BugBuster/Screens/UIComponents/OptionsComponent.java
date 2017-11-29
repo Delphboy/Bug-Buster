@@ -58,6 +58,6 @@ public class OptionsComponent extends Pane implements ComponentIF
 	@Override
 	public void update()
 	{
-
+		
 	}
 }

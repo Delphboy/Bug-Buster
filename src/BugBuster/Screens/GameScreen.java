@@ -19,7 +19,7 @@ public class GameScreen extends Pane
 		towerStats = new TowerStatsComponent(
 				new Tower("Tower",70, 70));
 		optionsBar = new OptionsComponent();
-		headerBar = new HeaderBarComponent(Player.getInstance());
+		headerBar = HeaderBarComponent.getInstance();
 		worldView = new WorldViewComponent();
 
 		headerBar.setMinSize(800,50);
