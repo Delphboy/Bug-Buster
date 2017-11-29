@@ -28,13 +28,28 @@ public class Player
 		return health;
 	}
 
+	public void setHealth(int health)
+	{
+		this.health = health;
+	}
+
 	public int getWavesComplete()
 	{
 		return wavesComplete;
 	}
 
+	public void setWavesComplete(int wavesComplete)
+	{
+		this.wavesComplete = wavesComplete;
+	}
+
 	public int getCurrency()
 	{
 		return currency;
+	}
+
+	public void setCurrency(int currency)
+	{
+		this.currency = currency;
 	}
 }

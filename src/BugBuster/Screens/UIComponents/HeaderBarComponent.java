@@ -19,8 +19,11 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	Label waveInfoLabel;
 	Label currencyLabel;
 
-	public HeaderBarComponent(Player player)
+	Player player;
+
+	public HeaderBarComponent(Player givenPlayer)
 	{
+		player = givenPlayer;
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
 		graphicsContext = canvas.getGraphicsContext2D();
 
@@ -42,14 +45,7 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 		currencyLabel.setLayoutX(240);
 		currencyLabel.setLayoutY(10);
 
-		// display empty hearts
-		for (int i = 1; i <= 10; i++)
-		{
-			if(i <= player.getHealth())
-				graphicsContext.drawImage(heart, 330 + (i * 40), 5, 40, 40);
-			else
-				graphicsContext.drawImage(emptyHeart, 330 + (i * 40), 5, 40, 40);
-		}
+		update();
 
 		// Add modules to header bar component
 		getChildren().add(canvas);
@@ -61,5 +57,14 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	public void update()
 	{
 
+
+		// display empty hearts
+		for (int i = 1; i <= 10; i++)
+		{
+			if(i <= player.getHealth())
+				graphicsContext.drawImage(heart, 330 + (i * 40), 5, 40, 40);
+			else
+				graphicsContext.drawImage(emptyHeart, 330 + (i * 40), 5, 40, 40);
+		}
 	}
 }

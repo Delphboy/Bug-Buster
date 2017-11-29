@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 public class Tower extends GameObject implements TowerIF
 {
 	private String type;
+	private String aboutMessage;
 	private int tileLocX;
 	private int tileLocY;
 	private int radius;
@@ -18,6 +19,8 @@ public class Tower extends GameObject implements TowerIF
 		this.type = type;
 		this.radius = radius;
 		this.damage = damage;
+		aboutMessage = "This will be a short string explaining the \nscience " +
+				"behind the tower";
 	}
 
 	public String getType()
@@ -50,6 +53,11 @@ public class Tower extends GameObject implements TowerIF
 		return img;
 	}
 
+	public String getAboutMessage()
+	{
+		return aboutMessage;
+	}
+
 	public void setType(String type)
 	{
 		this.type = type;
@@ -68,6 +76,11 @@ public class Tower extends GameObject implements TowerIF
 	public void setImage(Image image)
 	{
 		this.img = image;
+	}
+
+	public void setAboutMessage(String aboutMessage)
+	{
+		this.aboutMessage = aboutMessage;
 	}
 
 	@Override

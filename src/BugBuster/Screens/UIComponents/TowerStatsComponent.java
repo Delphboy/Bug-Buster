@@ -14,6 +14,7 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 	Label titleLabel;
 	Label rangeLabel;
 	Label damageLabel;
+	Label aboutTowerLabel;
 
 	Button upgradeRangeButton;
 	Button upgradeDamageButton;
@@ -41,6 +42,13 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		rangeLabel.setFont(new Font("Cooper Black", 22));
 		rangeLabel.setLayoutX(10);
 		rangeLabel.setLayoutY(100);
+
+		// Output details about the science behind the tower
+		aboutTowerLabel = new Label(tower.getAboutMessage());
+		aboutTowerLabel.setFont(new Font("Cooper Black", 12));
+		aboutTowerLabel.setLayoutX(10);
+		aboutTowerLabel.setLayoutY(140);
+
 
 		// Set the increase damage button
 		upgradeDamageButton = new Button("+1 Damage");
@@ -74,8 +82,8 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 			}
 		});
 
-		getChildren().addAll(titleLabel, rangeLabel, damageLabel, upgradeDamageButton,
-				upgradeRangeButton);
+		getChildren().addAll(titleLabel, rangeLabel, damageLabel,
+				aboutTowerLabel, upgradeDamageButton, upgradeRangeButton);
 	}
 
 	@Override

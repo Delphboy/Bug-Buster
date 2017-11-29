@@ -11,7 +11,7 @@ public class TowerFactory implements FactoryIF
     {}
 
     @Override
-    public Object createProduct(int discriminator)
+    public Tower createProduct(int discriminator)
     {
         Tower createdTower;
 

@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
-
 public class OptionsComponent extends Pane implements ComponentIF
 {
 	Button mainMenuBtn;
@@ -26,8 +25,8 @@ public class OptionsComponent extends Pane implements ComponentIF
 		mainMenuBtn.setFont(new Font("Cooper Black", 12));
 		mainMenuBtn.setLayoutX(10);
 		mainMenuBtn.setLayoutY(10);
-		mainMenuBtn.setMinSize(85, 30);
-		mainMenuBtn.setMaxSize(85, 30);
+		mainMenuBtn.setMinSize(100, 30);
+		mainMenuBtn.setMaxSize(100, 30);
 		mainMenuBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -40,7 +39,7 @@ public class OptionsComponent extends Pane implements ComponentIF
 		// Set the increase damage button
 		startRoundBtn = new Button("Start Round");
 		startRoundBtn.setFont(new Font("Cooper Black", 12));
-		startRoundBtn.setLayoutX(140);
+		startRoundBtn.setLayoutX(130);
 		startRoundBtn.setLayoutY(10);
 		startRoundBtn.setMinSize(100, 30);
 		startRoundBtn.setMaxSize(100, 30);
