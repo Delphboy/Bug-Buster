@@ -52,6 +52,7 @@ public class TowerShopComponent extends ScrollPane
 			}
 		});
 
-		setContent(mainMenuBtn);
+		getChildren().addAll(mainMenuBtn, startRoundBtn);
+		setContent(getChildren().get(0));
 	}
 }
