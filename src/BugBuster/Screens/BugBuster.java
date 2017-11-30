@@ -38,8 +38,8 @@ public class BugBuster extends Application
 		window.initStyle(StageStyle.UNDECORATED);
 
 		//by default, start the MainMenuScreen
-//		updateScene(new MainMenuScreen());
-		updateScene(new GameScreen());
+		updateScene(new MainMenuScreen());
+//		updateScene(new GameScreen(1));
 
 		// Display the window to the user
 		window.show();

@@ -13,14 +13,14 @@ public class GameScreen extends Pane
 	OptionsComponent optionsBar;
 	WorldViewComponent worldView;
 
-	public GameScreen()
+	public GameScreen(int mapNum)
 	{
 		towerShop = new TowerShopComponent();
 		towerStats = new TowerStatsComponent(
 				new Tower("Tower",70, 70));
 		optionsBar = new OptionsComponent();
 		headerBar = HeaderBarComponent.getInstance();
-		worldView = new WorldViewComponent();
+		worldView = new WorldViewComponent(mapNum);
 
 		headerBar.setMinSize(800,50);
 		headerBar.setMinSize(800,50);

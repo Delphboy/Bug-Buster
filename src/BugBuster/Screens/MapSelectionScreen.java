@@ -47,7 +47,7 @@ public class MapSelectionScreen extends Pane
 			public void handle(ActionEvent event)
 			{
 				System.out.println("Left Map Selected");
-				BugBuster.updateScene(new GameScreen());
+				BugBuster.updateScene(new GameScreen(1));
 			}
 		});
 		buttonLeftMap.setMinSize(200, 45);
@@ -64,6 +64,7 @@ public class MapSelectionScreen extends Pane
 			public void handle(ActionEvent event)
 			{
 				System.out.println("Middle Map Selected");
+				BugBuster.updateScene(new GameScreen(2));
 			}
 		});
 		buttonMiddleMap.setMinSize(200, 45);
@@ -80,6 +81,7 @@ public class MapSelectionScreen extends Pane
 			public void handle(ActionEvent event)
 			{
 				System.out.println("Right Map Selected");
+				BugBuster.updateScene(new GameScreen(3));
 			}
 		});
 		buttonRightMap.setMinSize(200, 45);
