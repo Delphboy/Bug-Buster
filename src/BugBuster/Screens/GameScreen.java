@@ -1,6 +1,6 @@
 package BugBuster.Screens;
 
-import BugBuster.Player;
+import BugBuster.Controller;
 import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
@@ -12,6 +12,8 @@ public class GameScreen extends Pane
 	HeaderBarComponent headerBar;
 	OptionsComponent optionsBar;
 	WorldViewComponent worldView;
+
+    Controller controller;
 
 	public GameScreen(int mapNum)
 	{
@@ -48,5 +50,34 @@ public class GameScreen extends Pane
 		worldView.setLayoutY(50);
 
 		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
+
+		controller = new Controller(this);
+		towerShop.getGiveTowerBtn().setOnAction(controller);
 	}
+
+    public TowerShopComponent getTowerShop()
+    {
+        return towerShop;
+    }
+
+    public TowerStatsComponent getTowerStats()
+    {
+        return towerStats;
+    }
+
+    public HeaderBarComponent getHeaderBar()
+    {
+        return headerBar;
+    }
+
+    public OptionsComponent getOptionsBar()
+    {
+        return optionsBar;
+    }
+
+    public WorldViewComponent getWorldView()
+    {
+        return worldView;
+    }
+
 }

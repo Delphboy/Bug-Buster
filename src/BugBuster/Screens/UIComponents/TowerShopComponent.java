@@ -8,6 +8,8 @@ import BugBuster.Towers.TowerFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
@@ -17,9 +19,6 @@ public class TowerShopComponent extends Pane implements ComponentIF
 
 	public TowerShopComponent()
 	{
-		final Player player = Player.getInstance();
-		final TowerFactory tf = new TowerFactory();
-		final Tower createdTower;
 		setWidth(250);
 		setHeight(50);
 
@@ -35,17 +34,11 @@ public class TowerShopComponent extends Pane implements ComponentIF
 			@Override
 			public void handle(ActionEvent event)
 			{
-				if(player.getCurrency() >= 10)
-				{
-					System.out.println("MAKE A TOWER");
-					player.setCurrency(player.getCurrency() - 10);
-					
-					HeaderBarComponent.getInstance().update(); //update UI
-				}
+				System.out.println("MAKE A TOWER");
 			}
 		});
 
-		getChildren().add(giveTowerBtn);
+		getChildren().addAll(giveTowerBtn);
 	}
 
 	@Override
@@ -53,4 +46,10 @@ public class TowerShopComponent extends Pane implements ComponentIF
 	{
 
 	}
+
+	public Button getGiveTowerBtn()
+	{
+		return giveTowerBtn;
+	}
+
 }
