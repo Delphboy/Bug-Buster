@@ -1,16 +1,31 @@
 package BugBuster.Screens.UIComponents;
 
+import BugBuster.Pathogens.Pathogen;
 import BugBuster.Screens.BugBuster;
 import BugBuster.Tile;
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 public class WorldViewComponent extends Pane implements ComponentIF
 {
 	Canvas canvas;
 	GraphicsContext gc;
+
+	private ArrayList<Pathogen> pathogens;
+
+	AnimationTimer timer = new AnimationTimer()
+	{
+		@Override
+		public void handle(long l)
+		{
+
+		}
+	};
 
 	public WorldViewComponent(int mapNum)
 	{
@@ -18,6 +33,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		gc = canvas.getGraphicsContext2D();
 		gc.setFill(Color.BLUE);
 		gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+
+		pathogens = new ArrayList<>();
 
 		getChildren().add(canvas);
 		drawWorld(mapNum);
@@ -121,4 +138,13 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	{
 
 	}
+
+	public static void startRound(int roundNumber)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+
+		}
+	}
+
 }
