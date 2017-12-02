@@ -12,6 +12,7 @@ public class Tower extends GameObject implements TowerIF
 	private int tileLocY;
 	private int radius;
 	private int damage;
+	private int cost = 10;
 
 	public Tower(String type, int radius, int damage)
 	{
@@ -21,6 +22,7 @@ public class Tower extends GameObject implements TowerIF
 		this.damage = damage;
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
+		img = new Image("resources/testTower.png");
 	}
 
 	public String getType()
@@ -58,29 +60,19 @@ public class Tower extends GameObject implements TowerIF
 		return aboutMessage;
 	}
 
-	public void setType(String type)
+	public int getCost()
 	{
-		this.type = type;
+		return cost;
 	}
 
-	public void setRadius(int radius)
+	public void setTileLocX(int tileLocX)
 	{
-		this.radius = radius;
+		this.tileLocX = tileLocX;
 	}
 
-	public void setDamage(int damage)
+	public void setTileLocY(int tileLocY)
 	{
-		this.damage = damage;
-	}
-
-	public void setImage(Image image)
-	{
-		this.img = image;
-	}
-
-	public void setAboutMessage(String aboutMessage)
-	{
-		this.aboutMessage = aboutMessage;
+		this.tileLocY = tileLocY;
 	}
 
 	@Override

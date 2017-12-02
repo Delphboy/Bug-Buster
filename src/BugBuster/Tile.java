@@ -40,4 +40,9 @@ public class Tile
     {
         return tileImg;
     }
+
+    public boolean isWalkable()
+    {
+        return isWalkable;
+    }
 }

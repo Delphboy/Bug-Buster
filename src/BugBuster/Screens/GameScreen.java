@@ -52,7 +52,10 @@ public class GameScreen extends Pane
 		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
 
 		controller = new Controller(this);
-		towerShop.getGiveTowerBtn().setOnAction(controller);
+		towerShop.getBuyWhiteBloodCellBtn().setOnAction(controller);
+		towerShop.getBuyAntiBioticsBtn().setOnAction(controller);
+
+		worldView.setOnMouseClicked(controller);
 	}
 
     public TowerShopComponent getTowerShop()

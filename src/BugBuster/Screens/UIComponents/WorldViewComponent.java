@@ -1,8 +1,10 @@
 package BugBuster.Screens.UIComponents;
 
 import BugBuster.Pathogens.Pathogen;
-import BugBuster.Screens.BugBuster;
+import BugBuster.Controller;
+import BugBuster.Player;
 import BugBuster.Tile;
+import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,6 +17,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 {
 	Canvas canvas;
 	GraphicsContext gc;
+	Tile[][] worldMap = new Tile[16][12];
+	Tower[][] towerLocations = new Tower[16][12];
 
 	private ArrayList<Pathogen> pathogens;
 
@@ -31,8 +35,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	{
 		canvas = new Canvas(800, 600);
 		gc = canvas.getGraphicsContext2D();
-		gc.setFill(Color.BLUE);
-		gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
 
 		pathogens = new ArrayList<>();
 
@@ -72,7 +74,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private Tile[][] loadMap1()
 	{
-		Tile[][] worldMap = new Tile[16][12];
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 12; j++)
@@ -93,7 +94,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private Tile[][] loadMap2()
 	{
-		Tile[][] worldMap = new Tile[16][12];
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 12; j++)
@@ -114,7 +114,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private Tile[][] loadMap3()
 	{
-		Tile[][] worldMap = new Tile[16][12];
 		for (int i = 0; i < 16; i++)
 		{
 			for (int j = 0; j < 12; j++)
@@ -136,14 +135,50 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	@Override
 	public void update()
 	{
+		debugTowers();
+	}
 
+	/**
+	 * Return true if tower is placed, false if tower can't be placed
+	 * @param x
+	 * @param y
+	 * @param tower
+	 * @return
+	 */
+	public boolean placeTower(int x, int y, Tower tower)
+	{
+		if(towerLocations[x][y] == null && ! worldMap[x][y].isWalkable())
+		{
+			tower.setTileLocX(x);
+			tower.setTileLocY(y);
+			Player.getInstance().setCurrency(Player.getInstance().getCurrency() - tower.getCost());
+			towerLocations[x][y] = tower;
+			gc.drawImage(tower.getImage(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+			return true;
+		}
+		return false;
 	}
 
 	public static void startRound(int roundNumber)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < roundNumber; i++)
 		{
 
+		}
+	}
+
+	/**
+	 * Print locations of towers
+	 */
+	private void debugTowers()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 12; j++)
+			{
+				if(towerLocations[i][j] != null)
+					System.out.println(towerLocations[i][j]);
+			}
 		}
 	}
 
