@@ -42,6 +42,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		drawWorld(mapNum);
 	}
 
+	public Tower[][] getTowerLocations()
+	{
+		return towerLocations;
+	}
+
 	private void drawWorld(int mapNum)
 	{
 		Tile[][] worldMap = null;

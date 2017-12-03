@@ -83,4 +83,8 @@ public class GameScreen extends Pane
         return worldView;
     }
 
+	public void setTowerStats(TowerStatsComponent towerStats)
+	{
+		this.towerStats = towerStats;
+	}
 }

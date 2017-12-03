@@ -7,6 +7,7 @@ import BugBuster.Towers.TowerFactory;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -30,24 +31,33 @@ public class Controller implements EventHandler
         if(event.getSource()== parent.getTowerShop().getBuyWhiteBloodCellBtn())
         {
             createTower(1);
+            parent.setCursor(Cursor.CROSSHAIR);
         }
         else if(event.getSource()== parent.getTowerShop().getBuyAntiBioticsBtn())
         {
             createTower(1);
+            parent.setCursor(Cursor.CROSSHAIR);
         }
         else if(event instanceof MouseEvent)
         {
             Point2D tile = getTileClickedLocation(((MouseEvent) event).getX(), ((MouseEvent) event).
                     getY());
-            if (unplacedTower != null)
-            {
-                parent.getWorldView().placeTower((int)tile.getX(), (int)tile.getY(), unplacedTower);
-                updateUI();
-                unplacedTower = null;
-            }
+            handleMouseEvent(tile);
         }
 
         updateUI();
+    }
+
+    private void handleMouseEvent(Point2D clickedTile)
+    {
+        if (unplacedTower != null)
+        {
+            parent.getWorldView().placeTower((int)clickedTile.getX(), (int)clickedTile.getY(),
+                    unplacedTower);
+            updateUI();
+            unplacedTower = null;
+            parent.setCursor(Cursor.DEFAULT);
+        }
     }
 
     private void createTower(int towerToMake)
