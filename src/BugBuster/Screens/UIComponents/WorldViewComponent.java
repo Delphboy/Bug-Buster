@@ -1,7 +1,7 @@
 package BugBuster.Screens.UIComponents;
 
 import BugBuster.Pathogens.Pathogen;
-import BugBuster.Controller;
+import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
 import BugBuster.Tile;
 import BugBuster.Towers.Tower;
@@ -9,7 +9,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -27,7 +26,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		@Override
 		public void handle(long l)
 		{
-
+			// animate pathogens
+			for(Pathogen p : pathogens)
+			{
+				p.navigate(worldMap);
+			}
 		}
 	};
 
@@ -88,10 +91,42 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			}
 		}
 
-		for (int i = 0; i < 16; i++)
+		//Draw Path
+		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][4] = new Tile(1 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[2][4] = new Tile(2 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[3][4] = new Tile(3 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[3][5] = new Tile(3 * Tile.TILE_WIDTH, 5 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[3][6] = new Tile(3 * Tile.TILE_WIDTH, 6 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[2][6] = new Tile(2 * Tile.TILE_WIDTH, 6 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][6] = new Tile(1 * Tile.TILE_WIDTH, 6 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][7] = new Tile(1 * Tile.TILE_WIDTH, 7 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for (int i = 1; i < 10; i++)
+		{
+			worldMap[i][8] = new Tile(i * Tile.TILE_WIDTH, 8 * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+		}
+
+		for (int j = 7; j >= 4; j--)
+		{
+			worldMap[9][j] = new Tile(9 * Tile.TILE_WIDTH, j * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+		}
+
+		for (int i = 10; i < 16; i++)
 		{
 			worldMap[i][4] = new Tile(i * Tile.TILE_WIDTH, 4 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", false);
+					.TILE_HEIGHT, "resources/path-tile.png", true);
 		}
 
 		return worldMap;
@@ -152,7 +187,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	 */
 	public boolean placeTower(int x, int y, Tower tower)
 	{
-		if(towerLocations[x][y] == null && ! worldMap[x][y].isWalkable())
+		if(towerLocations[x][y] == null && worldMap[x][y].isWalkable() == false)
 		{
 			tower.setTileLocX(x);
 			tower.setTileLocY(y);
@@ -164,12 +199,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return false;
 	}
 
-	public static void startRound(int roundNumber)
+	public void startRound(int roundNumber)
 	{
+		PathogenFactory pf = new PathogenFactory(gc);
 		for (int i = 0; i < roundNumber; i++)
 		{
-
+			pathogens.add(pf.createProduct(1));
 		}
+		timer.start();
 	}
 
 	/**
