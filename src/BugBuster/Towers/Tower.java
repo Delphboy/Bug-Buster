@@ -12,7 +12,7 @@ public class Tower extends GameObject implements TowerIF
 	private int tileLocY;
 	private int radius;
 	private int damage;
-	private int cost = 10;
+	int cost = 10;
 
 	public Tower(String type, int radius, int damage)
 	{

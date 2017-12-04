@@ -54,6 +54,9 @@ public class GameScreen extends Pane
 		controller = new Controller(this);
 		towerShop.getBuyWhiteBloodCellBtn().setOnAction(controller);
 		towerShop.getBuyAntiBioticsBtn().setOnAction(controller);
+		towerShop.getBuyVaccineBtn().setOnAction(controller);
+
+		optionsBar.getStartRoundBtn().setOnAction(controller);
 
 		worldView.setOnMouseClicked(controller);
 	}

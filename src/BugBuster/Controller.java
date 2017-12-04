@@ -35,10 +35,21 @@ public class Controller implements EventHandler
         }
         else if(event.getSource()== parent.getTowerShop().getBuyAntiBioticsBtn())
         {
-            createTower(1);
+            createTower(2);
             parent.setCursor(Cursor.CROSSHAIR);
         }
-        else if(event instanceof MouseEvent)
+        else if(event.getSource()== parent.getTowerShop().getBuyVaccineBtn())
+        {
+            createTower(3);
+            parent.setCursor(Cursor.CROSSHAIR);
+        }
+
+        else if(event.getSource() == parent.getOptionsBar().getStartRoundBtn())
+        {
+            System.out.println("I should start a new round");
+        }
+
+        if(event instanceof MouseEvent)
         {
             Point2D tile = getTileClickedLocation(((MouseEvent) event).getX(), ((MouseEvent) event).
                     getY());

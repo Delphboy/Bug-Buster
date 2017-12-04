@@ -10,6 +10,7 @@ public class TowerShopComponent extends Pane implements ComponentIF
 {
 	Button buyWhiteBloodCellBtn;
 	Button buyAntiBioticsBtn;
+	Button buyVaccineBtn;
 
 	public TowerShopComponent()
 	{
@@ -17,7 +18,7 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		setHeight(50);
 
 		// Button to buy a white blood cell tower
-		buyWhiteBloodCellBtn = new Button("White Blood Cell");
+		buyWhiteBloodCellBtn = new Button("Buy White Blood Cell Tower");
 		buyWhiteBloodCellBtn.setFont(new Font("Cooper Black", 12));
 		buyWhiteBloodCellBtn.setLayoutX(25);
 		buyWhiteBloodCellBtn.setLayoutY(10);
@@ -25,14 +26,23 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		buyWhiteBloodCellBtn.setMaxSize(200, 50);
 
 		// Button to buy an antibiotics tower
-		buyAntiBioticsBtn = new Button("Anti Biotics");
+		buyAntiBioticsBtn = new Button("Buy Anti-Biotics Tower");
 		buyAntiBioticsBtn.setFont(new Font("Cooper Black", 12));
 		buyAntiBioticsBtn.setLayoutX(25);
 		buyAntiBioticsBtn.setLayoutY(70);
 		buyAntiBioticsBtn.setMinSize(200, 50);
 		buyAntiBioticsBtn.setMaxSize(200, 50);
 
-		getChildren().addAll(buyWhiteBloodCellBtn, buyAntiBioticsBtn);
+		// Button to buy an antibiotics tower
+		buyVaccineBtn = new Button("Buy Vaccine Tower");
+		buyVaccineBtn.setFont(new Font("Cooper Black", 12));
+		buyVaccineBtn.setLayoutX(25);
+		buyVaccineBtn.setLayoutY(130);
+		buyVaccineBtn.setMinSize(200, 50);
+		buyVaccineBtn.setMaxSize(200, 50);
+
+		getChildren().addAll(buyWhiteBloodCellBtn, buyAntiBioticsBtn,
+				buyVaccineBtn);
 	}
 
 	@Override
@@ -49,5 +59,10 @@ public class TowerShopComponent extends Pane implements ComponentIF
 	public Button getBuyAntiBioticsBtn()
 	{
 		return buyAntiBioticsBtn;
+	}
+
+	public Button getBuyVaccineBtn()
+	{
+		return buyVaccineBtn;
 	}
 }

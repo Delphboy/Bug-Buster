@@ -43,14 +43,6 @@ public class OptionsComponent extends Pane implements ComponentIF
 		startRoundBtn.setLayoutY(10);
 		startRoundBtn.setMinSize(100, 30);
 		startRoundBtn.setMaxSize(100, 30);
-		startRoundBtn.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent event)
-			{
-				System.out.println("Start Round");
-			}
-		});
 
 		getChildren().addAll(startRoundBtn, mainMenuBtn);
 	}
@@ -59,5 +51,15 @@ public class OptionsComponent extends Pane implements ComponentIF
 	public void update()
 	{
 
+	}
+
+	public Button getMainMenuBtn()
+	{
+		return mainMenuBtn;
+	}
+
+	public Button getStartRoundBtn()
+	{
+		return startRoundBtn;
 	}
 }

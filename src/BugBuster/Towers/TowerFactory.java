@@ -18,7 +18,13 @@ public class TowerFactory implements FactoryIF
         switch(discriminator)
         {
             case 1:
-                createdTower = new Tower("Test Tower", 10, 10);
+                createdTower = new WhiteBloodCell();
+                break;
+            case 2:
+                createdTower = new Antibiotics();
+                break;
+            case 3:
+                createdTower = new Vaccine();
                 break;
             default:
                 createdTower = null;
