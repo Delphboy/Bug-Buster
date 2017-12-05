@@ -15,7 +15,7 @@ public class Tile
     Image tileImg;
     int posX;
     int posY;
-    boolean isWalkable;
+    boolean isWalkable, isEndTile;
 
     public Tile(int posX, int posY, String imgLoc, boolean isWalkable)
     {
@@ -25,6 +25,18 @@ public class Tile
         tileImg = new Image(imgLoc);
         this.isWalkable = isWalkable;
     }
+
+    public Tile(int posX, int posY, String imgLoc, boolean isWalkable,
+                boolean isEndTile)
+    {
+        this.posX = posX;
+        this.posY = posY;
+        tileBoundary = new Rectangle(posX, posY, TILE_WIDTH, TILE_HEIGHT);
+        tileImg = new Image(imgLoc);
+        this.isWalkable = isWalkable;
+        this.isEndTile = isEndTile;
+    }
+
 
     public int getPosX()
     {
@@ -44,5 +56,10 @@ public class Tile
     public boolean isWalkable()
     {
         return isWalkable;
+    }
+
+    public boolean isEndTile()
+    {
+        return isEndTile;
     }
 }

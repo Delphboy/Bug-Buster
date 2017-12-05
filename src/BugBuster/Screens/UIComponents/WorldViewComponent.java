@@ -27,10 +27,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		public void handle(long l)
 		{
 			// animate pathogens
-			for(Pathogen p : pathogens)
-			{
-				p.navigate(worldMap);
-			}
+//			for(Pathogen p : pathogens)
+//			{
+//				p.navigate(worldMap);
+//			}
+
 		}
 	};
 
@@ -123,11 +124,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					.TILE_HEIGHT, "resources/path-tile.png", true);
 		}
 
-		for (int i = 10; i < 16; i++)
+		for (int i = 10; i < 15; i++)
 		{
 			worldMap[i][4] = new Tile(i * Tile.TILE_WIDTH, 4 * Tile
 					.TILE_HEIGHT, "resources/path-tile.png", true);
 		}
+
+		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, true);
 
 		return worldMap;
 	}
@@ -206,6 +210,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			pathogens.add(pf.createProduct(1));
 		}
+		pathogens.get(0).navigate(worldMap);
 		timer.start();
 	}
 

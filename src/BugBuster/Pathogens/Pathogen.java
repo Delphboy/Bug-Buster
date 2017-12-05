@@ -8,11 +8,15 @@ import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 public class Pathogen extends GameObject
 {
 	int health,damange = 1, tileX, tileY;
 
 	private int previousX, previousY;
+	private Direction lastDir = Direction.RIGHT;
+	private ArrayList<Direction> directionQueue = new ArrayList<>();
 
 	public Pathogen(GraphicsContext gc, double x, double y)
 	{
@@ -25,55 +29,80 @@ public class Pathogen extends GameObject
 	}
 
 	/**
-	 * search the world the the next tile that the pathogen should move to, then move pathogen
-	 * accordingly
+	 * search the world the the next tile that the pathogen should move to, then
+	 * move pathogen accordingly
 	 * @param world
 	 */
 	public void navigate(Tile[][] world)
 	{
+		if(directionQueue.size() != 0)
+			moveTowardsTile(1,1);
+		else
+			buildRoute(world);
+	}
+
+	/**
+	 *
+	 * @param world
+	 */
+	private void buildRoute(Tile[][] world)
+	{
+		int scannedX = tileX;
+		int scannedY = tileY;
 		if((tileX < 16 && tileX >= 0) && (tileY < 12 && tileY >= 0))
 		{
-			// while pathogen can go right
-			if (world[tileX + 1][tileY].isWalkable() && (previousX != tileX + 1))
+			Tile scannedTile = world[scannedX][scannedY];
+			while(!scannedTile.isEndTile() && scannedX < 15 && scannedY < 11)
 			{
-				System.out.println("Right");
-				x += 1;
-				setTileLocation();
-				update();
-			}
+				scannedTile = world[scannedX][scannedY];
+				System.out.println(scannedTile.getPosX() + " : " +
+						scannedTile.getPosY());
 
-			// while pathogen can go down
-			if (world[tileX][tileY + 1].isWalkable() && (previousY != tileY + 1))
-			{
-				System.out.println("Down");
-				y += 1;
-				setTileLocation();
-				update();
-			}
-
-			// while pathogen can go up
-			if (world[tileX][tileY - 1].isWalkable() && (previousY != tileY - 1))
-			{
-				System.out.println("Up");
-				y -= 1;
-				setTileLocation();
-				update();
-			}
-
-			// while pathogen can go left
-			if(tileX > 0)
-			{
-				if(world[tileX - 1][tileY].isWalkable() && (previousX != tileX - 1))
+				if((lastDir != Direction.LEFT)
+						&& (world[scannedX + 1][scannedY].isWalkable()))
 				{
-					System.out.println("Left");
-					x -= 1;
-					setTileLocation();
-					update();
+					directionQueue.add(Direction.RIGHT);
+					lastDir = Direction.RIGHT;
+					scannedX += 1;
+				}
+				else if((lastDir != Direction.RIGHT) &&
+						(world[scannedX -1][scannedY].isWalkable()))
+				{
+					directionQueue.add(Direction.LEFT);
+					lastDir = Direction.LEFT;
+					scannedX -= 1;
+				}
+				else if((lastDir != Direction.UP) &&
+						(world[scannedX][scannedY + 1].isWalkable()))
+				{
+					directionQueue.add(Direction.DOWN);
+					lastDir = Direction.DOWN;
+					scannedY += 1;
+				}
+				else if((lastDir != Direction.DOWN) &&
+						(world[scannedX][scannedY - 1].isWalkable()))
+				{
+					directionQueue.add(Direction.UP);
+					lastDir = Direction.UP;
+					scannedY -= 1;
+				}
+				else
+				{
+					System.out.println("I don't know where to go");
 				}
 			}
+			System.out.println("last tile found! " + tileX + ":" + tileY);
 		}
 		else
 			System.out.println("INDEX ERROR");
+	}
+
+	private void moveTowardsTile(int tileX, int tileY)
+	{
+		for (Direction d:directionQueue)
+		{
+			System.out.println(d.toString());
+		}
 	}
 
 	/**
