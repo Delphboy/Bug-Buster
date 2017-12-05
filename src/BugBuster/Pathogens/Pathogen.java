@@ -1,9 +1,6 @@
 package BugBuster.Pathogens;
 
 import BugBuster.GameObject;
-import BugBuster.Screens.BugBuster;
-import BugBuster.Screens.GameScreen;
-import BugBuster.Screens.UIComponents.WorldViewComponent;
 import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -36,13 +33,14 @@ public class Pathogen extends GameObject
 	public void navigate(Tile[][] world)
 	{
 		if(directionQueue.size() != 0)
-			moveTowardsTile(1,1);
+			move();
 		else
 			buildRoute(world);
 	}
 
 	/**
-	 *
+	 * Build a route that the tile will take. Tiles are scanned and a queue
+	 * of movement operations is built.
 	 * @param world
 	 */
 	private void buildRoute(Tile[][] world)
@@ -97,12 +95,24 @@ public class Pathogen extends GameObject
 			System.out.println("INDEX ERROR");
 	}
 
-	private void moveTowardsTile(int tileX, int tileY)
+
+	/**
+	 * Use the movement operations created by the buildRoute() method to
+	 * navigate the pathogen through the world
+	 */
+	private void move()
 	{
-		for (Direction d:directionQueue)
+		Direction operation = directionQueue.get(0);
+
+		switch (operation)
 		{
-			System.out.println(d.toString());
+			case UP: y -= tileY - 1; break;
+			case DOWN: y += tileY + 1; break;
+			case LEFT: x -= tileX - 1; break;
+			case RIGHT: x += tileX + 1; break;
 		}
+		update();
+		directionQueue.remove(0);
 	}
 
 	/**
@@ -115,6 +125,27 @@ public class Pathogen extends GameObject
 		tileX = (int)(x) / Tile.TILE_WIDTH;
 		tileY = (int)(y) / Tile.TILE_HEIGHT;
 		System.out.println("X: " + tileX + "\tY:" + tileY);
+	}
+
+	/**
+	 * check whether the pathogen is on a specific tile.
+	 * @param tileX
+	 * @param tileY
+	 * @return TRUE : when pathogen is on a tile
+	 * @return FALSE : When pathogen isn't on the tile
+	 */
+	private boolean isOnTile(int tileX, int tileY)
+	{
+		boolean returnValue = true;
+
+		if (x < tileX * Tile.TILE_WIDTH && x > tileX * Tile.TILE_WIDTH + Tile.TILE_WIDTH)
+			returnValue = false;
+
+		if (y < tileY * Tile.TILE_HEIGHT && y > tileY * Tile.TILE_HEIGHT+ Tile
+				.TILE_HEIGHT)
+			returnValue = false;
+
+		return returnValue;
 	}
 
 }

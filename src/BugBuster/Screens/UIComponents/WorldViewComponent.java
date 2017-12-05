@@ -27,10 +27,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		public void handle(long l)
 		{
 			// animate pathogens
-//			for(Pathogen p : pathogens)
-//			{
-//				p.navigate(worldMap);
-//			}
+			for(Pathogen p : pathogens)
+			{
+				p.navigate(worldMap);
+			}
 
 		}
 	};
@@ -210,7 +210,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			pathogens.add(pf.createProduct(1));
 		}
-		pathogens.get(0).navigate(worldMap);
 		timer.start();
 	}
 
