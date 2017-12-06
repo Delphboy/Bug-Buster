@@ -1,6 +1,10 @@
 package BugBuster.Pathogens;
 
 import BugBuster.GameObject;
+import BugBuster.Player;
+import BugBuster.Screens.BugBuster;
+import BugBuster.Screens.TutorialScreen;
+import BugBuster.Screens.UIComponents.HeaderBarComponent;
 import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,9 +13,10 @@ import java.util.ArrayList;
 
 public class Pathogen extends GameObject
 {
+	public boolean isForRemoval = false;
 	int health,damange = 1, tileX, tileY;
 
-	private int previousX, previousY;
+	private int endTileX, endTileY;
 	private Direction lastDir = Direction.RIGHT;
 	private ArrayList<Direction> directionQueue = new ArrayList<>();
 
@@ -89,7 +94,10 @@ public class Pathogen extends GameObject
 					System.out.println("I don't know where to go");
 				}
 			}
-			System.out.println("last tile found! " + tileX + ":" + tileY);
+			endTileX = scannedX;
+			endTileY = scannedY;
+			System.out.println("last tile found! " + endTileX + ":" +
+					endTileY);
 		}
 		else
 			System.out.println("INDEX ERROR");
@@ -106,11 +114,27 @@ public class Pathogen extends GameObject
 
 		switch (operation)
 		{
-			case UP: y -= tileY - 1; break;
-			case DOWN: y += tileY + 1; break;
-			case LEFT: x -= tileX - 1; break;
-			case RIGHT: x += tileX + 1; break;
+			case UP: y -= Tile.TILE_HEIGHT; break;
+			case DOWN: y += Tile.TILE_HEIGHT; break;
+			case LEFT: x -= Tile.TILE_WIDTH; break;
+			case RIGHT: x += Tile.TILE_WIDTH; break;
 		}
+
+		// Handle removing pathogen and doing damage, if it makes it through
+		// the map
+		if(isOnTile(endTileX, endTileY))
+		{
+			isForRemoval = true;
+			Player player = Player.getInstance();
+			if(player.getHealth() >= 1)
+			{
+				player.setHealth(player.getHealth() - damange);
+				HeaderBarComponent.getInstance().update();
+			}
+			else
+				BugBuster.updateScene(new TutorialScreen());
+		}
+
 		update();
 		directionQueue.remove(0);
 	}
@@ -120,8 +144,6 @@ public class Pathogen extends GameObject
 	 */
 	private void setTileLocation()
 	{
-		previousX = tileX;
-		previousY = tileY;
 		tileX = (int)(x) / Tile.TILE_WIDTH;
 		tileY = (int)(y) / Tile.TILE_HEIGHT;
 		System.out.println("X: " + tileX + "\tY:" + tileY);
@@ -134,18 +156,16 @@ public class Pathogen extends GameObject
 	 * @return TRUE : when pathogen is on a tile
 	 * @return FALSE : When pathogen isn't on the tile
 	 */
-	private boolean isOnTile(int tileX, int tileY)
+	public boolean isOnTile(int tileX, int tileY)
 	{
-		boolean returnValue = true;
+		System.out.println("Given tile:\t" + endTileX + " : " + endTileY);
 
-		if (x < tileX * Tile.TILE_WIDTH && x > tileX * Tile.TILE_WIDTH + Tile.TILE_WIDTH)
-			returnValue = false;
-
-		if (y < tileY * Tile.TILE_HEIGHT && y > tileY * Tile.TILE_HEIGHT+ Tile
-				.TILE_HEIGHT)
-			returnValue = false;
-
-		return returnValue;
+		boolean returnVal = ((x >= tileX * Tile.TILE_WIDTH) &&
+				( x <= (tileX + 1) * Tile.TILE_WIDTH) &&
+				(y >= tileY * Tile.TILE_HEIGHT) &&
+				( y <= (tileY+ 1) * Tile.TILE_HEIGHT));
+		System.out.println("give:" + returnVal);
+		return returnVal;
 	}
 
 }

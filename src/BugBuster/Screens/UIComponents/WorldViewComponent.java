@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class WorldViewComponent extends Pane implements ComponentIF
 {
@@ -20,6 +21,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	Tower[][] towerLocations = new Tower[16][12];
 
 	private ArrayList<Pathogen> pathogens;
+	private ArrayList<Pathogen> pathogensForRemoval = new ArrayList<>();
 
 	AnimationTimer timer = new AnimationTimer()
 	{
@@ -30,8 +32,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			for(Pathogen p : pathogens)
 			{
 				p.navigate(worldMap);
+				if(p.isForRemoval)
+					pathogensForRemoval.add(p);
 			}
-
+			pathogens.removeAll(pathogensForRemoval);
 		}
 	};
 
