@@ -5,6 +5,7 @@ import BugBuster.Player;
 import BugBuster.Screens.BugBuster;
 import BugBuster.Screens.TutorialScreen;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
+import BugBuster.Screens.UIComponents.WorldViewComponent;
 import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -28,6 +29,24 @@ public class Pathogen extends GameObject
 		setTileLocation();
 
 		update();
+	}
+
+	/**
+	 * return the x-coordinate of the tile the pathogen is currently on
+	 * @return tileX
+	 */
+	public int getTileX()
+	{
+		return tileX;
+	}
+
+	/**
+	 * return the y-coordinate of the tile the pathogen is currently on
+	 * @return tileY
+	 */
+	public int getTileY()
+	{
+		return tileY;
 	}
 
 	/**
@@ -112,12 +131,37 @@ public class Pathogen extends GameObject
 	{
 		Direction operation = directionQueue.get(0);
 
+		// Move pathogen across a tile
 		switch (operation)
 		{
-			case UP: y -= Tile.TILE_HEIGHT; break;
-			case DOWN: y += Tile.TILE_HEIGHT; break;
-			case LEFT: x -= Tile.TILE_WIDTH; break;
-			case RIGHT: x += Tile.TILE_WIDTH; break;
+			case UP:
+				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
+				{
+					y -= 1;
+					update();
+				}
+				break;
+			case DOWN:
+				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
+				{
+					y += 1;
+					update();
+				}
+				break;
+			case LEFT:
+				for (int i = 0; i < Tile.TILE_WIDTH; i++)
+				{
+					x -= 1;
+					update();
+				}
+				break;
+			case RIGHT:
+				for (int i = 0; i < Tile.TILE_WIDTH; i++)
+				{
+					x += 1;
+					update();
+				}
+				break;
 		}
 
 		// Handle removing pathogen and doing damage, if it makes it through
@@ -135,7 +179,6 @@ public class Pathogen extends GameObject
 				BugBuster.updateScene(new TutorialScreen());
 		}
 
-		update();
 		directionQueue.remove(0);
 	}
 
@@ -167,5 +210,4 @@ public class Pathogen extends GameObject
 		System.out.println("give:" + returnVal);
 		return returnVal;
 	}
-
 }

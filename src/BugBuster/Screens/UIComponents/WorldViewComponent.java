@@ -8,10 +8,10 @@ import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class WorldViewComponent extends Pane implements ComponentIF
 {
@@ -32,6 +32,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			for(Pathogen p : pathogens)
 			{
 				p.navigate(worldMap);
+				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
+						.getTileX() * Tile.TILE_WIDTH, p.getTileY()*Tile.TILE_HEIGHT);
 				if(p.isForRemoval)
 					pathogensForRemoval.add(p);
 			}
@@ -78,11 +80,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				gc.drawImage(worldMap[i][j].getTileImg(), worldMap[i][j].getPosX(),
-						worldMap[i][j].getPosY(), worldMap[i][j].TILE_WIDTH,
-						worldMap[i][j].TILE_HEIGHT);
+				drawTile(worldMap[i][j].getTileImg(), worldMap[i][j].getPosX(),
+						worldMap[i][j].getPosY());
 			}
 		}
+	}
+
+	public void drawTile(Image img, int xPos, int yPos)
+	{
+		gc.drawImage(img, xPos, yPos, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 	}
 
 	private Tile[][] loadMap1()
