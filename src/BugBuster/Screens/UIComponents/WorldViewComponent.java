@@ -39,7 +39,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				{
 					pathogensForRemoval.add(p);
 				}
-				System.out.println("\t" + p.getTileX() + ":" + p.getTileY());
 			}
 			pathogens.removeAll(pathogensForRemoval);
 		}
@@ -93,6 +92,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	public void drawTile(Image img, int xPos, int yPos)
 	{
 		gc.drawImage(img, xPos, yPos, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+		System.out.println("Tile drawn at: " + xPos + ":" + yPos +
+		"\t" + ((int)(xPos / Tile.TILE_WIDTH)) + ":" + ((int)(yPos / Tile
+				.TILE_HEIGHT)));
 	}
 
 	private Tile[][] loadMap1()

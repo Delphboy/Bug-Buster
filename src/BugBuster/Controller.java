@@ -79,7 +79,8 @@ public class Controller implements EventHandler
     private Point2D getTileClickedLocation(double mouseX, double mouseY)
     {
         Point2D tileLoc = new Point2D(((int)mouseX / Tile.TILE_WIDTH), ((int)mouseY / Tile.TILE_HEIGHT));
-        System.out.println("Clicked!\tx: " + tileLoc.getX()+ "\ty:" + tileLoc.getY());
+        System.out.println("Clicked!\tx: " + mouseX+ "y:" + mouseY + "\tX: "
+                + tileLoc.getX() + "Y:" + tileLoc.getY());
 
         return tileLoc;
     }

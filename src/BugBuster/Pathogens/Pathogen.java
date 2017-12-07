@@ -26,7 +26,7 @@ public class Pathogen extends GameObject
 		super(gc, x, y);
 		health = 10;
 		img = new Image("resources/test-tile.png");
-		setTileLocation();
+		setTileLocation(lastDir);
 
 		update();
 	}
@@ -131,42 +131,11 @@ public class Pathogen extends GameObject
 	{
 		Direction operation = directionQueue.get(0);
 
-		// Move pathogen across a tile
-//		switch (operation)
-//		{
-//			case UP:
-//				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
-//				{
-//					y -= 1;
-//					update();
-//				}
-//				break;
-//			case DOWN:
-//				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
-//				{
-//					y += 1;
-//					update();
-//				}
-//				break;
-//			case LEFT:
-//				for (int i = 0; i < Tile.TILE_WIDTH; i++)
-//				{
-//					x -= 1;
-//					update();
-//				}
-//				break;
-//			case RIGHT:
-//				for (int i = 0; i < Tile.TILE_WIDTH; i++)
-//				{
-//					x += 1;
-//					update();
-//				}
-//				break;
-//		}
-
+		// Iterate movement count
 		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
 			moveCount = 0;
 
+		// Move pathogen across a tile
 		switch (operation)
 		{
 			case UP:
@@ -195,7 +164,7 @@ public class Pathogen extends GameObject
 		{
 			isForRemoval = true;
 			Player player = Player.getInstance();
-			if(player.getHealth() >= 1)
+			if(player.getHealth() > 1)
 			{
 				player.setHealth(player.getHealth() - damange);
 				HeaderBarComponent.getInstance().update();
@@ -203,19 +172,34 @@ public class Pathogen extends GameObject
 			else
 				BugBuster.updateScene(new TutorialScreen());
 		}
-		setTileLocation();
-		if(moveCount == Tile.TILE_WIDTH || moveCount ==Tile.TILE_HEIGHT)
+
+		setTileLocation(operation);
+
+		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
 			directionQueue.remove(0);
 	}
 
 	/**
-	 * update the tile location based on the actual X,Y coordinates of the pathogen
+	 * Update the tile location based on the actual X,Y coordinates of the
+	 * pathogen
+	 * IF pathogen is going LEFT or UP, add 30 to the x and y to account for
+	 * width and height of the pathogen.
 	 */
-	private void setTileLocation()
+	private void setTileLocation(Direction lastDir)
 	{
-		tileX = (int)(x) / Tile.TILE_WIDTH;
-		tileY = (int)(y) / Tile.TILE_HEIGHT;
-		System.out.println("X: " + tileX + "\tY:" + tileY);
+		if(lastDir == Direction.LEFT || lastDir == Direction.UP)
+		{
+			tileX = (int)((x + 30) / Tile.TILE_WIDTH);
+			tileY = (int)((y + 30) / Tile.TILE_HEIGHT);
+		}
+		else
+		{
+			tileX = (int)(x / Tile.TILE_WIDTH);
+			tileY = (int)(y / Tile.TILE_HEIGHT);
+		}
+
+		System.out.println("Pathogen Location: X: " + tileX + "\tY:" + tileY +
+				"\t\tx:" + x + " " + "\ty: " + y);
 	}
 
 	/**
@@ -227,13 +211,9 @@ public class Pathogen extends GameObject
 	 */
 	public boolean isOnTile(int tileX, int tileY)
 	{
-		System.out.println("Given tile:\t" + endTileX + " : " + endTileY);
-
-		boolean returnVal = ((x >= tileX * Tile.TILE_WIDTH) &&
+		return ((x >= tileX * Tile.TILE_WIDTH) &&
 				( x <= (tileX + 1) * Tile.TILE_WIDTH) &&
 				(y >= tileY * Tile.TILE_HEIGHT) &&
 				( y <= (tileY+ 1) * Tile.TILE_HEIGHT));
-		System.out.println("give:" + returnVal);
-		return returnVal;
 	}
 }
