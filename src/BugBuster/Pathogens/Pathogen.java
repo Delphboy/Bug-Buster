@@ -17,7 +17,7 @@ public class Pathogen extends GameObject
 	public boolean isForRemoval = false;
 	int health,damange = 1, tileX, tileY;
 
-	private int endTileX, endTileY;
+	private int endTileX, endTileY, moveCount = 0;
 	private Direction lastDir = Direction.RIGHT;
 	private ArrayList<Direction> directionQueue = new ArrayList<>();
 
@@ -132,37 +132,62 @@ public class Pathogen extends GameObject
 		Direction operation = directionQueue.get(0);
 
 		// Move pathogen across a tile
+//		switch (operation)
+//		{
+//			case UP:
+//				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
+//				{
+//					y -= 1;
+//					update();
+//				}
+//				break;
+//			case DOWN:
+//				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
+//				{
+//					y += 1;
+//					update();
+//				}
+//				break;
+//			case LEFT:
+//				for (int i = 0; i < Tile.TILE_WIDTH; i++)
+//				{
+//					x -= 1;
+//					update();
+//				}
+//				break;
+//			case RIGHT:
+//				for (int i = 0; i < Tile.TILE_WIDTH; i++)
+//				{
+//					x += 1;
+//					update();
+//				}
+//				break;
+//		}
+
+		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
+			moveCount = 0;
+
 		switch (operation)
 		{
 			case UP:
-				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
-				{
-					y -= 1;
-					update();
-				}
+				y -= 1;
+				update();
 				break;
 			case DOWN:
-				for (int i = 0; i < Tile.TILE_HEIGHT; i++)
-				{
-					y += 1;
-					update();
-				}
+				y += 1;
+				update();
 				break;
 			case LEFT:
-				for (int i = 0; i < Tile.TILE_WIDTH; i++)
-				{
-					x -= 1;
-					update();
-				}
+				x -= 1;
+				update();
 				break;
 			case RIGHT:
-				for (int i = 0; i < Tile.TILE_WIDTH; i++)
-				{
-					x += 1;
-					update();
-				}
+				x += 1;
+				update();
 				break;
 		}
+
+		moveCount += 1;
 
 		// Handle removing pathogen and doing damage, if it makes it through
 		// the map
@@ -178,8 +203,9 @@ public class Pathogen extends GameObject
 			else
 				BugBuster.updateScene(new TutorialScreen());
 		}
-
-		directionQueue.remove(0);
+		setTileLocation();
+		if(moveCount == Tile.TILE_WIDTH || moveCount ==Tile.TILE_HEIGHT)
+			directionQueue.remove(0);
 	}
 
 	/**

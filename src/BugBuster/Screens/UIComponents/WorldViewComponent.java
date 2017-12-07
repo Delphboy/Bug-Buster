@@ -31,11 +31,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			// animate pathogens
 			for(Pathogen p : pathogens)
 			{
-				p.navigate(worldMap);
 				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
-						.getTileX() * Tile.TILE_WIDTH, p.getTileY()*Tile.TILE_HEIGHT);
+						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+
+				p.navigate(worldMap);
 				if(p.isForRemoval)
+				{
 					pathogensForRemoval.add(p);
+				}
+				System.out.println("\t" + p.getTileX() + ":" + p.getTileY());
 			}
 			pathogens.removeAll(pathogensForRemoval);
 		}
