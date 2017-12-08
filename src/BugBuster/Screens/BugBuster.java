@@ -40,7 +40,7 @@ public class BugBuster extends Application
 		// Set up the style of the window
 		window.setTitle("Bug Buster | Software Architecture Assignment - Henry Senior");
 		window.setResizable(false);
-		window.initStyle(StageStyle.UNDECORATED);
+		window.initStyle(StageStyle.DECORATED);
 
 		//by default, start the MainMenuScreen
 //		updateScene(new MainMenuScreen());

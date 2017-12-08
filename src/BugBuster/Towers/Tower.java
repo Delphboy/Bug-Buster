@@ -3,14 +3,20 @@ package BugBuster.Towers;
 import BugBuster.Controller;
 import BugBuster.GameObject;
 import BugBuster.Pathogens.Pathogen;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Tower extends GameObject implements TowerIF
 {
@@ -21,13 +27,27 @@ public class Tower extends GameObject implements TowerIF
 	private int radius;
 	private int damage;
 	int cost = 10;
-	int fireRate = 1;
+	int fireRate;
+	Pathogen target;
 
-//	Timeline timeline = new Timeline(new KeyFrame(
-//		Duration.seconds(fireRate),
-//			actionEvent -> shoot(null);
-//
-//	));
+//	AnimationTimer shootTimer = new AnimationTimer()
+//	{
+//		@Override
+//		public void handle(long now)
+//		{
+//			shootPathogen(target);
+//		}
+//	};
+
+	Timer shootTimer = new Timer();
+	TimerTask task = new TimerTask()
+	{
+		@Override
+		public void run()
+		{
+			shootPathogen();
+		}
+	};
 
 	public Tower(String type, int radius, int damage)
 	{
@@ -35,9 +55,11 @@ public class Tower extends GameObject implements TowerIF
 		this.type = type;
 		this.radius = radius;
 		this.damage = damage;
+		this.fireRate = 10;
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
 		img = new Image("resources/testTower.png");
+		shootTimer.scheduleAtFixedRate(task, 0, this.fireRate * 100l);
 	}
 
 	public String getType()
@@ -101,14 +123,10 @@ public class Tower extends GameObject implements TowerIF
 				'}';
 	}
 
-	public Pathogen shoot(ArrayList<Pathogen> pathogens)
+	private void shootPathogen()
 	{
-		Pathogen target = getTarget(pathogens);
-
 		if(target != null)
 			target.setHealth(target.getHealth() - damage);
-
-		return target;
 	}
 
 	@Override
@@ -125,25 +143,21 @@ public class Tower extends GameObject implements TowerIF
 
 	/**
 	 * Find the pathogen closest to the target
-	 * @return
 	 */
-	private Pathogen getTarget(ArrayList<Pathogen> pathogens)
+	public void setTarget(ArrayList<Pathogen> pathogens)
 	{
-		Pathogen closestPathogen = null;
-
 		for (Pathogen p : pathogens)
 		{
+			target = null;
 			for (int y = tileLocY - radius; y <= tileLocY + radius; y++)
 			{
 				for (int x = tileLocX - radius; x <= tileLocX + radius; x++)
 				{
 					if(x == p.getTileX() && y == p.getTileY())
-						return p;
+						target = p;
 				}
 			}
 		}
-		
-		return closestPathogen;
 	}
 
 }

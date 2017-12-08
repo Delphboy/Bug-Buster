@@ -7,11 +7,14 @@ import BugBuster.Tile;
 import BugBuster.Towers.Tower;
 import BugBuster.Towers.TowerIF;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
 public class WorldViewComponent extends Pane implements ComponentIF
@@ -37,7 +40,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 
 				p.navigate(worldMap);
-				if(p.isForRemoval)
+				if(p.getHealth() <= 0)
 				{
 					pathogensForRemoval.add(p);
 				}
@@ -45,9 +48,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 			for(Tower t : towers)
 			{
-				Pathogen pathogen = t.shoot(pathogens);
-				if(pathogen != null && pathogen.getHealth() <= 0)
-					pathogensForRemoval.add(pathogen);
+				t.setTarget(pathogens);
 			}
 
 			pathogens.removeAll(pathogensForRemoval);

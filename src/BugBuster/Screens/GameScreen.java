@@ -18,8 +18,8 @@ public class GameScreen extends Pane
 	public GameScreen(int mapNum)
 	{
 		towerShop = new TowerShopComponent();
-		towerStats = new TowerStatsComponent(
-				new Tower("Tower",70, 70));
+//		towerStats = new TowerStatsComponent(
+//				new Tower("Tower",70, 70));
 		optionsBar = new OptionsComponent();
 		headerBar = HeaderBarComponent.getInstance();
 		worldView = new WorldViewComponent(mapNum);
@@ -39,17 +39,17 @@ public class GameScreen extends Pane
 		towerShop.setLayoutX(0);
 		towerShop.setLayoutY(50);
 
-		towerStats.setMinSize(250, 325);
-		towerStats.setMaxSize(250, 325);
-		towerStats.setLayoutX(0);
-		towerStats.setLayoutY(325);
+//		towerStats.setMinSize(250, 325);
+//		towerStats.setMaxSize(250, 325);
+//		towerStats.setLayoutX(0);
+//		towerStats.setLayoutY(325);
 
 		worldView.setMinSize(800, 600);
 		worldView.setMaxSize(800, 600);
 		worldView.setLayoutX(250);
 		worldView.setLayoutY(50);
 
-		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
+		getChildren().addAll(towerShop/*, towerStats*/, headerBar, worldView, optionsBar);
 
 		controller = new Controller(this);
 		towerShop.getBuyWhiteBloodCellBtn().setOnAction(controller);
