@@ -22,6 +22,11 @@ public class BugBuster extends Application
 	private static Stage window;
 	private static Scene scene;
 
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
+
 	/**
 	 * Set the
 	 * @param primaryStage
