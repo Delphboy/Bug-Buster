@@ -1,8 +1,16 @@
 package BugBuster.Towers;
 
+import BugBuster.Controller;
 import BugBuster.GameObject;
 import BugBuster.Pathogens.Pathogen;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class Tower extends GameObject implements TowerIF
 {
@@ -13,6 +21,13 @@ public class Tower extends GameObject implements TowerIF
 	private int radius;
 	private int damage;
 	int cost = 10;
+	int fireRate = 1;
+
+//	Timeline timeline = new Timeline(new KeyFrame(
+//		Duration.seconds(fireRate),
+//			actionEvent -> shoot(null);
+//
+//	));
 
 	public Tower(String type, int radius, int damage)
 	{
@@ -86,16 +101,14 @@ public class Tower extends GameObject implements TowerIF
 				'}';
 	}
 
-	@Override
-	public void shoot(Pathogen enemy)
+	public Pathogen shoot(ArrayList<Pathogen> pathogens)
 	{
+		Pathogen target = getTarget(pathogens);
 
-	}
+		if(target != null)
+			target.setHealth(target.getHealth() - damage);
 
-	@Override
-	public Pathogen getTarget()
-	{
-		return null;
+		return target;
 	}
 
 	@Override
@@ -109,4 +122,28 @@ public class Tower extends GameObject implements TowerIF
 	{
 
 	}
+
+	/**
+	 * Find the pathogen closest to the target
+	 * @return
+	 */
+	private Pathogen getTarget(ArrayList<Pathogen> pathogens)
+	{
+		Pathogen closestPathogen = null;
+
+		for (Pathogen p : pathogens)
+		{
+			for (int y = tileLocY - radius; y <= tileLocY + radius; y++)
+			{
+				for (int x = tileLocX - radius; x <= tileLocX + radius; x++)
+				{
+					if(x == p.getTileX() && y == p.getTileY())
+						return p;
+				}
+			}
+		}
+		
+		return closestPathogen;
+	}
+
 }

@@ -5,6 +5,7 @@ import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
 import BugBuster.Tile;
 import BugBuster.Towers.Tower;
+import BugBuster.Towers.TowerIF;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,6 +23,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private ArrayList<Pathogen> pathogens;
 	private ArrayList<Pathogen> pathogensForRemoval = new ArrayList<>();
+	private ArrayList<Tower> towers;
 
 	AnimationTimer timer = new AnimationTimer()
 	{
@@ -40,6 +42,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					pathogensForRemoval.add(p);
 				}
 			}
+
+			for(Tower t : towers)
+			{
+				Pathogen pathogen = t.shoot(pathogens);
+				if(pathogen != null && pathogen.getHealth() <= 0)
+					pathogensForRemoval.add(pathogen);
+			}
+
 			pathogens.removeAll(pathogensForRemoval);
 		}
 	};
@@ -50,6 +60,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		gc = canvas.getGraphicsContext2D();
 
 		pathogens = new ArrayList<>();
+		towers = new ArrayList<>();
 
 		getChildren().add(canvas);
 		drawWorld(mapNum);
@@ -60,6 +71,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return towerLocations;
 	}
 
+	/**
+	 * Draw the world based on what map is loaded
+	 * @param mapNum
+	 */
 	private void drawWorld(int mapNum)
 	{
 		Tile[][] worldMap = null;
@@ -89,14 +104,23 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		}
 	}
 
+	/**
+	 * Draw a tile at a specific x, y
+	 * @param img
+	 * @param xPos : Actual X, not tileX
+	 * @param yPos : Actual Y, not tileY
+	 */
 	public void drawTile(Image img, int xPos, int yPos)
 	{
 		gc.drawImage(img, xPos, yPos, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
-		System.out.println("Tile drawn at: " + xPos + ":" + yPos +
-		"\t" + ((int)(xPos / Tile.TILE_WIDTH)) + ":" + ((int)(yPos / Tile
-				.TILE_HEIGHT)));
+//		System.out.println("Tile drawn at: " + xPos + ":" + yPos +
+//		"\t" + ((int)(xPos / Tile.TILE_WIDTH)) + ":" + ((int)(yPos / Tile.TILE_HEIGHT)));
 	}
 
+	/**
+	 * Load map 1
+	 * @return a 2D Tile array representing the world
+	 */
 	private Tile[][] loadMap1()
 	{
 		for (int i = 0; i < 16; i++)
@@ -152,6 +176,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return worldMap;
 	}
 
+	/**
+	 * Load map 2
+	 * @return a 2D Tile array representing the world
+	 */
 	private Tile[][] loadMap2()
 	{
 		for (int i = 0; i < 16; i++)
@@ -172,6 +200,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return worldMap;
 	}
 
+	/**
+	 * Load map 3
+	 * @return a 2D Tile array representing the world
+	 */
 	private Tile[][] loadMap3()
 	{
 		for (int i = 0; i < 16; i++)
@@ -213,6 +245,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			tower.setTileLocY(y);
 			Player.getInstance().setCurrency(Player.getInstance().getCurrency() - tower.getCost());
 			towerLocations[x][y] = tower;
+			towers.add(tower);
 			gc.drawImage(tower.getImage(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 			return true;
 		}

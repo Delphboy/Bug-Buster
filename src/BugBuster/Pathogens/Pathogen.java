@@ -49,6 +49,17 @@ public class Pathogen extends GameObject
 		return tileY;
 	}
 
+	public int getHealth()
+	{
+		return health;
+	}
+
+	public void setHealth(int health)
+	{
+		System.out.println("ow: " + health);
+		this.health = health;
+	}
+
 	/**
 	 * search the world the the next tile that the pathogen should move to, then
 	 * move pathogen accordingly
@@ -77,8 +88,8 @@ public class Pathogen extends GameObject
 			while(!scannedTile.isEndTile() && scannedX < 15 && scannedY < 11)
 			{
 				scannedTile = world[scannedX][scannedY];
-				System.out.println(scannedTile.getPosX() + " : " +
-						scannedTile.getPosY());
+//				System.out.println(scannedTile.getPosX() + " : " +
+//						scannedTile.getPosY());
 
 				if((lastDir != Direction.LEFT)
 						&& (world[scannedX + 1][scannedY].isWalkable()))
@@ -115,8 +126,6 @@ public class Pathogen extends GameObject
 			}
 			endTileX = scannedX;
 			endTileY = scannedY;
-			System.out.println("last tile found! " + endTileX + ":" +
-					endTileY);
 		}
 		else
 			System.out.println("INDEX ERROR");
@@ -198,8 +207,8 @@ public class Pathogen extends GameObject
 			tileY = (int)(y / Tile.TILE_HEIGHT);
 		}
 
-		System.out.println("Pathogen Location: X: " + tileX + "\tY:" + tileY +
-				"\t\tx:" + x + " " + "\ty: " + y);
+//		System.out.println("Pathogen Location: X: " + tileX + "\tY:" + tileY +
+//				"\t\tx:" + x + " " + "\ty: " + y);
 	}
 
 	/**
