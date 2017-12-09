@@ -4,6 +4,9 @@ import BugBuster.FactoryIF;
 import BugBuster.Pathogens.Pathogen;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by stc765 on 28/11/17.
  */
@@ -19,17 +22,21 @@ public class PathogenFactory implements FactoryIF
     public Pathogen createProduct(int discriminator)
     {
         Pathogen createdPathogen;
-
         switch(discriminator)
         {
             case 1:
-                createdPathogen = new Pathogen(graphicsContext, 0, 200);
+                createdPathogen = new Bacteria(graphicsContext, 0, 200);
+                break;
+            case 2:
+                createdPathogen = new H1N1(graphicsContext, 0, 200);
                 break;
             default:
+                System.out.println("FACTORY BROKE");
                 createdPathogen = null;
                 break;
         }
 
-        return (Pathogen)createdPathogen;
+        System.out.println("FACTORY RETURN: " + createdPathogen);
+        return createdPathogen;
     }
 }

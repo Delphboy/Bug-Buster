@@ -4,6 +4,8 @@ import BugBuster.Controller;
 import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class GameScreen extends Pane
 {
@@ -51,6 +53,13 @@ public class GameScreen extends Pane
 
 		getChildren().addAll(towerShop/*, towerStats*/, headerBar, worldView, optionsBar);
 
+		//PLay Music
+		Media soundFile = new Media(this.getClass().getResource("../../resources/sounds/background.mp3").toExternalForm());
+		System.out.println("Sound file @" + soundFile.getSource());
+		MediaPlayer soundPlayer = new MediaPlayer(soundFile);
+		soundPlayer.play();
+
+		// Configure controller
 		controller = new Controller(this);
 		towerShop.getBuyWhiteBloodCellBtn().setOnAction(controller);
 		towerShop.getBuyAntiBioticsBtn().setOnAction(controller);

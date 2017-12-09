@@ -46,7 +46,7 @@ public class Controller implements EventHandler
 
         else if(event.getSource() == parent.getOptionsBar().getStartRoundBtn())
         {
-            parent.getWorldView().startRound(1);
+            parent.getWorldView().startRound();
         }
 
         if(event instanceof MouseEvent)

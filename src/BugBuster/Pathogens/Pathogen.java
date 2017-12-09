@@ -12,22 +12,22 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
-public class Pathogen extends GameObject
+public abstract class Pathogen extends GameObject
 {
 	public boolean isForRemoval = false;
-	int health,damange = 1, tileX, tileY;
+	protected int health,damange, tileX, tileY;
 
-	private int endTileX, endTileY, moveCount = 0;
-	private Direction lastDir = Direction.RIGHT;
-	private ArrayList<Direction> directionQueue = new ArrayList<>();
+	protected int endTileX, endTileY, moveCount = 0;
+	protected Direction lastDir = Direction.RIGHT;
+	protected ArrayList<Direction> directionQueue = new ArrayList<>();
 
 	public Pathogen(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
-		health = 10;
+		health = 5;
 		img = new Image("resources/test-tile.png");
 		setTileLocation(lastDir);
-
+		damange = 1;
 		update();
 	}
 
@@ -56,8 +56,12 @@ public class Pathogen extends GameObject
 
 	public void setHealth(int health)
 	{
-		System.out.println("ow: " + health);
 		this.health = health;
+	}
+
+	public Direction getLastDir()
+	{
+		return lastDir;
 	}
 
 	/**
@@ -78,7 +82,7 @@ public class Pathogen extends GameObject
 	 * of movement operations is built.
 	 * @param world
 	 */
-	private void buildRoute(Tile[][] world)
+	protected void buildRoute(Tile[][] world)
 	{
 		int scannedX = tileX;
 		int scannedY = tileY;
@@ -136,7 +140,7 @@ public class Pathogen extends GameObject
 	 * Use the movement operations created by the buildRoute() method to
 	 * navigate the pathogen through the world
 	 */
-	private void move()
+	protected void move()
 	{
 		Direction operation = directionQueue.get(0);
 
@@ -194,7 +198,7 @@ public class Pathogen extends GameObject
 	 * IF pathogen is going LEFT or UP, add 30 to the x and y to account for
 	 * width and height of the pathogen.
 	 */
-	private void setTileLocation(Direction lastDir)
+	protected void setTileLocation(Direction lastDir)
 	{
 		if(lastDir == Direction.LEFT || lastDir == Direction.UP)
 		{

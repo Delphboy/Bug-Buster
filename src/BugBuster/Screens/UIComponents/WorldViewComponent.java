@@ -3,19 +3,19 @@ package BugBuster.Screens.UIComponents;
 import BugBuster.Pathogens.Pathogen;
 import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
+import BugBuster.Screens.BugBuster;
+import BugBuster.Screens.TutorialScreen;
 import BugBuster.Tile;
 import BugBuster.Towers.Tower;
-import BugBuster.Towers.TowerIF;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WorldViewComponent extends Pane implements ComponentIF
 {
@@ -28,7 +28,26 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	private ArrayList<Pathogen> pathogensForRemoval = new ArrayList<>();
 	private ArrayList<Tower> towers;
 
-	AnimationTimer timer = new AnimationTimer()
+	private int roundNumber = 1;
+	private boolean isRoundActive = false;
+	private ArrayList<Integer> enemiesForRound = new ArrayList<>();
+	private Timer factoryTimer = new Timer();
+	private TimerTask factoryTimerTask = new TimerTask()
+	{
+		@Override
+		public void run()
+		{
+			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
+					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
+					"\n\tpathogens.size(): " + pathogens.size());
+
+			if(isRoundActive)
+				playRound();
+		}
+	};
+
+
+	AnimationTimer gameLoopTimer = new AnimationTimer()
 	{
 		@Override
 		public void handle(long l)
@@ -43,12 +62,18 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				if(p.getHealth() <= 0)
 				{
 					pathogensForRemoval.add(p);
+					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
+							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 				}
+
+				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
+					pathogensForRemoval.add(p);
+
 			}
 
 			for(Tower t : towers)
 			{
-				t.setTarget(pathogens);
+				t.findTarget(pathogens);
 			}
 
 			pathogens.removeAll(pathogensForRemoval);
@@ -62,6 +87,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 		pathogens = new ArrayList<>();
 		towers = new ArrayList<>();
+
+		gameLoopTimer.start();
+		factoryTimer.schedule(factoryTimerTask, 0, 500);
 
 		getChildren().add(canvas);
 		drawWorld(mapNum);
@@ -253,14 +281,140 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return false;
 	}
 
-	public void startRound(int roundNumber)
+	public void startRound()
 	{
-		PathogenFactory pf = new PathogenFactory(gc);
-		for (int i = 0; i < roundNumber; i++)
+		if(roundNumber <= 10)
 		{
-			pathogens.add(pf.createProduct(1));
+			switch (roundNumber)
+			{
+				case 1:
+					enemiesForRound.add(1);
+					break;
+				case 2:
+					enemiesForRound.add(2);
+					break;
+				case 3:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 4:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 5:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 6:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 7:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 8:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 9:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				case 10:
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					break;
+				default:
+					System.out.println("UNKNOWN ROUND");
+					break;
+			}
 		}
-		timer.start();
+		else
+		{
+			BugBuster.updateScene(new TutorialScreen());
+		}
+
+		isRoundActive = true;
+	}
+
+	private void playRound()
+	{
+		if((enemiesForRound.size() == 0 && pathogens.size() == 0) && (isRoundActive)) //ie) round has just finished
+		{
+			System.out.println("ROUND ENDED");
+			isRoundActive = false;
+			Player player = Player.getInstance();
+			player.setCurrency(player.getCurrency() + 100);
+			player.setWavesComplete(roundNumber);
+			roundNumber += 1;
+		}
+		else
+		{
+			System.out.println("ROUND PLAYED");
+			PathogenFactory pf = new PathogenFactory(gc);
+			if(enemiesForRound.size() > 0)
+			{
+				pathogens.add(pf.createProduct(enemiesForRound.get(enemiesForRound.size() - 1)));
+				enemiesForRound.remove(enemiesForRound.size() - 1);
+			}
+		}
 	}
 
 	/**

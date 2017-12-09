@@ -3,12 +3,20 @@ package BugBuster.Towers;
 import BugBuster.Controller;
 import BugBuster.GameObject;
 import BugBuster.Pathogens.Pathogen;
+import BugBuster.Screens.UIComponents.HeaderBarComponent;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
@@ -18,14 +26,14 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Tower extends GameObject implements TowerIF
+public abstract class Tower extends GameObject implements TowerIF
 {
-	private String type;
-	private String aboutMessage;
-	private int tileLocX;
-	private int tileLocY;
-	private int radius;
-	private int damage;
+	String type;
+	String aboutMessage;
+	int tileLocX;
+	int tileLocY;
+	int radius;
+	int damage;
 	int cost = 10;
 	int fireRate;
 	Pathogen target;
@@ -55,11 +63,11 @@ public class Tower extends GameObject implements TowerIF
 		this.type = type;
 		this.radius = radius;
 		this.damage = damage;
-		this.fireRate = 10;
+		this.fireRate = 3;
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
 		img = new Image("resources/testTower.png");
-		shootTimer.scheduleAtFixedRate(task, 0, this.fireRate * 100l);
+		shootTimer.scheduleAtFixedRate(task, 0, (long)((1.0 / this.fireRate) * 1000));
 	}
 
 	public String getType()
@@ -126,7 +134,26 @@ public class Tower extends GameObject implements TowerIF
 	private void shootPathogen()
 	{
 		if(target != null)
+		{
 			target.setHealth(target.getHealth() - damage);
+			animate();
+			Media soundFile = new Media(this.getClass().getResource("../../resources/sounds/default-laser.mp3").toExternalForm());
+			MediaPlayer soundPlayer = new MediaPlayer(soundFile);
+			soundPlayer.play();
+		}
+	}
+
+	private void animate()
+	{
+		Rectangle laser = new Rectangle(x, y, 2, 5);
+		laser.setFill(Color.RED);
+
+		PathTransition path = new PathTransition();
+//		path.setNode(gc.getCanvas());
+		path.setDuration(Duration.millis(10000));
+		path.setPath(laser);
+		path.setCycleCount(PathTransition.INDEFINITE);
+		path.play();
 	}
 
 	@Override
@@ -144,7 +171,7 @@ public class Tower extends GameObject implements TowerIF
 	/**
 	 * Find the pathogen closest to the target
 	 */
-	public void setTarget(ArrayList<Pathogen> pathogens)
+	public void findTarget(ArrayList<Pathogen> pathogens)
 	{
 		for (Pathogen p : pathogens)
 		{
@@ -155,9 +182,10 @@ public class Tower extends GameObject implements TowerIF
 				{
 					if(x == p.getTileX() && y == p.getTileY())
 						target = p;
+					if(target !=  null && target.getHealth() <= 0)
+						target = null;
 				}
 			}
 		}
 	}
-
 }
