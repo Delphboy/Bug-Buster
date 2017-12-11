@@ -1,5 +1,6 @@
 package BugBuster.Screens.UIComponents;
 
+import BugBuster.Pathogens.NullPathogen;
 import BugBuster.Pathogens.Pathogen;
 import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
@@ -56,6 +57,38 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		public void handle(long l)
 		{
 			// process pathogens
+//			for(Pathogen p : pathogens)
+//			{
+//				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
+//						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+//
+//				p.navigate(worldMap);
+//				if(p.getHealth() <= 0)
+//				{
+//					pathogensForRemoval.add(p);
+//					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
+//							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+//				}
+//
+//				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
+//					pathogensForRemoval.add(p);
+//
+//				p.attack();
+//			}
+//
+//			for(Tower t : towers)
+//			{
+//				t.findTarget(pathogens);
+//			}
+//
+//			// Disable start round button if a round is being played
+//			OptionsComponent oc = OptionsComponent.getInstance();
+//			oc.getStartRoundBtn().setDisable(isRoundActive);
+//
+//			HeaderBarComponent.getInstance().update();
+//
+//			pathogens.removeAll(pathogensForRemoval);
+
 			for(Pathogen p : pathogens)
 			{
 				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
@@ -64,15 +97,22 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				p.navigate(worldMap);
 				if(p.getHealth() <= 0)
 				{
-					pathogensForRemoval.add(p);
+					p = new NullPathogen(gc, p.getTileX() * Tile.TILE_WIDTH,
+							p.getTileY() * Tile.TILE_HEIGHT);
 					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
 							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 				}
 
 				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
-					pathogensForRemoval.add(p);
+					p = new NullPathogen(gc, p.getTileX() * Tile.TILE_WIDTH,
+							p.getTileY() * Tile.TILE_HEIGHT);
 
 				p.attack();
+
+				if(p.isForRemoval)
+					pathogensForRemoval.add(p);
+
+				System.out.println("PathogensForRemove.size(): " + pathogensForRemoval.size());
 			}
 
 			for(Tower t : towers)
@@ -87,6 +127,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			HeaderBarComponent.getInstance().update();
 
 			pathogens.removeAll(pathogensForRemoval);
+
 		}
 	};
 

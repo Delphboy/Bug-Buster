@@ -34,7 +34,7 @@ public class PathogenFactory implements FactoryIF
                 break;
             default:
                 System.out.println("FACTORY ERROR: UNRECOGNISED DISCRIMINATOR");
-                createdPathogen = null;
+                createdPathogen = new NullPathogen(graphicsContext, 0, 200);
                 break;
         }
         return createdPathogen;

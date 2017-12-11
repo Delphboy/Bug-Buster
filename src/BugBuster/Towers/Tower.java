@@ -2,6 +2,7 @@ package BugBuster.Towers;
 
 import BugBuster.Controller;
 import BugBuster.GameObject;
+import BugBuster.Pathogens.NullPathogen;
 import BugBuster.Pathogens.Pathogen;
 import BugBuster.Player;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
@@ -191,6 +192,8 @@ public abstract class Tower extends GameObject implements TowerIF
 					if(x == p.getTileX() && y == p.getTileY())
 						target = p;
 					if(target !=  null && target.getHealth() <= 0)
+						target = null;
+					if(target instanceof NullPathogen)
 						target = null;
 				}
 			}
