@@ -3,11 +3,12 @@ package BugBuster.Screens.UIComponents;
 import BugBuster.Pathogens.Pathogen;
 import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
-import BugBuster.Screens.BugBuster;
+import BugBuster.BugBuster;
 import BugBuster.Screens.TutorialScreen;
 import BugBuster.Tile;
 import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -37,12 +38,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		@Override
 		public void run()
 		{
-			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
-					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
-					"\n\tpathogens.size(): " + pathogens.size());
+//			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
+//					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
+//					"\n\tpathogens.size(): " + pathogens.size());
 
 			if(isRoundActive)
+			{
 				playRound();
+			}
 		}
 	};
 
@@ -52,7 +55,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		@Override
 		public void handle(long l)
 		{
-			// animate pathogens
+			// process pathogens
 			for(Pathogen p : pathogens)
 			{
 				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
@@ -69,12 +72,19 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
 					pathogensForRemoval.add(p);
 
+				p.attack();
 			}
 
 			for(Tower t : towers)
 			{
 				t.findTarget(pathogens);
 			}
+
+			// Disable start round button if a round is being played
+			OptionsComponent oc = OptionsComponent.getInstance();
+			oc.getStartRoundBtn().setDisable(isRoundActive);
+
+			HeaderBarComponent.getInstance().update();
 
 			pathogens.removeAll(pathogensForRemoval);
 		}
@@ -98,6 +108,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	public Tower[][] getTowerLocations()
 	{
 		return towerLocations;
+	}
+
+	public void addChild(Node nodeToAdd)
+	{
+		getChildren().add(nodeToAdd);
 	}
 
 	/**
@@ -259,6 +274,23 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		debugTowers();
 	}
 
+	@Override
+	public void killComponent()
+	{
+		canvas = null;
+		gc = null;
+		worldMap = null;
+		towerLocations = null;
+
+		pathogens = null;
+		pathogensForRemoval = null;
+		towers = null;
+
+		enemiesForRound = null;
+		factoryTimer = null;
+		factoryTimerTask = null;
+	}
+
 	/**
 	 * Return true if tower is placed, false if tower can't be placed
 	 * @param x
@@ -274,6 +306,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			tower.setTileLocY(y);
 			Player.getInstance().setCurrency(Player.getInstance().getCurrency() - tower.getCost());
 			towerLocations[x][y] = tower;
+			tower.setGraphicsContext(gc);
 			towers.add(tower);
 			gc.drawImage(tower.getImage(), x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 			return true;
@@ -288,7 +321,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			switch (roundNumber)
 			{
 				case 1:
-					enemiesForRound.add(1);
+					enemiesForRound.add(4);
 					break;
 				case 2:
 					enemiesForRound.add(2);
@@ -396,18 +429,18 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	private void playRound()
 	{
-		if((enemiesForRound.size() == 0 && pathogens.size() == 0) && (isRoundActive)) //ie) round has just finished
+		//ie) round has just finished
+		if((enemiesForRound.size() == 0 && pathogens.size() == 0) && (isRoundActive))
 		{
-			System.out.println("ROUND ENDED");
 			isRoundActive = false;
 			Player player = Player.getInstance();
 			player.setCurrency(player.getCurrency() + 100);
 			player.setWavesComplete(roundNumber);
 			roundNumber += 1;
 		}
+		// Round still active
 		else
 		{
-			System.out.println("ROUND PLAYED");
 			PathogenFactory pf = new PathogenFactory(gc);
 			if(enemiesForRound.size() > 0)
 			{
@@ -430,6 +463,12 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					System.out.println(towerLocations[i][j]);
 			}
 		}
+	}
+
+	public void killTimers()
+	{
+		factoryTimer.cancel();
+		gameLoopTimer.stop();
 	}
 
 }

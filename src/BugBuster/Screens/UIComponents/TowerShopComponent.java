@@ -1,5 +1,7 @@
 package BugBuster.Screens.UIComponents;
 
+import BugBuster.Player;
+import BugBuster.Towers.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -8,11 +10,23 @@ import javafx.scene.text.Font;
 
 public class TowerShopComponent extends Pane implements ComponentIF
 {
+	private static TowerShopComponent instance;
+
 	Button buyWhiteBloodCellBtn;
 	Button buyAntiBioticsBtn;
 	Button buyVaccineBtn;
+	Button buyNextVaccineBtn;
 
-	public TowerShopComponent()
+	public static TowerShopComponent getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new TowerShopComponent();
+		}
+		return instance;
+	}
+
+	private TowerShopComponent()
 	{
 		setWidth(250);
 		setHeight(50);
@@ -41,14 +55,44 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		buyVaccineBtn.setMinSize(200, 50);
 		buyVaccineBtn.setMaxSize(200, 50);
 
+		// Button to buy an antibiotics tower
+		buyNextVaccineBtn = new Button("Buy MMR Immunisation: 100");
+		buyNextVaccineBtn.setFont(new Font("Cooper Black", 8));
+		buyNextVaccineBtn.setLayoutX(25);
+		buyNextVaccineBtn.setLayoutY(190);
+		buyNextVaccineBtn.setMinSize(200, 50);
+		buyNextVaccineBtn.setMaxSize(200, 50);
+
 		getChildren().addAll(buyWhiteBloodCellBtn, buyAntiBioticsBtn,
-				buyVaccineBtn);
+				buyVaccineBtn, buyNextVaccineBtn);
 	}
 
 	@Override
 	public void update()
 	{
+		Player playerInstance = Player.getInstance();
+		if (playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
+		{
+			buyNextVaccineBtn.setText("Buy MMR Immunisation: 100");
+		} else if (playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
+		{
+			buyNextVaccineBtn.setText("Buy Smallpox Immunisation: 250");
+		}
+		else
+		{
+			buyNextVaccineBtn.setText("Vaccines fully upgraded");
+			buyNextVaccineBtn.setDisable(true);
+		}
+	}
 
+	@Override
+	public void killComponent()
+	{
+		instance = null;
+		buyWhiteBloodCellBtn = null;
+		buyAntiBioticsBtn = null;
+		buyVaccineBtn = null;
+		buyNextVaccineBtn = null;
 	}
 
 	public Button getBuyWhiteBloodCellBtn()
@@ -64,5 +108,10 @@ public class TowerShopComponent extends Pane implements ComponentIF
 	public Button getBuyVaccineBtn()
 	{
 		return buyVaccineBtn;
+	}
+
+	public Button getBuyNextVaccineBtn()
+	{
+		return buyNextVaccineBtn;
 	}
 }

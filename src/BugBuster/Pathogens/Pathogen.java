@@ -2,10 +2,9 @@ package BugBuster.Pathogens;
 
 import BugBuster.GameObject;
 import BugBuster.Player;
-import BugBuster.Screens.BugBuster;
+import BugBuster.BugBuster;
 import BugBuster.Screens.TutorialScreen;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
-import BugBuster.Screens.UIComponents.WorldViewComponent;
 import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -62,6 +61,27 @@ public abstract class Pathogen extends GameObject
 	public Direction getLastDir()
 	{
 		return lastDir;
+	}
+
+	/**
+	 * Deal damage to the play if on the end tile
+	 */
+	public void attack()
+	{
+		// Handle removing pathogen and doing damage, if it makes it through
+		// the map
+		if(isOnTile(endTileX, endTileY))
+		{
+			isForRemoval = true;
+			Player player = Player.getInstance();
+			if(player.getHealth() > 1)
+			{
+				player.setHealth(player.getHealth() - damange);
+				HeaderBarComponent.getInstance().update();
+			}
+			else
+				BugBuster.updateScene(new TutorialScreen());
+		}
 	}
 
 	/**
@@ -170,21 +190,6 @@ public abstract class Pathogen extends GameObject
 		}
 
 		moveCount += 1;
-
-		// Handle removing pathogen and doing damage, if it makes it through
-		// the map
-		if(isOnTile(endTileX, endTileY))
-		{
-			isForRemoval = true;
-			Player player = Player.getInstance();
-			if(player.getHealth() > 1)
-			{
-				player.setHealth(player.getHealth() - damange);
-				HeaderBarComponent.getInstance().update();
-			}
-			else
-				BugBuster.updateScene(new TutorialScreen());
-		}
 
 		setTileLocation(operation);
 

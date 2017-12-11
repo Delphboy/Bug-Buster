@@ -1,16 +1,7 @@
 package BugBuster.Pathogens;
 
-import BugBuster.GameObject;
-import BugBuster.Player;
-import BugBuster.Screens.BugBuster;
-import BugBuster.Screens.TutorialScreen;
-import BugBuster.Screens.UIComponents.HeaderBarComponent;
-import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Path;
-
-import java.util.ArrayList;
 
 public class Bacteria extends Pathogen
 {

@@ -1,7 +1,7 @@
 package BugBuster.Screens.UIComponents;
 
 import BugBuster.Player;
-import BugBuster.Screens.BugBuster;
+import BugBuster.BugBuster;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -19,7 +19,7 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	Label waveInfoLabel;
 	Label currencyLabel;
 
-	Player player;
+	public Player player;
 
 	private static HeaderBarComponent instance;
 
@@ -27,14 +27,14 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	{
 		if (instance == null)
 		{
-			instance = new HeaderBarComponent(Player.getInstance());
+			instance = new HeaderBarComponent();
 		}
 		return instance;
 	}
 
-	private HeaderBarComponent(Player givenPlayer)
+	private HeaderBarComponent()
 	{
-		player = givenPlayer;
+		player = Player.getInstance();
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
 		graphicsContext = canvas.getGraphicsContext2D();
 
@@ -67,16 +67,28 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	@Override
 	public void update()
 	{
-		waveInfoLabel.setText(String.valueOf(player.getWavesComplete()) + "/10");
-		currencyLabel.setText(String.valueOf(player.getCurrency()));
-
-		// display hearts
-		for (int i = 1; i <= 10; i++)
+		if(instance != null && player != null)
 		{
-			if(i <= player.getHealth())
-				graphicsContext.drawImage(heart, 330 + (i * 40), 5, 40, 40);
-			else
-				graphicsContext.drawImage(emptyHeart, 330 + (i * 40), 5, 40, 40);
+			waveInfoLabel.setText(String.valueOf(player.getWavesComplete()) + "/10");
+			currencyLabel.setText(String.valueOf(player.getCurrency()));
+
+			// display hearts
+			for (int i = 1; i <= 10; i++)
+			{
+				if(i <= player.getHealth())
+					graphicsContext.drawImage(heart, 330 + (i * 40), 5, 40, 40);
+				else
+					graphicsContext.drawImage(emptyHeart, 330 + (i * 40), 5, 40, 40);
+			}
 		}
+	}
+
+	@Override
+	public void killComponent()
+	{
+		instance = null;
+		player = null;
+		canvas = null;
+		graphicsContext = null;
 	}
 }

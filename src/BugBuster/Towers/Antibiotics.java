@@ -13,6 +13,8 @@ public class Antibiotics extends Tower implements TowerIF
 		super("Antibiotics", 1, 5);
 		img = new Image("resources/antibiotics-tower.png");
 		cost = 40;
+		aboutMessage = "Antibiotics are special medicines that\nkill bacteria. There's no point " +
+				"using\nthem against anything other than\nbacteria though, as it won't work!";
 	}
 
 	@Override

@@ -1,21 +1,30 @@
 package BugBuster.Screens.UIComponents;
 
-import BugBuster.Screens.BugBuster;
+import BugBuster.BugBuster;
+import BugBuster.Player;
 import BugBuster.Screens.MainMenuScreen;
-import BugBuster.Towers.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 public class OptionsComponent extends Pane implements ComponentIF
 {
+	private static OptionsComponent instance;
 	Button mainMenuBtn;
 	Button startRoundBtn;
 
-	public OptionsComponent()
+	public static OptionsComponent getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new OptionsComponent();
+		}
+		return instance;
+	}
+
+	private OptionsComponent()
 	{
 		setWidth(250);
 		setHeight(50);
@@ -32,6 +41,7 @@ public class OptionsComponent extends Pane implements ComponentIF
 			@Override
 			public void handle(ActionEvent event)
 			{
+				Player.setInstanceToNull();
 				BugBuster.updateScene(new MainMenuScreen());
 			}
 		});
@@ -51,6 +61,15 @@ public class OptionsComponent extends Pane implements ComponentIF
 	public void update()
 	{
 
+	}
+
+	@Override
+	public void killComponent()
+	{
+		instance = null;
+
+		mainMenuBtn = null;
+		startRoundBtn = null;
 	}
 
 	public Button getMainMenuBtn()

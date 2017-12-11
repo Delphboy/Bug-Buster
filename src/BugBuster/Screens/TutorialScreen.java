@@ -1,5 +1,6 @@
 package BugBuster.Screens;
 
+import BugBuster.BugBuster;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -9,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
-public class TutorialScreen extends Pane
+public class TutorialScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
@@ -38,5 +39,12 @@ public class TutorialScreen extends Pane
 		buttonReturnToMenu.setLayoutY(10);
 
 		getChildren().addAll(canvas, buttonReturnToMenu);
+	}
+
+	@Override
+	public void killScreen()
+	{
+		canvas = null;
+		graphicsContext = null;
 	}
 }

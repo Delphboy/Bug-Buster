@@ -1,11 +1,7 @@
 package BugBuster.Pathogens;
 
 import BugBuster.FactoryIF;
-import BugBuster.Pathogens.Pathogen;
 import javafx.scene.canvas.GraphicsContext;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by stc765 on 28/11/17.
@@ -28,15 +24,19 @@ public class PathogenFactory implements FactoryIF
                 createdPathogen = new Bacteria(graphicsContext, 0, 200);
                 break;
             case 2:
-                createdPathogen = new H1N1(graphicsContext, 0, 200);
+                createdPathogen = new Flu(graphicsContext, 0, 200);
+                break;
+            case 3:
+                createdPathogen = new MMR(graphicsContext, 0, 200);
+                break;
+            case 4:
+                createdPathogen = new SmallPox(graphicsContext, 0, 200);
                 break;
             default:
-                System.out.println("FACTORY BROKE");
+                System.out.println("FACTORY ERROR: UNRECOGNISED DISCRIMINATOR");
                 createdPathogen = null;
                 break;
         }
-
-        System.out.println("FACTORY RETURN: " + createdPathogen);
         return createdPathogen;
     }
 }

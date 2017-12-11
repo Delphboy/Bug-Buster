@@ -3,13 +3,13 @@ package BugBuster.Towers;
 import BugBuster.Controller;
 import BugBuster.GameObject;
 import BugBuster.Pathogens.Pathogen;
+import BugBuster.Player;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -37,15 +37,6 @@ public abstract class Tower extends GameObject implements TowerIF
 	int cost = 10;
 	int fireRate;
 	Pathogen target;
-
-//	AnimationTimer shootTimer = new AnimationTimer()
-//	{
-//		@Override
-//		public void handle(long now)
-//		{
-//			shootPathogen(target);
-//		}
-//	};
 
 	Timer shootTimer = new Timer();
 	TimerTask task = new TimerTask()
@@ -120,6 +111,31 @@ public abstract class Tower extends GameObject implements TowerIF
 		this.tileLocY = tileLocY;
 	}
 
+	public void setGraphicsContext(GraphicsContext graphicsContext)
+	{
+		gc = graphicsContext;
+	}
+
+	public void increaseDamage()
+	{
+		Player playerInstance = Player.getInstance();
+		if(playerInstance.getCurrency() >= damage * 10)
+		{
+			damage += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
+		}
+	}
+
+	public void increaseRadius()
+	{
+		Player playerInstance = Player.getInstance();
+		if(playerInstance.getCurrency() >= radius * 5)
+		{
+			radius += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
+		}
+	}
+
 	@Override
 	public String toString()
 	{
@@ -145,15 +161,7 @@ public abstract class Tower extends GameObject implements TowerIF
 
 	private void animate()
 	{
-		Rectangle laser = new Rectangle(x, y, 2, 5);
-		laser.setFill(Color.RED);
 
-		PathTransition path = new PathTransition();
-//		path.setNode(gc.getCanvas());
-		path.setDuration(Duration.millis(10000));
-		path.setPath(laser);
-		path.setCycleCount(PathTransition.INDEFINITE);
-		path.play();
 	}
 
 	@Override

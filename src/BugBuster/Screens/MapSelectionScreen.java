@@ -1,5 +1,6 @@
 package BugBuster.Screens;
 
+import BugBuster.BugBuster;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -9,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
-public class MapSelectionScreen extends Pane
+public class MapSelectionScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
@@ -91,5 +92,12 @@ public class MapSelectionScreen extends Pane
 
 		getChildren().addAll(canvas, buttonReturnToMenu, buttonLeftMap, buttonMiddleMap,
 				buttonRightMap);
+	}
+
+	@Override
+	public void killScreen()
+	{
+		canvas = null;
+		graphicsContext = null;
 	}
 }

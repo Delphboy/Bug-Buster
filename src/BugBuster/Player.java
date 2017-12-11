@@ -1,11 +1,14 @@
 package BugBuster;
 
+import BugBuster.Screens.UIComponents.HeaderBarComponent;
+
 public class Player
 {
 	private static Player instance = null;
 
 	int health; // 1 hp per heart, max 10
 	int wavesComplete, currency;
+	String currentVaccine = "flu";
 
 	private Player()
 	{
@@ -21,6 +24,11 @@ public class Player
 			instance = new Player();
 		}
 		return instance;
+	}
+
+	public static void setInstanceToNull()
+	{
+		instance = null;
 	}
 
 	public int getHealth()
@@ -51,5 +59,15 @@ public class Player
 	public void setCurrency(int currency)
 	{
 		this.currency = currency;
+	}
+
+	public String getCurrentVaccine()
+	{
+		return currentVaccine;
+	}
+
+	public void setCurrentVaccine(String currentVaccine)
+	{
+		this.currentVaccine = currentVaccine;
 	}
 }

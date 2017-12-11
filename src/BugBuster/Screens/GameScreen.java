@@ -1,13 +1,17 @@
 package BugBuster.Screens;
 
 import BugBuster.Controller;
+import BugBuster.Player;
 import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
-public class GameScreen extends Pane
+import javax.annotation.PreDestroy;
+
+public class GameScreen extends Pane implements ScreenIF
 {
 	TowerShopComponent towerShop;
 	TowerStatsComponent towerStats;
@@ -17,12 +21,13 @@ public class GameScreen extends Pane
 
     Controller controller;
 
+	MediaPlayer soundPlayer;
+
 	public GameScreen(int mapNum)
 	{
-		towerShop = new TowerShopComponent();
-//		towerStats = new TowerStatsComponent(
-//				new Tower("Tower",70, 70));
-		optionsBar = new OptionsComponent();
+		towerShop = TowerShopComponent.getInstance();
+		towerStats = TowerStatsComponent.getInstance();
+		optionsBar = OptionsComponent.getInstance();
 		headerBar = HeaderBarComponent.getInstance();
 		worldView = new WorldViewComponent(mapNum);
 
@@ -41,22 +46,30 @@ public class GameScreen extends Pane
 		towerShop.setLayoutX(0);
 		towerShop.setLayoutY(50);
 
-//		towerStats.setMinSize(250, 325);
-//		towerStats.setMaxSize(250, 325);
-//		towerStats.setLayoutX(0);
-//		towerStats.setLayoutY(325);
+		towerStats.setMinSize(250, 325);
+		towerStats.setMaxSize(250, 325);
+		towerStats.setLayoutX(0);
+		towerStats.setLayoutY(325);
 
 		worldView.setMinSize(800, 600);
 		worldView.setMaxSize(800, 600);
 		worldView.setLayoutX(250);
 		worldView.setLayoutY(50);
 
-		getChildren().addAll(towerShop/*, towerStats*/, headerBar, worldView, optionsBar);
+		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
 
-		//PLay Music
+		//Play Music
 		Media soundFile = new Media(this.getClass().getResource("../../resources/sounds/background.mp3").toExternalForm());
 		System.out.println("Sound file @" + soundFile.getSource());
-		MediaPlayer soundPlayer = new MediaPlayer(soundFile);
+		soundPlayer = new MediaPlayer(soundFile);
+		soundPlayer.setOnEndOfMedia(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				soundPlayer.seek(Duration.ZERO);
+			}
+		});
 		soundPlayer.play();
 
 		// Configure controller
@@ -64,6 +77,7 @@ public class GameScreen extends Pane
 		towerShop.getBuyWhiteBloodCellBtn().setOnAction(controller);
 		towerShop.getBuyAntiBioticsBtn().setOnAction(controller);
 		towerShop.getBuyVaccineBtn().setOnAction(controller);
+		towerShop.getBuyNextVaccineBtn().setOnAction(controller);
 
 		optionsBar.getStartRoundBtn().setOnAction(controller);
 
@@ -98,5 +112,22 @@ public class GameScreen extends Pane
 	public void setTowerStats(TowerStatsComponent towerStats)
 	{
 		this.towerStats = towerStats;
+	}
+
+	@Override
+	public void killScreen()
+	{
+		soundPlayer.stop();
+		soundPlayer = null;
+
+		worldView.killTimers();
+
+		towerShop.killComponent();
+		towerStats.killComponent();
+		optionsBar.killComponent();
+		headerBar.killComponent();
+		worldView.killComponent();
+
+		controller = null;
 	}
 }

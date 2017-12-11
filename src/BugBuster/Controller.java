@@ -44,6 +44,32 @@ public class Controller implements EventHandler
             parent.setCursor(Cursor.CROSSHAIR);
         }
 
+        else if(event.getSource()== parent.getTowerShop().getBuyNextVaccineBtn())
+        {
+            Player playerInstance = Player.getInstance();
+            if(playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
+            {
+                if(playerInstance.getCurrency() >= 100)
+                {
+                    playerInstance.setCurrentVaccine("MMR");
+                    playerInstance.setCurrency(playerInstance.getCurrency() - 100);
+                }
+            }
+            else if(playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
+            {
+                if(playerInstance.getCurrency() >= 250)
+                {
+                    playerInstance.setCurrentVaccine("Smallpox");
+                    playerInstance.setCurrency(playerInstance.getCurrency() - 250);
+                }
+            }
+            else
+            {
+                // Do nothing, maximum upgrade achieved
+            }
+            parent.getTowerShop().update();
+        }
+
         else if(event.getSource() == parent.getOptionsBar().getStartRoundBtn())
         {
             parent.getWorldView().startRound();
@@ -61,6 +87,9 @@ public class Controller implements EventHandler
 
     private void handleMouseEvent(Point2D clickedTile)
     {
+        Tower towerLocations[][] = parent.getWorldView().getTowerLocations();
+        TowerStatsComponent towerStatsComponent = parent.getTowerStats();
+
         if (unplacedTower != null)
         {
             parent.getWorldView().placeTower((int)clickedTile.getX(), (int)clickedTile.getY(),
@@ -68,6 +97,16 @@ public class Controller implements EventHandler
             updateUI();
             unplacedTower = null;
             parent.setCursor(Cursor.DEFAULT);
+        }
+
+        if(towerLocations[(int)clickedTile.getX()][(int)clickedTile.getY()] != null)
+        {
+            towerStatsComponent.setTowerToDisplay(
+                    towerLocations[(int)clickedTile.getX()][(int)clickedTile.getY()]);
+        }
+        else
+        {
+            towerStatsComponent.setTowerToDisplay(null);
         }
     }
 
