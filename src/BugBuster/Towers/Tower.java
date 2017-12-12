@@ -14,6 +14,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +40,8 @@ public abstract class Tower extends GameObject implements TowerIF
 	int cost = 10;
 	int fireRate;
 	Pathogen target;
+
+	MediaPlayer soundPlayer = null;
 
 	Timer shootTimer = new Timer();
 	TimerTask task = new TimerTask()
@@ -154,9 +158,33 @@ public abstract class Tower extends GameObject implements TowerIF
 		{
 			target.setHealth(target.getHealth() - damage);
 			animate();
-			Media soundFile = new Media(this.getClass().getResource("../../resources/sounds/default-laser.mp3").toExternalForm());
-			MediaPlayer soundPlayer = new MediaPlayer(soundFile);
-			soundPlayer.play();
+			try
+			{
+				Media soundFile = new Media
+						(new File("src/resources/sounds/default-laser.mp3")
+								.toURI()
+								.toString());
+				System.out.println("Sound file @" + soundFile.getSource());
+				soundPlayer = new MediaPlayer(soundFile);
+			}catch (MediaException me)
+			{
+				System.err.println("If you are experiencing this issue on Linux, " +
+						"please follow this link for a fix:\n " +
+						"https://stackoverflow.com/questions/19549902/cant-play-mp3-file-via-javafx-2-2-media-player");
+			}
+
+			if(soundPlayer != null)
+			{
+				soundPlayer.setOnEndOfMedia(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						soundPlayer.seek(Duration.ZERO);
+					}
+				});
+				soundPlayer.play();
+			}
 		}
 	}
 

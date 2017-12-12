@@ -6,10 +6,12 @@ import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import javax.annotation.PreDestroy;
+import java.io.File;
 
 public class GameScreen extends Pane implements ScreenIF
 {
@@ -59,18 +61,33 @@ public class GameScreen extends Pane implements ScreenIF
 		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
 
 		//Play Music
-		Media soundFile = new Media(this.getClass().getResource("../../resources/sounds/background.mp3").toExternalForm());
-		System.out.println("Sound file @" + soundFile.getSource());
-		soundPlayer = new MediaPlayer(soundFile);
-		soundPlayer.setOnEndOfMedia(new Runnable()
+		try
 		{
-			@Override
-			public void run()
+			Media soundFile = new Media(new File
+					("src/resources/sounds/background.mp3").toURI()
+							.toString());
+			System.out.println("Sound file @" + soundFile.getSource());
+			soundPlayer = new MediaPlayer(soundFile);
+		}catch (MediaException me)
+		{
+			System.err.println("If you are experiencing this issue on Linux, " +
+					"please follow this link for a fix:\n " +
+					"https://stackoverflow.com/questions/19549902/cant-play-mp3-file-via-javafx-2-2-media-player");
+		}
+
+		if(soundPlayer != null)
+		{
+			soundPlayer.setOnEndOfMedia(new Runnable()
 			{
-				soundPlayer.seek(Duration.ZERO);
-			}
-		});
-		soundPlayer.play();
+				@Override
+				public void run()
+				{
+					soundPlayer.seek(Duration.ZERO);
+				}
+			});
+			soundPlayer.play();
+		}
+
 
 		// Configure controller
 		controller = new Controller(this);
@@ -117,8 +134,11 @@ public class GameScreen extends Pane implements ScreenIF
 	@Override
 	public void killScreen()
 	{
-		soundPlayer.stop();
-		soundPlayer = null;
+		if(soundPlayer != null)
+		{
+			soundPlayer.stop();
+			soundPlayer = null;
+		}
 
 		worldView.killTimers();
 
