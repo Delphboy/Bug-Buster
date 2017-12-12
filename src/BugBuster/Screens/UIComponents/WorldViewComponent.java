@@ -1,6 +1,5 @@
 package BugBuster.Screens.UIComponents;
 
-import BugBuster.Pathogens.NullPathogen;
 import BugBuster.Pathogens.Pathogen;
 import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
@@ -25,7 +24,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	GraphicsContext gc;
 	Tile[][] worldMap = new Tile[16][12];
 	Tower[][] towerLocations = new Tower[16][12];
-
 	private ArrayList<Pathogen> pathogens;
 	private ArrayList<Pathogen> pathogensForRemoval = new ArrayList<>();
 	private ArrayList<Tower> towers;
@@ -33,22 +31,22 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	private int roundNumber = 1;
 	private boolean isRoundActive = false;
 	private ArrayList<Integer> enemiesForRound = new ArrayList<>();
-	private Timer factoryTimer = new Timer();
-	private TimerTask factoryTimerTask = new TimerTask()
-	{
-		@Override
-		public void run()
-		{
-//			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
-//					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
-//					"\n\tpathogens.size(): " + pathogens.size());
-
-			if(isRoundActive)
-			{
-				playRound();
-			}
-		}
-	};
+//	private Timer factoryTimer = new Timer();
+//	private TimerTask factoryTimerTask = new TimerTask()
+//	{
+//		@Override
+//		public void run()
+//		{
+////			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
+////					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
+////					"\n\tpathogens.size(): " + pathogens.size());
+//
+//			if(isRoundActive)
+//			{
+//				playRound();
+//			}
+//		}
+//	};
 
 
 	AnimationTimer gameLoopTimer = new AnimationTimer()
@@ -57,38 +55,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		public void handle(long l)
 		{
 			// process pathogens
-//			for(Pathogen p : pathogens)
-//			{
-//				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
-//						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
-//
-//				p.navigate(worldMap);
-//				if(p.getHealth() <= 0)
-//				{
-//					pathogensForRemoval.add(p);
-//					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
-//							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
-//				}
-//
-//				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
-//					pathogensForRemoval.add(p);
-//
-//				p.attack();
-//			}
-//
-//			for(Tower t : towers)
-//			{
-//				t.findTarget(pathogens);
-//			}
-//
-//			// Disable start round button if a round is being played
-//			OptionsComponent oc = OptionsComponent.getInstance();
-//			oc.getStartRoundBtn().setDisable(isRoundActive);
-//
-//			HeaderBarComponent.getInstance().update();
-//
-//			pathogens.removeAll(pathogensForRemoval);
-
 			for(Pathogen p : pathogens)
 			{
 				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
@@ -97,22 +63,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				p.navigate(worldMap);
 				if(p.getHealth() <= 0)
 				{
-					p = new NullPathogen(gc, p.getTileX() * Tile.TILE_WIDTH,
-							p.getTileY() * Tile.TILE_HEIGHT);
+					pathogensForRemoval.add(p);
 					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
 							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 				}
 
 				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
-					p = new NullPathogen(gc, p.getTileX() * Tile.TILE_WIDTH,
-							p.getTileY() * Tile.TILE_HEIGHT);
-
-				p.attack();
-
-				if(p.isForRemoval)
 					pathogensForRemoval.add(p);
 
-				System.out.println("PathogensForRemove.size(): " + pathogensForRemoval.size());
+				p.attack();
 			}
 
 			for(Tower t : towers)
@@ -128,6 +87,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 			pathogens.removeAll(pathogensForRemoval);
 
+			if(isRoundActive)
+			{
+				playRound();
+			}
 		}
 	};
 
@@ -140,7 +103,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		towers = new ArrayList<>();
 
 		gameLoopTimer.start();
-		factoryTimer.schedule(factoryTimerTask, 0, 500);
+//		factoryTimer.schedule(factoryTimerTask, 0, 500);
 
 		getChildren().add(canvas);
 		drawWorld(mapNum);
@@ -328,8 +291,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		towers = null;
 
 		enemiesForRound = null;
-		factoryTimer = null;
-		factoryTimerTask = null;
+//		factoryTimer = null;
+//		factoryTimerTask = null;
 	}
 
 	/**
@@ -345,6 +308,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			tower.setTileLocX(x);
 			tower.setTileLocY(y);
+			tower.setParent(this.getParent());
 			Player.getInstance().setCurrency(Player.getInstance().getCurrency() - tower.getCost());
 			towerLocations[x][y] = tower;
 			tower.setGraphicsContext(gc);
@@ -461,9 +425,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			}
 		}
 		else
-		{
 			BugBuster.updateScene(new TutorialScreen());
-		}
 
 		isRoundActive = true;
 	}
@@ -508,8 +470,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	public void killTimers()
 	{
-		factoryTimer.cancel();
-		gameLoopTimer.stop();
+//		if(factoryTimer != null)
+//			factoryTimer.cancel();
+
+		if(gameLoopTimer != null)
+			gameLoopTimer.stop();
 	}
 
 }

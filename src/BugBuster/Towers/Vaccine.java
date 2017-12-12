@@ -1,9 +1,6 @@
 package BugBuster.Towers;
 
-import BugBuster.Pathogens.Bacteria;
-import BugBuster.Pathogens.Flu;
-import BugBuster.Pathogens.MMR;
-import BugBuster.Pathogens.Pathogen;
+import BugBuster.Pathogens.*;
 import BugBuster.Player;
 import javafx.scene.image.Image;
 

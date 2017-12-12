@@ -133,7 +133,7 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		else
 		{
 			titleLabel.setText("Select a Tower");
-			aboutTowerLabel.setText("Select a tower to discover how it works");
+			aboutTowerLabel.setText("Select a tower to discover how it\nworks");
 			rangeLabel.setText("Range: ");
 			damageLabel.setText("Damage: ");
 

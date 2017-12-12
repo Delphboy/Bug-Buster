@@ -5,5 +5,5 @@ package BugBuster;
  */
 public interface FactoryIF
 {
-    public Object createProduct(int discriminator);
+    public Object createProduct(int discriminator) throws InterruptedException;
 }

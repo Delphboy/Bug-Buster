@@ -23,4 +23,16 @@ public class Flu extends Pathogen
 
 		update();
 	}
+
+	@Override
+	public void attack()
+	{
+		super.attack();
+	}
+
+	@Override
+	public void move()
+	{
+		super.move();
+	}
 }

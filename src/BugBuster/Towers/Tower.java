@@ -1,31 +1,20 @@
 package BugBuster.Towers;
 
-import BugBuster.Controller;
-import BugBuster.GameObject;
-import BugBuster.Pathogens.NullPathogen;
+import BugBuster.*;
 import BugBuster.Pathogens.Pathogen;
-import BugBuster.Player;
-import BugBuster.Screens.UIComponents.HeaderBarComponent;
 import javafx.animation.*;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +29,8 @@ public abstract class Tower extends GameObject implements TowerIF
 	int cost = 10;
 	int fireRate;
 	Pathogen target;
+
+	Parent parent;
 
 	MediaPlayer soundPlayer = null;
 
@@ -64,6 +55,11 @@ public abstract class Tower extends GameObject implements TowerIF
 				"behind the tower";
 		img = new Image("resources/testTower.png");
 		shootTimer.scheduleAtFixedRate(task, 0, (long)((1.0 / this.fireRate) * 1000));
+	}
+
+	public void setParent(Parent parent)
+	{
+		this.parent=parent;
 	}
 
 	public String getType()
@@ -174,23 +170,22 @@ public abstract class Tower extends GameObject implements TowerIF
 			}
 
 			if(soundPlayer != null)
-			{
-				soundPlayer.setOnEndOfMedia(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						soundPlayer.seek(Duration.ZERO);
-					}
-				});
 				soundPlayer.play();
-			}
 		}
 	}
 
 	private void animate()
 	{
+		Rectangle laser = new Rectangle(x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, 2,
+				5);
+		laser.setFill(Color.RED);
 
+		PathTransition path = new PathTransition();
+		path.setNode(laser);
+		path.setDuration(Duration.millis(1000));
+		path.setPath(laser);
+		path.setCycleCount(1);
+		path.play();
 	}
 
 	@Override
@@ -220,8 +215,6 @@ public abstract class Tower extends GameObject implements TowerIF
 					if(x == p.getTileX() && y == p.getTileY())
 						target = p;
 					if(target !=  null && target.getHealth() <= 0)
-						target = null;
-					if(target instanceof NullPathogen)
 						target = null;
 				}
 			}

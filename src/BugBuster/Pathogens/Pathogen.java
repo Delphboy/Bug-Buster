@@ -18,7 +18,7 @@ public abstract class Pathogen extends GameObject
 
 	protected int endTileX, endTileY, moveCount = 0;
 	protected Direction lastDir = Direction.RIGHT;
-	protected ArrayList<Direction> directionQueue = new ArrayList<>();
+	protected MoveCommand directionQueue = new MoveCommand();
 
 	public Pathogen(GraphicsContext gc, double x, double y)
 	{
@@ -91,7 +91,7 @@ public abstract class Pathogen extends GameObject
 	 */
 	public void navigate(Tile[][] world)
 	{
-		if(directionQueue.size() != 0)
+		if(directionQueue.getLength() != 0)
 			move();
 		else
 			buildRoute(world);
@@ -112,34 +112,32 @@ public abstract class Pathogen extends GameObject
 			while(!scannedTile.isEndTile() && scannedX < 15 && scannedY < 11)
 			{
 				scannedTile = world[scannedX][scannedY];
-//				System.out.println(scannedTile.getPosX() + " : " +
-//						scannedTile.getPosY());
 
 				if((lastDir != Direction.LEFT)
 						&& (world[scannedX + 1][scannedY].isWalkable()))
 				{
-					directionQueue.add(Direction.RIGHT);
+					directionQueue.addCommand(Direction.RIGHT);
 					lastDir = Direction.RIGHT;
 					scannedX += 1;
 				}
 				else if((lastDir != Direction.RIGHT) &&
 						(world[scannedX -1][scannedY].isWalkable()))
 				{
-					directionQueue.add(Direction.LEFT);
+					directionQueue.addCommand(Direction.LEFT);
 					lastDir = Direction.LEFT;
 					scannedX -= 1;
 				}
 				else if((lastDir != Direction.UP) &&
 						(world[scannedX][scannedY + 1].isWalkable()))
 				{
-					directionQueue.add(Direction.DOWN);
+					directionQueue.addCommand(Direction.DOWN);
 					lastDir = Direction.DOWN;
 					scannedY += 1;
 				}
 				else if((lastDir != Direction.DOWN) &&
 						(world[scannedX][scannedY - 1].isWalkable()))
 				{
-					directionQueue.add(Direction.UP);
+					directionQueue.addCommand(Direction.UP);
 					lastDir = Direction.UP;
 					scannedY -= 1;
 				}
@@ -160,12 +158,12 @@ public abstract class Pathogen extends GameObject
 	 * Use the movement operations created by the buildRoute() method to
 	 * navigate the pathogen through the world
 	 */
-	protected void move()
+	public void move()
 	{
-		Direction operation = directionQueue.get(0);
+		Direction operation = (Direction)directionQueue.peek();
 
 		// Iterate movement count
-		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
+		if(moveCount == Tile.TILE_WIDTH  || moveCount == Tile.TILE_HEIGHT)
 			moveCount = 0;
 
 		// Move pathogen across a tile
@@ -194,7 +192,7 @@ public abstract class Pathogen extends GameObject
 		setTileLocation(operation);
 
 		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
-			directionQueue.remove(0);
+			directionQueue.remove();
 	}
 
 	/**
