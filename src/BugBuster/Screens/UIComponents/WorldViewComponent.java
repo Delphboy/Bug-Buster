@@ -19,6 +19,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -39,15 +40,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	private boolean isRoundActive = false;
 	private ArrayList<Integer> enemiesForRound = new ArrayList<>();
 
-	Timeline towerFindTargetTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>()
+	Timeline towerShootTargetTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>()
 	{
 		@Override
 		public void handle(ActionEvent event) {
 			for(Tower t : towers)
 			{
-				t.findTarget(pathogens);
+				t.shootPathogen(pathogens);
 				Pathogen target = t.getTarget();
-				t.shootPathogen();
+
 				if(target != null)
 				{
 					Rectangle laser = new Rectangle(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, 10, 10);
@@ -57,18 +58,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					laserTransition.setCycleCount(1);
 					laserTransition.setNode(laser);
 
-//					System.out.println("ANIMATION DEBUG: " +
-//						"\n\tTileX: " + t.getTileLocX() * Tile.TILE_WIDTH +
-//						"\n\tTileY: " + t.getTileLocY()  * Tile.TILE_HEIGHT +
-//						"\n\tTargetX: " + target.getTileX() * Tile.TILE_WIDTH +
-//						"\n\tTargetY: " + target.getTileY() * Tile.TILE_HEIGHT);
-
 					laserTransition.setFromX(t.getTileLocX() * Tile.TILE_WIDTH);
-					laserTransition.setToX(target.getTileX() * Tile.TILE_WIDTH);
+					laserTransition.setToX(target.getTileX());
 					laserTransition.setFromX(t.getTileLocY() * Tile.TILE_HEIGHT);
-					laserTransition.setToX(target.getTileY() * Tile.TILE_HEIGHT);
+					laserTransition.setToX(target.getTileY());
 					getChildren().add(laser);
 					laserTransition.play();
+//
+//					Line laser = new Line(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, target.getTileX() * Tile.TILE_WIDTH, target.getTileY() * Tile.TILE_HEIGHT);
+//					getChildren().add(laser);
 				}
 			}
 		}
@@ -153,8 +151,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		drawWorld(mapNum);
 
 		gameLoopTimer.start();
-		towerFindTargetTimeline.setCycleCount(Timeline.INDEFINITE);
-		towerFindTargetTimeline.play();
+		towerShootTargetTimeline.setCycleCount(Timeline.INDEFINITE);
+		towerShootTargetTimeline.play();
 
 		pathogenSpawnTimeline.setCycleCount(Timeline.INDEFINITE);
 		pathogenSpawnTimeline.play();
@@ -434,11 +432,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			switch (roundNumber)
 			{
 				case 1:
-					enemiesForRound.add(1);
-					enemiesForRound.add(1);
-					enemiesForRound.add(1);
-					enemiesForRound.add(1);
-					enemiesForRound.add(1);
+					enemiesForRound.add(4);
+					enemiesForRound.add(3);
+					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					enemiesForRound.add(4);
 					break;
 				case 2:
 					enemiesForRound.add(1);
@@ -598,7 +596,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	public void killTimers()
 	{
-		towerFindTargetTimeline.stop();
+		towerShootTargetTimeline.stop();
 		pathogenSpawnTimeline.stop();
 
 		if(gameLoopTimer != null)

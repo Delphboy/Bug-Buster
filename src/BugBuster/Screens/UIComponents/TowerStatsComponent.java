@@ -74,7 +74,7 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 			@Override
 			public void handle(ActionEvent event)
 			{
-				towerToDisplay.increaseDamage();
+				towerToDisplay.upgradeTowerDamage();
 				update();
 				HeaderBarComponent.getInstance().update();
 			}
@@ -92,7 +92,7 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 			@Override
 			public void handle(ActionEvent event)
 			{
-				towerToDisplay.increaseRadius();
+				towerToDisplay.upgradeTowerRange();
 				update();
 				HeaderBarComponent.getInstance().update();
 			}
@@ -151,12 +151,13 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 
 		towerToDisplay = null;
 
+		upgradeRangeButton = null;
+		upgradeDamageButton = null;
+
 		titleLabel = null;
 		rangeLabel = null;
 		damageLabel = null;
 		aboutTowerLabel = null;
 
-		upgradeRangeButton = null;
-		upgradeDamageButton = null;
 	}
 }

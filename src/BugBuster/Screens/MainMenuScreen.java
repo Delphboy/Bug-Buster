@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class MainMenuScreen extends Pane implements ScreenIF
@@ -22,7 +23,7 @@ public class MainMenuScreen extends Pane implements ScreenIF
 		graphicsContext = canvas.getGraphicsContext2D();
 
 		Image menuImage = new Image("resources/welcome-sreen.png");
-		graphicsContext.drawImage(menuImage, 0, 0);
+		graphicsContext.drawImage(menuImage, 0, 0, BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
 
 		Button buttonStartGame = new Button("Start Game");
 		buttonStartGame.setFont(new Font("Cooper Black", 24));

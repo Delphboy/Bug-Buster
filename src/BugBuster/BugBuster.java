@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -57,6 +58,7 @@ public class BugBuster extends Application
 		window.setTitle("Bug Buster | Software Architecture Assignment - Henry Senior");
 		window.setResizable(false);
 		window.initStyle(StageStyle.DECORATED);
+		window.getIcons().add(new Image("/resources/icon.png"));
 
 		//by default, start the MainMenuScreen
 		updateScene(new MainMenuScreen());

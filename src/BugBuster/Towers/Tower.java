@@ -104,26 +104,6 @@ public abstract class Tower extends GameObject implements TowerIF
 		return target;
 	}
 
-	public void increaseDamage()
-	{
-		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= damage * 10) && (damage < 7))
-		{
-			damage += 1;
-			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
-		}
-	}
-
-	public void increaseRadius()
-	{
-		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= radius * 5) && (radius < 5))
-		{
-			radius += 1;
-			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
-		}
-	}
-
 	@Override
 	public String toString()
 	{
@@ -135,8 +115,10 @@ public abstract class Tower extends GameObject implements TowerIF
 				'}';
 	}
 
-	public void shootPathogen()
+	public void shootPathogen(ArrayList<Pathogen> pathogens)
 	{
+		findTarget(pathogens);
+
 		if(target != null)
 		{
 			target.setHealth(target.getHealth() - damage);
@@ -160,26 +142,46 @@ public abstract class Tower extends GameObject implements TowerIF
 		}
 	}
 
+	/**
+	 * Upgrade the range of the tower.
+	 * Whilst a general upgrade is implemented here, it should be overrided by a tower's concrete
+	 * implementation
+	 */
 	@Override
 	public void upgradeTowerRange()
 	{
-
+		Player playerInstance = Player.getInstance();
+		if((playerInstance.getCurrency() >= radius * 2))
+		{
+			radius += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 2);
+		}
 	}
 
+	/**
+	 * Upgrade the damage of the tower.
+	 * Whilst a general upgrade is implemented here, it should be overrided by a tower's concrete
+	 * implementation
+	 */
 	@Override
 	public void upgradeTowerDamage()
 	{
-
+		Player playerInstance = Player.getInstance();
+		if((playerInstance.getCurrency() >= damage * 2))
+		{
+			damage += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 2);
+		}
 	}
 
 	/**
 	 * Find the pathogen closest to the target
 	 */
-	public void findTarget(ArrayList<Pathogen> pathogens)
+	protected void findTarget(ArrayList<Pathogen> pathogens)
 	{
+		target = null;
 		for (Pathogen p : pathogens)
 		{
-			target = null;
 			for (int y = tileLocY - radius; y <= tileLocY + radius; y++)
 			{
 				for (int x = tileLocX - radius; x <= tileLocX + radius; x++)

@@ -23,13 +23,14 @@ public class Vaccine extends Tower implements TowerIF
 	{
 		super.findTarget(pathogens);
 		Player playerInstance = Player.getInstance();
+
 		if(target instanceof Bacteria)
 		{
 			target = null;
 		}
 		else
 		{
-			System.out.println("VACCINE DEBUG:" + target + "\n" + playerInstance.getCurrentVaccine());
+			System.out.println("VACCINE DEBUG: " + target );
 			if(playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
 			{
 				if(target instanceof Flu == false)
@@ -37,13 +38,36 @@ public class Vaccine extends Tower implements TowerIF
 			}
 			else if(playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
 			{
-				if(target instanceof Flu == false && target instanceof MMR == false)
+				if(target instanceof SmallPox)
 					target = null;
 			}
 			else
 			{
-				// DO nothing
+				System.out.println("WE HAVE A TARGET!" + target);
 			}
 		}
 	}
+
+	@Override
+	public void upgradeTowerRange()
+	{
+		Player playerInstance = Player.getInstance();
+		if((playerInstance.getCurrency() >= radius * 5) && (radius < 3))
+		{
+			radius += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
+		}
+	}
+
+	@Override
+	public void upgradeTowerDamage()
+	{
+		Player playerInstance = Player.getInstance();
+		if((playerInstance.getCurrency() >= damage * 10) && (damage < 10))
+		{
+			damage += 1;
+			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
+		}
+	}
+
 }

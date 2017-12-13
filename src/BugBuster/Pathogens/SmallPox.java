@@ -7,12 +7,6 @@ import java.util.ArrayList;
 
 public class SmallPox extends Pathogen
 {
-	public boolean isForRemoval = false;
-
-	private int endTileX, endTileY, moveCount = 0;
-	private Direction lastDir = Direction.RIGHT;
-	private ArrayList<Direction> directionQueue = new ArrayList<>();
-
 	public SmallPox(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
