@@ -2,8 +2,7 @@ package BugBuster;
 
 import BugBuster.Screens.GameScreen;
 import BugBuster.Screens.UIComponents.*;
-import BugBuster.Towers.Tower;
-import BugBuster.Towers.TowerFactory;
+import BugBuster.Towers.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -28,20 +27,33 @@ public class Controller implements EventHandler
     @Override
     public void handle(Event event)
     {
+        Player player = Player.getInstance();
         if(event.getSource()== parent.getTowerShop().getBuyWhiteBloodCellBtn())
         {
-            createTower(1);
-            parent.setCursor(Cursor.CROSSHAIR);
+            WhiteBloodCell wbc = new WhiteBloodCell();
+            if(player.getCurrency() > wbc.getCost())
+            {
+                createTower(1);
+                parent.setCursor(Cursor.CROSSHAIR);
+            }
         }
         else if(event.getSource()== parent.getTowerShop().getBuyAntiBioticsBtn())
         {
-            createTower(2);
-            parent.setCursor(Cursor.CROSSHAIR);
+            Antibiotics antibiotics = new Antibiotics();
+            if(player.getCurrency() > antibiotics.getCost())
+            {
+                createTower(2);
+                parent.setCursor(Cursor.CROSSHAIR);
+            }
         }
         else if(event.getSource()== parent.getTowerShop().getBuyVaccineBtn())
         {
-            createTower(3);
-            parent.setCursor(Cursor.CROSSHAIR);
+            Vaccine vaccine = new Vaccine();
+            if(player.getCurrency() > vaccine.getCost())
+            {
+                createTower(3);
+                parent.setCursor(Cursor.CROSSHAIR);
+            }
         }
 
         else if(event.getSource()== parent.getTowerShop().getBuyNextVaccineBtn())

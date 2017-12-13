@@ -78,6 +78,7 @@ public abstract class Pathogen extends GameObject
 			isForRemoval = true;
 			Player player = Player.getInstance();
 			player.setHealth(player.getHealth() - damage);
+			health = 0;
 			if (player.getHealth() <= 0)
 				BugBuster.updateScene(new LossScreen());
 

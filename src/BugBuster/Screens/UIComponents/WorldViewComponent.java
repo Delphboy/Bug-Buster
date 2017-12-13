@@ -51,28 +51,30 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 				if(target != null)
 				{
-					Rectangle laser = new Rectangle(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, 10, 10);
-					laser.setFill(Color.RED);
-
-					TranslateTransition laserTransition = new TranslateTransition(Duration.millis(100));
-					laserTransition.setCycleCount(1);
-					laserTransition.setNode(laser);
-
-					laserTransition.setFromX(t.getTileLocX() * Tile.TILE_WIDTH);
-					laserTransition.setToX(target.getTileX());
-					laserTransition.setFromX(t.getTileLocY() * Tile.TILE_HEIGHT);
-					laserTransition.setToX(target.getTileY());
-					getChildren().add(laser);
-					laserTransition.play();
+//					Rectangle laser = new Rectangle(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, 10, 10);
+//					laser.setFill(Color.RED);
 //
-//					Line laser = new Line(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, target.getTileX() * Tile.TILE_WIDTH, target.getTileY() * Tile.TILE_HEIGHT);
+//					TranslateTransition laserTransition = new TranslateTransition(Duration.millis(100));
+//					laserTransition.setCycleCount(1);
+//					laserTransition.setNode(laser);
+//
+////					laserTransition.setFromX(t.getTileLocX() * Tile.TILE_WIDTH);
+//					laserTransition.setToX(target.getTileX());
+////					laserTransition.setFromY(t.getTileLocY() * Tile
+////							.TILE_HEIGHT);
+//					laserTransition.setToY(target.getTileY());
 //					getChildren().add(laser);
+//					laserTransition.play();
+//
+					Line laser = new Line(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, target.getTileX() * Tile.TILE_WIDTH, target.getTileY() * Tile.TILE_HEIGHT);
+					getChildren().add(laser);
 				}
 			}
 		}
 	}));
 
-	Timeline pathogenSpawnTimeline = new Timeline(new KeyFrame(Duration.seconds(0.75), new EventHandler<ActionEvent>()
+	Timeline pathogenSpawnTimeline = new Timeline(new KeyFrame(Duration
+			.seconds(1), new EventHandler<ActionEvent>()
 	{
 		@Override
 		public void handle(ActionEvent event) {
@@ -95,37 +97,30 @@ public class WorldViewComponent extends Pane implements ComponentIF
 						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 
 				p.navigate(worldMap);
+
+				p.attack();
+
 				if(p.getHealth() <= 0)
 				{
 					pathogensForRemoval.add(p);
+
 					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
 							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 
-					switch (p.getLastDir())
+					for(int i = p.getTileX() - 2; i < p.getTileX() + 2; i++)
 					{
-						case LEFT:
-							drawTile(worldMap[p.getTileX() - 1][p.getTileY()].getTileImg(), (p
-									.getTileX() - 1) * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
-							break;
-						case RIGHT:
-							drawTile(worldMap[p.getTileX() + 1][p.getTileY()].getTileImg(), (p
-									.getTileX() + 1) * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
-							break;
-						case UP:
-							drawTile(worldMap[p.getTileX()][p.getTileY() - 1].getTileImg(), p
-									.getTileX() * Tile.TILE_WIDTH, (p.getTileY() - 1)* Tile.TILE_HEIGHT);
-							break;
-						case DOWN:
-							drawTile(worldMap[p.getTileX()][p.getTileY() + 1].getTileImg(), p
-									.getTileX() * Tile.TILE_WIDTH, (p.getTileY() + 1)* Tile.TILE_HEIGHT);
-							break;
+						for(int j = p.getTileY() - 2; j < p.getTileY() + 2; j++)
+						{
+							if(worldMap[i][j].isWalkable())
+								drawTile(worldMap[i][j].getTileImg(), i *
+										Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT);
+						}
 					}
+
 				}
 
 				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
 					pathogensForRemoval.add(p);
-
-				p.attack();
 			}
 
 			// Disable start round button if a round is being played
@@ -432,11 +427,11 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			switch (roundNumber)
 			{
 				case 1:
-					enemiesForRound.add(4);
-					enemiesForRound.add(3);
-					enemiesForRound.add(2);
-					enemiesForRound.add(3);
-					enemiesForRound.add(4);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
 					break;
 				case 2:
 					enemiesForRound.add(1);
@@ -475,6 +470,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(3);
 					enemiesForRound.add(1);
 					enemiesForRound.add(3);
+					enemiesForRound.add(4);
 					for (int i = 0; i < 5; i++)
 						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
 
@@ -528,19 +524,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(3);
 					for (int i = 0; i < 15; i++)
 						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
-					enemiesForRound.add(4);
 					enemiesForRound.add(4);
 					enemiesForRound.add(4);
 					enemiesForRound.add(4);

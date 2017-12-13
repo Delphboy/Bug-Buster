@@ -66,12 +66,10 @@ public class GameScreen extends Pane implements ScreenIF
 		//Play Music
 		try
 		{
-			Media soundFile = new Media(new File
-					("src/resources/background.mp3").toURI()
-					.toString());
-			System.out.println("Sound file @" + soundFile.getSource());
-			soundPlayer = new MediaPlayer(soundFile);
-		}catch (MediaException me)
+			File soundFile = new File("src/resources/background.mp3");
+			Media soundSource = new Media(soundFile.getAbsolutePath());
+			soundPlayer = new MediaPlayer(soundSource);
+		}catch (Exception e)
 		{
 			System.err.println("If you are experiencing this issue on Linux, " +
 					"please follow this link for a fix:\n " +

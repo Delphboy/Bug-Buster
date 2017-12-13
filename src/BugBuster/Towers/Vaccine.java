@@ -14,7 +14,7 @@ public class Vaccine extends Tower implements TowerIF
 		aboutMessage = "A vaccine protects people from specific\n pathogens. To protect yourself\n" +
 				"against more pathogens, you will need\nmore immunisations. Make sure you\nimmunise" +
 				" yourself against: \n - The Flu\n - MMR Viruses\n - Smallpox";
-		cost = 35;
+		cost = 50;
 		img = new Image("resources/vaccine-tower.png");
 	}
 
@@ -52,7 +52,7 @@ public class Vaccine extends Tower implements TowerIF
 	public void upgradeTowerRange()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= radius * 5) && (radius < 3))
+		if((playerInstance.getCurrency() > (radius * 5)) && (radius < 3))
 		{
 			radius += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
@@ -63,7 +63,7 @@ public class Vaccine extends Tower implements TowerIF
 	public void upgradeTowerDamage()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= damage * 10) && (damage < 10))
+		if((playerInstance.getCurrency() > (damage * 10)) && (damage < 10))
 		{
 			damage += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);

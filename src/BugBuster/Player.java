@@ -14,7 +14,7 @@ public class Player
 	{
 		health = 10;
 		wavesComplete = 0;
-		currency = 1000;
+		currency = 700;
 		currentVaccine = "flu";
 	}
 

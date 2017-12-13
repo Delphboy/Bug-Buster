@@ -151,7 +151,7 @@ public abstract class Tower extends GameObject implements TowerIF
 	public void upgradeTowerRange()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= radius * 2))
+		if((playerInstance.getCurrency() > radius * 2))
 		{
 			radius += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 2);
@@ -167,7 +167,7 @@ public abstract class Tower extends GameObject implements TowerIF
 	public void upgradeTowerDamage()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= damage * 2))
+		if((playerInstance.getCurrency() > damage * 2))
 		{
 			damage += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 2);

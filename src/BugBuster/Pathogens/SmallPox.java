@@ -11,7 +11,7 @@ public class SmallPox extends Pathogen
 	{
 		super(gc, x, y);
 		health = 25;
-		damage = 10;
+		damage = 7;
 		img = new Image("resources/Smallpox.png");
 		setTileLocation(lastDir);
 

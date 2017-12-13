@@ -55,6 +55,9 @@ public class WinScreen extends Pane implements ScreenIF
 		applesLeftLabel.setLayoutY(475);
 
 		getChildren().addAll(canvas, buttonReturnToMenu, healthLeftLabel, applesLeftLabel);
+
+		// Reset the player for next game
+		Player.setInstanceToNull();
 	}
 
 	@Override

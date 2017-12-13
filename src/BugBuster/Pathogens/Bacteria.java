@@ -8,7 +8,7 @@ public class Bacteria extends Pathogen
 	public Bacteria(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
-		health = 5;
+		health = 1;
 		damage = 1;
 		img = new Image("resources/Bacteria.png");
 		setTileLocation(lastDir);

@@ -13,7 +13,7 @@ public class Antibiotics extends Tower implements TowerIF
 	{
 		super("Antibiotics", 1, 5);
 		img = new Image("resources/antibiotics-tower.png");
-		cost = 40;
+		cost = 30;
 		aboutMessage = "Antibiotics are special medicines that\nkill bacteria. There's no point " +
 				"using\nthem against anything other than\nbacteria though, as it won't work!";
 	}
@@ -32,7 +32,7 @@ public class Antibiotics extends Tower implements TowerIF
 	public void upgradeTowerRange()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= radius * 5) && (radius < 3))
+		if((playerInstance.getCurrency() > (radius * 5)) && (radius < 3))
 		{
 			radius += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
@@ -43,7 +43,7 @@ public class Antibiotics extends Tower implements TowerIF
 	public void upgradeTowerDamage()
 	{
 		Player playerInstance = Player.getInstance();
-		if((playerInstance.getCurrency() >= damage * 10) && (damage < 10))
+		if((playerInstance.getCurrency() > (damage * 10)) && (damage < 10))
 		{
 			damage += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
