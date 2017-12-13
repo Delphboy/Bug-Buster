@@ -4,19 +4,26 @@ import BugBuster.Pathogens.Pathogen;
 import BugBuster.Pathogens.PathogenFactory;
 import BugBuster.Player;
 import BugBuster.BugBuster;
-import BugBuster.Screens.TutorialScreen;
+import BugBuster.Screens.WinScreen;
 import BugBuster.Tile;
 import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Random;
 
 public class WorldViewComponent extends Pane implements ComponentIF
 {
@@ -31,23 +38,52 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	private int roundNumber = 1;
 	private boolean isRoundActive = false;
 	private ArrayList<Integer> enemiesForRound = new ArrayList<>();
-//	private Timer factoryTimer = new Timer();
-//	private TimerTask factoryTimerTask = new TimerTask()
-//	{
-//		@Override
-//		public void run()
-//		{
-////			System.out.println("ROUND DEBUG: " + roundNumber + "\n\tisRoundActive:" + isRoundActive +
-////					"\n\tenemiesForRound.size(): " + enemiesForRound.size() +
-////					"\n\tpathogens.size(): " + pathogens.size());
-//
-//			if(isRoundActive)
-//			{
-//				playRound();
-//			}
-//		}
-//	};
 
+	Timeline towerFindTargetTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>()
+	{
+		@Override
+		public void handle(ActionEvent event) {
+			for(Tower t : towers)
+			{
+				t.findTarget(pathogens);
+				Pathogen target = t.getTarget();
+				t.shootPathogen();
+				if(target != null)
+				{
+					Rectangle laser = new Rectangle(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, 10, 10);
+					laser.setFill(Color.RED);
+
+					TranslateTransition laserTransition = new TranslateTransition(Duration.millis(100));
+					laserTransition.setCycleCount(1);
+					laserTransition.setNode(laser);
+
+//					System.out.println("ANIMATION DEBUG: " +
+//						"\n\tTileX: " + t.getTileLocX() * Tile.TILE_WIDTH +
+//						"\n\tTileY: " + t.getTileLocY()  * Tile.TILE_HEIGHT +
+//						"\n\tTargetX: " + target.getTileX() * Tile.TILE_WIDTH +
+//						"\n\tTargetY: " + target.getTileY() * Tile.TILE_HEIGHT);
+
+					laserTransition.setFromX(t.getTileLocX() * Tile.TILE_WIDTH);
+					laserTransition.setToX(target.getTileX() * Tile.TILE_WIDTH);
+					laserTransition.setFromX(t.getTileLocY() * Tile.TILE_HEIGHT);
+					laserTransition.setToX(target.getTileY() * Tile.TILE_HEIGHT);
+					getChildren().add(laser);
+					laserTransition.play();
+				}
+			}
+		}
+	}));
+
+	Timeline pathogenSpawnTimeline = new Timeline(new KeyFrame(Duration.seconds(0.75), new EventHandler<ActionEvent>()
+	{
+		@Override
+		public void handle(ActionEvent event) {
+			if(isRoundActive)
+			{
+				playRound();
+			}
+		}
+	}));
 
 	AnimationTimer gameLoopTimer = new AnimationTimer()
 	{
@@ -66,6 +102,26 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					pathogensForRemoval.add(p);
 					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
 							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+
+					switch (p.getLastDir())
+					{
+						case LEFT:
+							drawTile(worldMap[p.getTileX() - 1][p.getTileY()].getTileImg(), (p
+									.getTileX() - 1) * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+							break;
+						case RIGHT:
+							drawTile(worldMap[p.getTileX() + 1][p.getTileY()].getTileImg(), (p
+									.getTileX() + 1) * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+							break;
+						case UP:
+							drawTile(worldMap[p.getTileX()][p.getTileY() - 1].getTileImg(), p
+									.getTileX() * Tile.TILE_WIDTH, (p.getTileY() - 1)* Tile.TILE_HEIGHT);
+							break;
+						case DOWN:
+							drawTile(worldMap[p.getTileX()][p.getTileY() + 1].getTileImg(), p
+									.getTileX() * Tile.TILE_WIDTH, (p.getTileY() + 1)* Tile.TILE_HEIGHT);
+							break;
+					}
 				}
 
 				if(worldMap[p.getTileX()][p.getTileY()].isEndTile())
@@ -74,23 +130,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				p.attack();
 			}
 
-			for(Tower t : towers)
-			{
-				t.findTarget(pathogens);
-			}
-
 			// Disable start round button if a round is being played
 			OptionsComponent oc = OptionsComponent.getInstance();
 			oc.getStartRoundBtn().setDisable(isRoundActive);
 
 			HeaderBarComponent.getInstance().update();
 
-			pathogens.removeAll(pathogensForRemoval);
-
-			if(isRoundActive)
-			{
-				playRound();
-			}
+			if(pathogens != null)
+				pathogens.removeAll(pathogensForRemoval);
 		}
 	};
 
@@ -102,21 +149,20 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		pathogens = new ArrayList<>();
 		towers = new ArrayList<>();
 
-		gameLoopTimer.start();
-//		factoryTimer.schedule(factoryTimerTask, 0, 500);
-
 		getChildren().add(canvas);
 		drawWorld(mapNum);
+
+		gameLoopTimer.start();
+		towerFindTargetTimeline.setCycleCount(Timeline.INDEFINITE);
+		towerFindTargetTimeline.play();
+
+		pathogenSpawnTimeline.setCycleCount(Timeline.INDEFINITE);
+		pathogenSpawnTimeline.play();
 	}
 
 	public Tower[][] getTowerLocations()
 	{
 		return towerLocations;
-	}
-
-	public void addChild(Node nodeToAdd)
-	{
-		getChildren().add(nodeToAdd);
 	}
 
 	/**
@@ -182,7 +228,117 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 		//Draw Path
 		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
+
+		worldMap[1][4] = new Tile(1 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		worldMap[1][1] = new Tile(1 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][2] = new Tile(1 * Tile.TILE_WIDTH, 2 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][3] = new Tile(1 * Tile.TILE_WIDTH, 3 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[2][1] = new Tile(2 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[4][10] = new Tile(4 * Tile.TILE_WIDTH, 10 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[6][1] = new Tile(6 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[8][10] = new Tile(8 * Tile.TILE_WIDTH, 10 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[10][1] = new Tile(10 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[11][1] = new Tile(11 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[11][2] = new Tile(11 * Tile.TILE_WIDTH, 2 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[11][3] = new Tile(11 * Tile.TILE_WIDTH, 3 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[11][4] = new Tile(11 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[12][4] = new Tile(12 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[13][4] = new Tile(13 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[14][4] = new Tile(14 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+
+
+		for (int i = 3; i <= 9; i += 2)
+		{
+			for (int j = 1; j <= 10; j++)
+			{
+				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+			}
+		}
+
+
+		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
+
+		return worldMap;
+	}
+
+	/**
+	 * Load map 2
+	 * @return a 2D Tile array representing the world
+	 */
+	private Tile[][] loadMap2()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 12; j++)
+			{
+				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
+						.TILE_HEIGHT, "resources/cell-tile.png", false);
+			}
+		}
+
+		//Draw Path
+		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
+
+		for (int j = 4; j >= 1; j--)
+			worldMap[1][j] = new Tile(1 * Tile.TILE_WIDTH, j * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for(int i = 2; i < 7; i++)
+			worldMap[i][1] = new Tile(i * Tile.TILE_WIDTH, 1 * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for(int j = 2; j < 6; j++)
+			worldMap[6][j] = new Tile(6 * Tile.TILE_WIDTH, j * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for(int i = 6; i > 2; i--)
+			worldMap[i][6] = new Tile(i * Tile.TILE_WIDTH, 6 * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		worldMap[3][7] = new Tile(3 * Tile.TILE_WIDTH, 7 * Tile
 				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[3][8] = new Tile(3 * Tile.TILE_WIDTH, 8 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for(int i = 3; i < 14; i++)
+			worldMap[i][9] = new Tile(i * Tile.TILE_WIDTH, 9 * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		for(int j = 8; j > 3; j--)
+			worldMap[13][j] = new Tile(13 * Tile.TILE_WIDTH, j * Tile
+					.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		worldMap[14][4] = new Tile(14 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true);
+
+		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
+
+		return worldMap;
+	}
+
+	/**
+	 * Load map 3
+	 * @return a 2D Tile array representing the world
+	 */
+	private Tile[][] loadMap3()
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			for (int j = 0; j < 12; j++)
+			{
+				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
+						.TILE_HEIGHT, "resources/cell-tile.png", false);
+			}
+		}
+
+		//Draw Path
+		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
+				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
 		worldMap[1][4] = new Tile(1 * Tile.TILE_WIDTH, 4 * Tile
 				.TILE_HEIGHT, "resources/path-tile.png", true);
 		worldMap[2][4] = new Tile(2 * Tile.TILE_WIDTH, 4 * Tile
@@ -219,55 +375,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		}
 
 		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, true);
-
-		return worldMap;
-	}
-
-	/**
-	 * Load map 2
-	 * @return a 2D Tile array representing the world
-	 */
-	private Tile[][] loadMap2()
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			for (int j = 0; j < 12; j++)
-			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/cell-tile.png", false);
-			}
-		}
-
-		for (int i = 0; i < 16; i++)
-		{
-			worldMap[i][8] = new Tile(i * Tile.TILE_WIDTH, 8 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", false);
-		}
-
-		return worldMap;
-	}
-
-	/**
-	 * Load map 3
-	 * @return a 2D Tile array representing the world
-	 */
-	private Tile[][] loadMap3()
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			for (int j = 0; j < 12; j++)
-			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/cell-tile.png", false);
-			}
-		}
-
-		for (int i = 0; i < 16; i++)
-		{
-			worldMap[i][2] = new Tile(i * Tile.TILE_WIDTH, 2 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", false);
-		}
+				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
 
 		return worldMap;
 	}
@@ -308,7 +416,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			tower.setTileLocX(x);
 			tower.setTileLocY(y);
-			tower.setParent(this.getParent());
 			Player.getInstance().setCurrency(Player.getInstance().getCurrency() - tower.getCost());
 			towerLocations[x][y] = tower;
 			tower.setGraphicsContext(gc);
@@ -321,33 +428,58 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	public void startRound()
 	{
+		Random rnd = new Random();
 		if(roundNumber <= 10)
 		{
 			switch (roundNumber)
 			{
 				case 1:
-					enemiesForRound.add(4);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
 					break;
 				case 2:
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(2);
 					enemiesForRound.add(2);
 					break;
 				case 3:
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(1);
+					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					enemiesForRound.add(3);
 					break;
 				case 4:
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					enemiesForRound.add(3);
+					enemiesForRound.add(3);
+					enemiesForRound.add(3);
 					break;
 				case 5:
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 5; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
+
 					break;
 				case 6:
 					enemiesForRound.add(1);
@@ -355,9 +487,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 7; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
 					break;
 				case 7:
 					enemiesForRound.add(1);
@@ -365,11 +497,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 9; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
 					break;
 				case 8:
 					enemiesForRound.add(1);
@@ -377,13 +507,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 11; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
 					break;
 				case 9:
 					enemiesForRound.add(1);
@@ -391,15 +517,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 15; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
 					break;
 				case 10:
 					enemiesForRound.add(1);
@@ -407,17 +527,25 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					enemiesForRound.add(1);
 					enemiesForRound.add(2);
 					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
-					enemiesForRound.add(1);
-					enemiesForRound.add(2);
+					enemiesForRound.add(3);
+					for (int i = 0; i < 15; i++)
+						enemiesForRound.add(rnd.nextInt(4 - 1) + 1);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
+					enemiesForRound.add(4);
 					break;
 				default:
 					System.out.println("UNKNOWN ROUND");
@@ -425,7 +553,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			}
 		}
 		else
-			BugBuster.updateScene(new TutorialScreen());
+			BugBuster.updateScene(new WinScreen());
 
 		isRoundActive = true;
 	}
@@ -470,8 +598,8 @@ public class WorldViewComponent extends Pane implements ComponentIF
 
 	public void killTimers()
 	{
-//		if(factoryTimer != null)
-//			factoryTimer.cancel();
+		towerFindTargetTimeline.stop();
+		pathogenSpawnTimeline.stop();
 
 		if(gameLoopTimer != null)
 			gameLoopTimer.stop();

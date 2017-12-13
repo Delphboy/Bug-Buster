@@ -3,6 +3,8 @@ package BugBuster.Towers;
 import BugBuster.*;
 import BugBuster.Pathogens.Pathogen;
 import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -27,22 +29,9 @@ public abstract class Tower extends GameObject implements TowerIF
 	int radius;
 	int damage;
 	int cost = 10;
-	int fireRate;
 	Pathogen target;
 
-	Parent parent;
-
 	MediaPlayer soundPlayer = null;
-
-	Timer shootTimer = new Timer();
-	TimerTask task = new TimerTask()
-	{
-		@Override
-		public void run()
-		{
-			shootPathogen();
-		}
-	};
 
 	public Tower(String type, int radius, int damage)
 	{
@@ -50,16 +39,9 @@ public abstract class Tower extends GameObject implements TowerIF
 		this.type = type;
 		this.radius = radius;
 		this.damage = damage;
-		this.fireRate = 3;
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
 		img = new Image("resources/testTower.png");
-		shootTimer.scheduleAtFixedRate(task, 0, (long)((1.0 / this.fireRate) * 1000));
-	}
-
-	public void setParent(Parent parent)
-	{
-		this.parent=parent;
 	}
 
 	public String getType()
@@ -117,10 +99,15 @@ public abstract class Tower extends GameObject implements TowerIF
 		gc = graphicsContext;
 	}
 
+	public Pathogen getTarget()
+	{
+		return target;
+	}
+
 	public void increaseDamage()
 	{
 		Player playerInstance = Player.getInstance();
-		if(playerInstance.getCurrency() >= damage * 10)
+		if((playerInstance.getCurrency() >= damage * 10) && (damage < 7))
 		{
 			damage += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
@@ -130,10 +117,10 @@ public abstract class Tower extends GameObject implements TowerIF
 	public void increaseRadius()
 	{
 		Player playerInstance = Player.getInstance();
-		if(playerInstance.getCurrency() >= radius * 5)
+		if((playerInstance.getCurrency() >= radius * 5) && (radius < 5))
 		{
 			radius += 1;
-			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
+			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
 		}
 	}
 
@@ -148,19 +135,15 @@ public abstract class Tower extends GameObject implements TowerIF
 				'}';
 	}
 
-	private void shootPathogen()
+	public void shootPathogen()
 	{
 		if(target != null)
 		{
 			target.setHealth(target.getHealth() - damage);
-			animate();
+
 			try
 			{
-				Media soundFile = new Media
-						(new File("src/resources/sounds/default-laser.mp3")
-								.toURI()
-								.toString());
-				System.out.println("Sound file @" + soundFile.getSource());
+				Media soundFile = new Media(this.getClass().getResource("../../resources/default-laser.mp3").toExternalForm());
 				soundPlayer = new MediaPlayer(soundFile);
 			}catch (MediaException me)
 			{
@@ -171,21 +154,10 @@ public abstract class Tower extends GameObject implements TowerIF
 
 			if(soundPlayer != null)
 				soundPlayer.play();
+
+			if(target.getHealth() <= 0)
+				target = null;
 		}
-	}
-
-	private void animate()
-	{
-		Rectangle laser = new Rectangle(x * Tile.TILE_WIDTH, y * Tile.TILE_HEIGHT, 2,
-				5);
-		laser.setFill(Color.RED);
-
-		PathTransition path = new PathTransition();
-		path.setNode(laser);
-		path.setDuration(Duration.millis(1000));
-		path.setPath(laser);
-		path.setCycleCount(1);
-		path.play();
 	}
 
 	@Override

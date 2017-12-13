@@ -3,18 +3,16 @@ package BugBuster.Pathogens;
 import BugBuster.GameObject;
 import BugBuster.Player;
 import BugBuster.BugBuster;
-import BugBuster.Screens.TutorialScreen;
+import BugBuster.Screens.LossScreen;
 import BugBuster.Screens.UIComponents.HeaderBarComponent;
 import BugBuster.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-
 public abstract class Pathogen extends GameObject
 {
 	public boolean isForRemoval = false;
-	protected int health,damange, tileX, tileY;
+	protected int health, damage, tileX, tileY;
 
 	protected int endTileX, endTileY, moveCount = 0;
 	protected Direction lastDir = Direction.RIGHT;
@@ -26,7 +24,7 @@ public abstract class Pathogen extends GameObject
 		health = 5;
 		img = new Image("resources/test-tile.png");
 		setTileLocation(lastDir);
-		damange = 1;
+		damage = 1;
 		update();
 	}
 
@@ -63,6 +61,11 @@ public abstract class Pathogen extends GameObject
 		return lastDir;
 	}
 
+	public int getDamage()
+	{
+		return damage;
+	}
+
 	/**
 	 * Deal damage to the play if on the end tile
 	 */
@@ -74,13 +77,10 @@ public abstract class Pathogen extends GameObject
 		{
 			isForRemoval = true;
 			Player player = Player.getInstance();
-			if(player.getHealth() > 1)
-			{
-				player.setHealth(player.getHealth() - damange);
-				HeaderBarComponent.getInstance().update();
-			}
-			else
-				BugBuster.updateScene(new TutorialScreen());
+			player.setHealth(player.getHealth() - damage);
+			if (player.getHealth() <= 0)
+				BugBuster.updateScene(new LossScreen());
+
 		}
 	}
 

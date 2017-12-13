@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class OptionsComponent extends Pane implements ComponentIF
@@ -49,6 +50,7 @@ public class OptionsComponent extends Pane implements ComponentIF
 		// Set the increase damage button
 		startRoundBtn = new Button("Start Round");
 		startRoundBtn.setFont(new Font("Cooper Black", 12));
+		startRoundBtn.setTextFill(Color.GREEN);
 		startRoundBtn.setLayoutX(130);
 		startRoundBtn.setLayoutY(10);
 		startRoundBtn.setMinSize(100, 30);

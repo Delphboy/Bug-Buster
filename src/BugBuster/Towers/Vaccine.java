@@ -29,6 +29,7 @@ public class Vaccine extends Tower implements TowerIF
 		}
 		else
 		{
+			System.out.println("VACCINE DEBUG:" + target + "\n" + playerInstance.getCurrentVaccine());
 			if(playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
 			{
 				if(target instanceof Flu == false)

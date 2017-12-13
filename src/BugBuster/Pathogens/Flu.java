@@ -18,7 +18,7 @@ public class Flu extends Pathogen
 	{
 		super(gc, x, y);
 		health = 5;
-		img = new Image("resources/test-tile.png");
+		img = new Image("resources/flu.png");
 		setTileLocation(lastDir);
 
 		update();

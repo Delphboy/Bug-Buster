@@ -17,8 +17,8 @@ public class MMR extends Pathogen
 	public MMR(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
-		health = 5;
-		img = new Image("resources/test-tile.png");
+		health = 10;
+		img = new Image("resources/MMR.png");
 		setTileLocation(lastDir);
 
 		update();

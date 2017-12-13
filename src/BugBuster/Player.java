@@ -8,13 +8,14 @@ public class Player
 
 	int health; // 1 hp per heart, max 10
 	int wavesComplete, currency;
-	String currentVaccine = "flu";
+	String currentVaccine;
 
 	private Player()
 	{
 		health = 10;
 		wavesComplete = 0;
 		currency = 1000;
+		currentVaccine = "flu";
 	}
 
 	public static Player getInstance()

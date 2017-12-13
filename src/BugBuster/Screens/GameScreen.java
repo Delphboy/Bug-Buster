@@ -5,6 +5,7 @@ import BugBuster.Player;
 import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
@@ -12,6 +13,7 @@ import javafx.util.Duration;
 
 import javax.annotation.PreDestroy;
 import java.io.File;
+import java.io.InputStream;
 
 public class GameScreen extends Pane implements ScreenIF
 {
@@ -60,12 +62,13 @@ public class GameScreen extends Pane implements ScreenIF
 
 		getChildren().addAll(towerShop, towerStats, headerBar, worldView, optionsBar);
 
+
 		//Play Music
 		try
 		{
 			Media soundFile = new Media(new File
-					("src/resources/sounds/background.mp3").toURI()
-							.toString());
+					("src/resources/background.mp3").toURI()
+					.toString());
 			System.out.println("Sound file @" + soundFile.getSource());
 			soundPlayer = new MediaPlayer(soundFile);
 		}catch (MediaException me)

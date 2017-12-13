@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class SmallPox extends Pathogen
 {
 	public boolean isForRemoval = false;
-	int health,damange = 1, tileX, tileY;
 
 	private int endTileX, endTileY, moveCount = 0;
 	private Direction lastDir = Direction.RIGHT;
@@ -17,9 +16,9 @@ public class SmallPox extends Pathogen
 	public SmallPox(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
-		health = 50;
-		damange = 7;
-		img = new Image("resources/test-tile.png");
+		health = 25;
+		damage = 10;
+		img = new Image("resources/Smallpox.png");
 		setTileLocation(lastDir);
 
 		update();

@@ -9,8 +9,8 @@ public class Bacteria extends Pathogen
 	{
 		super(gc, x, y);
 		health = 5;
-		damange = 1;
-		img = new Image("resources/test-tile.png");
+		damage = 1;
+		img = new Image("resources/Bacteria.png");
 		setTileLocation(lastDir);
 
 		update();
