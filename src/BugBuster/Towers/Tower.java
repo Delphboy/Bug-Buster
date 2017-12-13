@@ -33,6 +33,12 @@ public abstract class Tower extends GameObject implements TowerIF
 
 	MediaPlayer soundPlayer = null;
 
+	/**
+	 * Create a new tower
+	 * @param type
+	 * @param radius
+	 * @param damage
+	 */
 	public Tower(String type, int radius, int damage)
 	{
 		super(null, 0 ,0);

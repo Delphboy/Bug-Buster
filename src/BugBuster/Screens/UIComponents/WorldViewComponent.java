@@ -111,7 +111,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 					{
 						for(int j = p.getTileY() - 2; j < p.getTileY() + 2; j++)
 						{
-							if(worldMap[i][j].isWalkable())
+							if( (i > 0 && i < 16) && (j > 0 && j < 12) && worldMap[i][j].isWalkable())
 								drawTile(worldMap[i][j].getTileImg(), i *
 										Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT);
 						}

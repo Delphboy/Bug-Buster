@@ -46,48 +46,44 @@ public abstract class Pathogen extends GameObject
 		return tileY;
 	}
 
+	/**
+	 * Return the amount of health the pathogen currently has
+	 * @return (int) health
+	 */
 	public int getHealth()
 	{
 		return health;
 	}
 
+	/**
+	 * Sets the health of the pathogen. Used when towers deal damage
+	 * @param health
+	 */
 	public void setHealth(int health)
 	{
 		this.health = health;
 	}
 
-	public Direction getLastDir()
-	{
-		return lastDir;
-	}
-
-	public int getDamage()
-	{
-		return damage;
-	}
-
 	/**
-	 * Deal damage to the play if on the end tile
+	 * Deal damage to the player if the pathogen is on the end tile
 	 */
 	public void attack()
 	{
-		// Handle removing pathogen and doing damage, if it makes it through
-		// the map
 		if(isOnTile(endTileX, endTileY))
 		{
 			isForRemoval = true;
 			Player player = Player.getInstance();
 			player.setHealth(player.getHealth() - damage);
 			health = 0;
+			// End the game if the player is dead
 			if (player.getHealth() <= 0)
 				BugBuster.updateScene(new LossScreen());
-
 		}
 	}
 
 	/**
-	 * search the world the the next tile that the pathogen should move to, then
-	 * move pathogen accordingly
+	 * If the pathogen still has tiles it can move to, move the pathogen. If there aren't any tiles
+	 * to which the pathogen can move, build a route of possible moves
 	 * @param world
 	 */
 	public void navigate(Tile[][] world)
@@ -100,7 +96,7 @@ public abstract class Pathogen extends GameObject
 
 	/**
 	 * Build a route that the tile will take. Tiles are scanned and a queue
-	 * of movement operations is built.
+	 * of movement operations is built. This is achieved by implementing the Command Pattern
 	 * @param world
 	 */
 	protected void buildRoute(Tile[][] world)
@@ -192,6 +188,7 @@ public abstract class Pathogen extends GameObject
 
 		setTileLocation(operation);
 
+		// Once the pathogen has moved over a tile, remove the operation from the movement queue
 		if(moveCount == Tile.TILE_WIDTH || moveCount == Tile.TILE_HEIGHT)
 			directionQueue.remove();
 	}
@@ -214,9 +211,6 @@ public abstract class Pathogen extends GameObject
 			tileX = (int)(x / Tile.TILE_WIDTH);
 			tileY = (int)(y / Tile.TILE_HEIGHT);
 		}
-
-//		System.out.println("Pathogen Location: X: " + tileX + "\tY:" + tileY +
-//				"\t\tx:" + x + " " + "\ty: " + y);
 	}
 
 	/**

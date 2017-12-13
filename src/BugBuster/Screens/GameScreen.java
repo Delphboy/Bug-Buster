@@ -10,9 +10,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.annotation.PreDestroy;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class GameScreen extends Pane implements ScreenIF
@@ -24,8 +30,6 @@ public class GameScreen extends Pane implements ScreenIF
 	WorldViewComponent worldView;
 
     Controller controller;
-
-	MediaPlayer soundPlayer;
 
 	public GameScreen(int mapNum)
 	{
@@ -64,30 +68,17 @@ public class GameScreen extends Pane implements ScreenIF
 
 
 		//Play Music
-		try
-		{
-			File soundFile = new File("src/resources/background.mp3");
-			Media soundSource = new Media(soundFile.getAbsolutePath());
-			soundPlayer = new MediaPlayer(soundSource);
-		}catch (Exception e)
-		{
-			System.err.println("If you are experiencing this issue on Linux, " +
-					"please follow this link for a fix:\n " +
-					"https://stackoverflow.com/questions/19549902/cant-play-mp3-file-via-javafx-2-2-media-player");
-		}
-
-		if(soundPlayer != null)
-		{
-			soundPlayer.setOnEndOfMedia(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					soundPlayer.seek(Duration.ZERO);
-				}
-			});
-			soundPlayer.play();
-		}
+//		try
+//		{
+//			Media soundFile = new Media(getClass().getResourceAsStream("../../resources/background.mp3"));
+//			MediaPlayer player = new MediaPlayer(soundFile);
+//			player.play();
+//		}
+//		catch (Exception ex)
+//		{
+//			System.err.println(ex.getMessage());
+//			System.exit(1);
+//		}
 
 
 		// Configure controller
@@ -135,12 +126,6 @@ public class GameScreen extends Pane implements ScreenIF
 	@Override
 	public void killScreen()
 	{
-		if(soundPlayer != null)
-		{
-			soundPlayer.stop();
-			soundPlayer = null;
-		}
-
 		worldView.killTimers();
 
 		towerShop.killComponent();
