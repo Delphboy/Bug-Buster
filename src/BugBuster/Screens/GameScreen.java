@@ -68,17 +68,19 @@ public class GameScreen extends Pane implements ScreenIF
 
 
 		//Play Music
-//		try
-//		{
-//			Media soundFile = new Media(getClass().getResourceAsStream("../../resources/background.mp3"));
-//			MediaPlayer player = new MediaPlayer(soundFile);
-//			player.play();
-//		}
-//		catch (Exception ex)
-//		{
-//			System.err.println(ex.getMessage());
-//			System.exit(1);
-//		}
+		ClassLoader classLoader = getClass().getClassLoader();
+		Media soundFile = new Media(classLoader.getResource
+				("resources/background.mp3").toExternalForm());
+
+		MediaPlayer player = new MediaPlayer(soundFile);
+		player.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run()
+			{
+				player.seek(Duration.ZERO);
+			}
+		});
+		player.play();
 
 
 		// Configure controller

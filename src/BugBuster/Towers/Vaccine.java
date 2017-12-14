@@ -19,7 +19,7 @@ public class Vaccine extends Tower implements TowerIF
 	}
 
 	@Override
-	public void findTarget(ArrayList<Pathogen> pathogens)
+	protected void findTarget(ArrayList<Pathogen> pathogens)
 	{
 		super.findTarget(pathogens);
 		Player playerInstance = Player.getInstance();

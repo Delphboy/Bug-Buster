@@ -6,6 +6,7 @@ import BugBuster.Player;
 import BugBuster.BugBuster;
 import BugBuster.Screens.WinScreen;
 import BugBuster.Tile;
+import BugBuster.Towers.Bullet;
 import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -47,28 +48,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			for(Tower t : towers)
 			{
 				t.shootPathogen(pathogens);
-				Pathogen target = t.getTarget();
-
-				if(target != null)
-				{
-//					Rectangle laser = new Rectangle(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, 10, 10);
-//					laser.setFill(Color.RED);
-//
-//					TranslateTransition laserTransition = new TranslateTransition(Duration.millis(100));
-//					laserTransition.setCycleCount(1);
-//					laserTransition.setNode(laser);
-//
-////					laserTransition.setFromX(t.getTileLocX() * Tile.TILE_WIDTH);
-//					laserTransition.setToX(target.getTileX());
-////					laserTransition.setFromY(t.getTileLocY() * Tile
-////							.TILE_HEIGHT);
-//					laserTransition.setToY(target.getTileY());
-//					getChildren().add(laser);
-//					laserTransition.play();
-//
-					Line laser = new Line(t.getTileLocX() * Tile.TILE_WIDTH, t.getTileLocY() * Tile.TILE_HEIGHT, target.getTileX() * Tile.TILE_WIDTH, target.getTileY() * Tile.TILE_HEIGHT);
-					getChildren().add(laser);
-				}
 			}
 		}
 	}));

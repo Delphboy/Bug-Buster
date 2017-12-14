@@ -30,8 +30,19 @@ public abstract class Tower extends GameObject implements TowerIF
 	int damage;
 	int cost = 10;
 	Pathogen target;
+	private ArrayList<Bullet>bullets;
 
-	MediaPlayer soundPlayer = null;
+	Timeline animateBullet = new Timeline(new KeyFrame(Duration
+			.millis(1), new EventHandler<ActionEvent>()
+	{
+		@Override
+		public void handle(ActionEvent event) {
+			for (Bullet b : bullets)
+			{
+				b.update();
+			}
+		}
+	}));
 
 	/**
 	 * Create a new tower
@@ -48,6 +59,7 @@ public abstract class Tower extends GameObject implements TowerIF
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
 		img = new Image("resources/testTower.png");
+		bullets = new ArrayList<>();
 	}
 
 	public String getType()
@@ -129,19 +141,26 @@ public abstract class Tower extends GameObject implements TowerIF
 		{
 			target.setHealth(target.getHealth() - damage);
 
-			try
-			{
-				Media soundFile = new Media(this.getClass().getResource("../../resources/default-laser.mp3").toExternalForm());
-				soundPlayer = new MediaPlayer(soundFile);
-			}catch (MediaException me)
-			{
-				System.err.println("If you are experiencing this issue on Linux, " +
-						"please follow this link for a fix:\n " +
-						"https://stackoverflow.com/questions/19549902/cant-play-mp3-file-via-javafx-2-2-media-player");
-			}
+			System.out.println(target.getTileX() + " : " + target.getTileY());
 
-			if(soundPlayer != null)
-				soundPlayer.play();
+			// Create and animate a bullet
+			Bullet laser = new Bullet(gc, tileLocX * Tile.TILE_WIDTH,
+					tileLocY * Tile.TILE_HEIGHT,
+					target.getTileX() * Tile.TILE_WIDTH,
+					target.getTileY() * Tile.TILE_HEIGHT);
+
+			laser.update();
+			if(bullets.size() == 0)
+				bullets.add(laser);
+			animateBullet.setCycleCount(Timeline.INDEFINITE);
+			animateBullet.play();
+
+			//Play Music
+			ClassLoader classLoader = getClass().getClassLoader();
+			Media soundFile = new Media(classLoader.getResource
+					("resources/default-laser.mp3").toExternalForm());
+			MediaPlayer player = new MediaPlayer(soundFile);
+			player.play();
 
 			if(target.getHealth() <= 0)
 				target = null;

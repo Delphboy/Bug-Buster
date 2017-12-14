@@ -19,7 +19,7 @@ public class Antibiotics extends Tower implements TowerIF
 	}
 
 	@Override
-	public void findTarget(ArrayList<Pathogen> pathogens)
+	protected void findTarget(ArrayList<Pathogen> pathogens)
 	{
 		super.findTarget(pathogens);
 		if(! (target instanceof Bacteria))
