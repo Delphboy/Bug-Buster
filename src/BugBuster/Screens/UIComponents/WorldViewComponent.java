@@ -84,8 +84,7 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			// process pathogens
 			for(Pathogen p : pathogens)
 			{
-				drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
-						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+				drawTile(worldMap[p.getTileX()][p.getTileY()]);
 
 				p.navigate(worldMap);
 				p.attack();
@@ -95,16 +94,14 @@ public class WorldViewComponent extends Pane implements ComponentIF
 				{
 					pathogensForRemoval.add(p);
 
-					drawTile(worldMap[p.getTileX()][p.getTileY()].getTileImg(), p
-							.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
+					drawTile(worldMap[p.getTileX()][p.getTileY()]);
 
 					for(int i = p.getTileX() - 2; i < p.getTileX() + 2; i++)
 					{
 						for(int j = p.getTileY() - 2; j < p.getTileY() + 2; j++)
 						{
 							if( (i > 0 && i < 16) && (j > 0 && j < 12) && worldMap[i][j].isWalkable())
-								drawTile(worldMap[i][j].getTileImg(), i *
-										Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT);
+								drawTile(worldMap[i][j]);
 						}
 					}
 
@@ -186,21 +183,18 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				drawTile(worldMap[i][j].getTileImg(), worldMap[i][j].getPosX(),
-						worldMap[i][j].getPosY());
+				drawTile(worldMap[i][j]);
 			}
 		}
 	}
 
 	/**
-	 * Draw a tile at a specific x, y
-	 * @param img
-	 * @param xPos : Actual X, not tileX
-	 * @param yPos : Actual Y, not tileY
+	 * draw a given tile
+	 * @param tileToDraw
 	 */
-	public void drawTile(Image img, int xPos, int yPos)
+	public void drawTile(Tile tileToDraw)
 	{
-		gc.drawImage(img, xPos, yPos, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+		tileToDraw.update();
 	}
 
 	/**
@@ -213,45 +207,42 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/cell-tile.png", false);
+				worldMap[i][j] = new Tile(gc, i, j, "resources/cell-tile.png", false);
 			}
 		}
 
 		//Draw Path
-		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
+		worldMap[0][4] = new Tile(gc, 0, 4, "resources/path-tile.png", true, false);
 
-		worldMap[1][4] = new Tile(1 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][4] = new Tile(gc, 1, 4, "resources/path-tile.png", true);
 
-		worldMap[1][1] = new Tile(1 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[1][2] = new Tile(1 * Tile.TILE_WIDTH, 2 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[1][3] = new Tile(1 * Tile.TILE_WIDTH, 3 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[2][1] = new Tile(2 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[4][10] = new Tile(4 * Tile.TILE_WIDTH, 10 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[6][1] = new Tile(6 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[8][10] = new Tile(8 * Tile.TILE_WIDTH, 10 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[10][1] = new Tile(10 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[11][1] = new Tile(11 * Tile.TILE_WIDTH, 1 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[11][2] = new Tile(11 * Tile.TILE_WIDTH, 2 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[11][3] = new Tile(11 * Tile.TILE_WIDTH, 3 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[11][4] = new Tile(11 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[12][4] = new Tile(12 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[13][4] = new Tile(13 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[14][4] = new Tile(14 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[1][1] = new Tile(gc, 1, 1, "resources/path-tile.png", true);
+		worldMap[1][2] = new Tile(gc, 1, 2, "resources/path-tile.png", true);
+		worldMap[1][3] = new Tile(gc, 1, 3, "resources/path-tile.png", true);
+		worldMap[2][1] = new Tile(gc, 2, 1, "resources/path-tile.png", true);
+		worldMap[4][10] = new Tile(gc, 4, 10, "resources/path-tile.png", true);
+		worldMap[6][1] = new Tile(gc, 6, 1, "resources/path-tile.png", true);
+		worldMap[8][10] = new Tile(gc, 8, 10, "resources/path-tile.png", true);
+		worldMap[10][1] = new Tile(gc, 10, 1, "resources/path-tile.png", true);
+		worldMap[11][1] = new Tile(gc, 11, 1, "resources/path-tile.png", true);
+		worldMap[11][2] = new Tile(gc, 11, 2, "resources/path-tile.png", true);
+		worldMap[11][3] = new Tile(gc, 11, 3, "resources/path-tile.png", true);
+		worldMap[11][4] = new Tile(gc, 11, 4, "resources/path-tile.png", true);
+		worldMap[12][4] = new Tile(gc, 12, 4, "resources/path-tile.png", true);
+		worldMap[13][4] = new Tile(gc, 13, 4, "resources/path-tile.png", true);
+		worldMap[14][4] = new Tile(gc, 14, 4, "resources/path-tile.png", true);
 
 
 		for (int i = 3; i <= 9; i += 2)
 		{
 			for (int j = 1; j <= 10; j++)
 			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile.TILE_HEIGHT, "resources/path-tile.png", true);
+				worldMap[i][j] = new Tile(gc, i, j, "resources/path-tile.png", true);
 			}
 		}
 
 
-		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
+		worldMap[15][4] = new Tile(gc, 15, 4, "resources/path-tile.png", true, true);
 
 		return worldMap;
 	}
@@ -266,49 +257,37 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/cell-tile.png", false);
+				worldMap[i][j] = new Tile(gc, i, j ,"resources/cell-tile.png", false);
 			}
 		}
 
 		//Draw Path
-		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
+		worldMap[0][4] = new Tile(gc, 0, 4, "resources/path-tile.png", true);
 
 		for (int j = 4; j >= 1; j--)
-			worldMap[1][j] = new Tile(1 * Tile.TILE_WIDTH, j * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[1][j] = new Tile(gc, 1, j, "resources/path-tile.png", true);
 
 		for(int i = 2; i < 7; i++)
-			worldMap[i][1] = new Tile(i * Tile.TILE_WIDTH, 1 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[i][1] = new Tile(gc, i, 1, "resources/path-tile.png", true);
 
 		for(int j = 2; j < 6; j++)
-			worldMap[6][j] = new Tile(6 * Tile.TILE_WIDTH, j * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[6][j] = new Tile(gc, 6, j, "resources/path-tile.png", true);
 
 		for(int i = 6; i > 2; i--)
-			worldMap[i][6] = new Tile(i * Tile.TILE_WIDTH, 6 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[i][6] = new Tile(gc, i, 6, "resources/path-tile.png", true);
 
-		worldMap[3][7] = new Tile(3 * Tile.TILE_WIDTH, 7 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[3][8] = new Tile(3 * Tile.TILE_WIDTH, 8 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[3][7] = new Tile(gc,3,7,"resources/path-tile.png",true);
+		worldMap[3][8] = new Tile(gc,3,8,"resources/path-tile.png",true);
 
 		for(int i = 3; i < 14; i++)
-			worldMap[i][9] = new Tile(i * Tile.TILE_WIDTH, 9 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[i][9] = new Tile(gc, i, 9, "resources/path-tile.png", true);
 
 		for(int j = 8; j > 3; j--)
-			worldMap[13][j] = new Tile(13 * Tile.TILE_WIDTH, j * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[13][j] = new Tile(gc, 13, j, "resources/path-tile.png", true);
 
-		worldMap[14][4] = new Tile(14 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[14][4] = new Tile(gc, 14, 4, "resources/path-tile.png", true);
 
-		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
+		worldMap[15][4] = new Tile(gc, 15,4, "resources/path-tile.png", true, true);
 
 		return worldMap;
 	}
@@ -323,51 +302,37 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		{
 			for (int j = 0; j < 12; j++)
 			{
-				worldMap[i][j] = new Tile(i * Tile.TILE_WIDTH, j * Tile
-						.TILE_HEIGHT, "resources/cell-tile.png", false);
+				worldMap[i][j] = new Tile(gc, i, j, "resources/cell-tile.png", false);
 			}
 		}
 
 		//Draw Path
-		worldMap[0][4] = new Tile(0 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, true, false);
-		worldMap[1][4] = new Tile(1 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[2][4] = new Tile(2 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[3][4] = new Tile(3 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[3][5] = new Tile(3 * Tile.TILE_WIDTH, 5 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[3][6] = new Tile(3 * Tile.TILE_WIDTH, 6 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[2][6] = new Tile(2 * Tile.TILE_WIDTH, 6 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[1][6] = new Tile(1 * Tile.TILE_WIDTH, 6 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
-		worldMap[1][7] = new Tile(1 * Tile.TILE_WIDTH, 7 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true);
+		worldMap[0][4] = new Tile(gc, 0, 4, "resources/path-tile.png", true);
+		worldMap[1][4] = new Tile(gc, 1, 4, "resources/path-tile.png", true);
+		worldMap[2][4] = new Tile(gc, 2, 4, "resources/path-tile.png", true);
+		worldMap[3][4] = new Tile(gc, 3, 4, "resources/path-tile.png", true);
+		worldMap[3][5] = new Tile(gc, 3, 5, "resources/path-tile.png", true);
+		worldMap[3][6] = new Tile(gc, 3, 6, "resources/path-tile.png", true);
+		worldMap[2][6] = new Tile(gc, 2, 6, "resources/path-tile.png", true);
+		worldMap[1][6] = new Tile(gc, 1, 6, "resources/path-tile.png", true);
+		worldMap[1][7] = new Tile(gc, 1, 7, "resources/path-tile.png", true);
 
 		for (int i = 1; i < 10; i++)
 		{
-			worldMap[i][8] = new Tile(i * Tile.TILE_WIDTH, 8 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[i][8] = new Tile(gc, i,8, "resources/path-tile.png", true);
 		}
 
 		for (int j = 7; j >= 4; j--)
 		{
-			worldMap[9][j] = new Tile(9 * Tile.TILE_WIDTH, j * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[9][j] = new Tile(gc, 9, j, "resources/path-tile.png", true);
 		}
 
 		for (int i = 10; i < 15; i++)
 		{
-			worldMap[i][4] = new Tile(i * Tile.TILE_WIDTH, 4 * Tile
-					.TILE_HEIGHT, "resources/path-tile.png", true);
+			worldMap[i][4] = new Tile(gc, i, 4, "resources/path-tile.png", true);
 		}
 
-		worldMap[15][4] = new Tile(15 * Tile.TILE_WIDTH, 4 * Tile
-				.TILE_HEIGHT, "resources/path-tile.png", true, false, true);
+		worldMap[15][4] = new Tile(gc,15,4, "resources/path-tile.png", true, true);
 
 		return worldMap;
 	}

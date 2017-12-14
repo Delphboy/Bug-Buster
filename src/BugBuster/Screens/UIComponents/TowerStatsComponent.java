@@ -78,7 +78,7 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		aboutTowerLabel.setLayoutY(140);
 
 		// Set the increase damage button
-		upgradeDamageButton = new Button("+1 Damage");
+		upgradeDamageButton = new Button("+1");
 		upgradeDamageButton.setFont(new Font("Cooper Black", 10));
 		upgradeDamageButton.setLayoutX(140);
 		upgradeDamageButton.setLayoutY(50);

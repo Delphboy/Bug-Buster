@@ -1,24 +1,23 @@
 package BugBuster;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 /**
  * This class represents a tile which makes up the world
  * @author Henry Senior
  * @version 1.0.0
  */
-public class Tile
+public class Tile extends GameObject
 {
     // Provide easy access to the width and height for calculations elsewhere
     public static final int TILE_WIDTH = 50;
     public static final int TILE_HEIGHT = 50;
 
-    Rectangle tileBoundary;
     Image tileImg;
     int posX;
     int posY;
-    boolean isWalkable, isStartTile, isEndTile;
+    boolean isWalkable, isEndTile;
 
     /**
      * Create a generic tile
@@ -27,14 +26,14 @@ public class Tile
      * @param imgLoc
      * @param isWalkable
      */
-    public Tile(int posX, int posY, String imgLoc, boolean isWalkable)
+    public Tile(GraphicsContext gc, int posX, int posY, String imgLoc, boolean isWalkable)
     {
+        super(gc, posX * Tile.TILE_WIDTH, posY * TILE_HEIGHT);
         this.posX = posX;
         this.posY = posY;
-        tileBoundary = new Rectangle(posX, posY, TILE_WIDTH, TILE_HEIGHT);
         tileImg = new Image(imgLoc);
+        img = new Image(imgLoc);
         this.isWalkable = isWalkable;
-        isStartTile = false;
         isEndTile = false;
     }
 
@@ -44,19 +43,20 @@ public class Tile
      * @param posY
      * @param imgLoc
      * @param isWalkable
-     * @param isStartTile
      * @param isEndTile
      */
-    public Tile(int posX, int posY, String imgLoc, boolean isWalkable, boolean isStartTile,
+    public Tile(GraphicsContext gc, int posX, int posY, String imgLoc, boolean isWalkable,
                 boolean isEndTile)
     {
-        this.posX = posX;
-        this.posY = posY;
-        tileBoundary = new Rectangle(posX, posY, TILE_WIDTH, TILE_HEIGHT);
-        tileImg = new Image(imgLoc);
-        this.isWalkable = isWalkable;
-        this.isStartTile = isStartTile;
+        this(gc, posX, posY, imgLoc, isWalkable);
         this.isEndTile = isEndTile;
+    }
+
+    @Override
+    public void update()
+    {
+        if(img != null)
+            gc.drawImage(img, x, y, TILE_WIDTH, TILE_HEIGHT);
     }
 
     /**
