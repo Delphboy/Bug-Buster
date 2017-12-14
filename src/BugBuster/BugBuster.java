@@ -1,6 +1,5 @@
 package BugBuster;
 
-import BugBuster.Screens.GameScreen;
 import BugBuster.Screens.MainMenuScreen;
 import BugBuster.Screens.ScreenIF;
 import javafx.application.Application;
@@ -14,6 +13,8 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
+ * The main class in the program. It extends JavaFX's Application class to start the program
+ * Once started, the stage is resized and then GameScreen is loaded and displayed.
  * @author Henry Senior
  * @version 1.0.0
  */
@@ -29,6 +30,10 @@ public class BugBuster extends Application
 	private static Stage window;
 	private static Scene scene;
 
+	/**
+	 * Provide the program with a static entrance point
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -60,9 +65,8 @@ public class BugBuster extends Application
 		window.initStyle(StageStyle.DECORATED);
 		window.getIcons().add(new Image("/resources/icon.png"));
 
-		//by default, start the MainMenuScreen
+		//load the MainMenuScreen
 		updateScene(new MainMenuScreen());
-//		updateScene(new GameScreen(1));
 
 		// Display the window to the user
 		window.show();

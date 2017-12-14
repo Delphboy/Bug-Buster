@@ -3,13 +3,25 @@ package BugBuster.Towers;
 import BugBuster.FactoryIF;
 
 /**
- * Created by stc765 on 28/11/17.
+ * A class to represent the TowerFactory
+ * This class utilises the Factory Design Pattern
+ * The factory will create a tower based on a given value
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public class TowerFactory implements FactoryIF
 {
+    /**
+     * Create a new TowerFactory object
+     */
     public TowerFactory()
     {}
 
+    /**
+     * Create a tower that corresponds the the given discriminator
+     * @param discriminator
+     * @return the requested Tower
+     */
     @Override
     public Tower createProduct(int discriminator)
     {
@@ -31,6 +43,6 @@ public class TowerFactory implements FactoryIF
                 break;
         }
 
-        return (Tower)createdTower;
+        return createdTower;
     }
 }

@@ -3,8 +3,11 @@ package BugBuster.Pathogens;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-
+/**
+ * A class to represent a Smallpox pathogen
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class SmallPox extends Pathogen
 {
 	public SmallPox(GraphicsContext gc, double x, double y)

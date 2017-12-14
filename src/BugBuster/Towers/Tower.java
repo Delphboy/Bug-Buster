@@ -2,47 +2,33 @@ package BugBuster.Towers;
 
 import BugBuster.*;
 import BugBuster.Pathogens.Pathogen;
-import javafx.animation.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
+/**
+ * A class to represent the Towers used in the game
+ * This class provides a blue print of all the Towers that the game can implement.
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public abstract class Tower extends GameObject implements TowerIF
 {
-	String type;
-	String aboutMessage;
-	int tileLocX;
-	int tileLocY;
-	int radius;
-	int damage;
-	int cost = 10;
-	Pathogen target;
-	private ArrayList<Bullet>bullets;
-
-	Timeline animateBullet = new Timeline(new KeyFrame(Duration
-			.millis(1), new EventHandler<ActionEvent>()
-	{
-		@Override
-		public void handle(ActionEvent event) {
-			for (Bullet b : bullets)
-			{
-				b.update();
-			}
-		}
-	}));
+	protected String type;
+	protected String aboutMessage;
+	protected int tileLocX;
+	protected int tileLocY;
+	protected int radius;
+	protected int damage;
+	protected int cost = 10;
+	protected int imageCounter = 1;
+	protected boolean maxRadiusAchieved;
+	protected boolean maxDamageAchieved;
+	protected Image defaultImage;
+	protected Image shootImage;
+	protected Pathogen target;
 
 	/**
 	 * Create a new tower
@@ -56,104 +42,144 @@ public abstract class Tower extends GameObject implements TowerIF
 		this.type = type;
 		this.radius = radius;
 		this.damage = damage;
+
+		maxRadiusAchieved = false;
+		maxDamageAchieved = false;
 		aboutMessage = "This will be a short string explaining the \nscience " +
 				"behind the tower";
-		img = new Image("resources/testTower.png");
-		bullets = new ArrayList<>();
+		defaultImage = new Image("resources/testTower.png");
+		shootImage = new Image("resources/testTower.png");
+		img = defaultImage;
 	}
 
+	/**
+	 * Return the type of the tower
+	 * @return typer
+	 */
 	public String getType()
 	{
 		return type;
 	}
 
-	public int getTileLocX()
-	{
-		return tileLocX;
-	}
-
-	public int getTileLocY()
-	{
-		return tileLocY;
-	}
-
+	/**
+	 * Get the radius/range of the the tower
+	 * @return radius
+	 */
 	public int getRadius()
 	{
 		return radius;
 	}
 
+	/**
+	 * Get the damage the tower will do on each attack
+	 * @return damage
+	 */
 	public int getDamage()
 	{
 		return damage;
 	}
 
+	/**
+	 * Get the tower's display image
+	 * @return imgCounter
+	 */
 	public Image getImage()
 	{
 		return img;
 	}
 
+	/**
+	 * Get the aboutMessage which details the science of the tower
+	 * @return aboutMessage
+	 */
 	public String getAboutMessage()
 	{
 		return aboutMessage;
 	}
 
+	/**
+	 * get the price of the tower
+	 * @return cost
+	 */
 	public int getCost()
 	{
 		return cost;
 	}
 
+	/**
+	 * Set the tower's tile X location and update the GameObject x
+	 * @param tileLocX
+	 */
 	public void setTileLocX(int tileLocX)
 	{
 		this.tileLocX = tileLocX;
+		x = tileLocX * Tile.TILE_WIDTH;
 	}
 
+	/**
+	 * Set the tower's tile Y location and update the GameObject y
+	 * @param tileLocY
+	 */
 	public void setTileLocY(int tileLocY)
 	{
 		this.tileLocY = tileLocY;
+		y = tileLocY * Tile.TILE_HEIGHT;
 	}
 
+	/**
+	 * Set the graphicsContext used to draw the tower
+	 * @param graphicsContext
+	 */
 	public void setGraphicsContext(GraphicsContext graphicsContext)
 	{
 		gc = graphicsContext;
 	}
 
-	public Pathogen getTarget()
+	/**
+	 * Get whether or not the maximum tower radius/range has been reached
+	 * @return true/false
+	 */
+	public boolean isMaxRadiusAchieved()
 	{
-		return target;
+		return maxRadiusAchieved;
 	}
 
+	/**
+	 * Get whether or not the maximum tower damage has been reached
+	 * @return true/false
+	 */
+	public boolean isMaxDamageAchieved()
+	{
+		return maxDamageAchieved;
+	}
+
+	/**
+	 * if the tower has a target;
+	 * 		- animate the tower
+	 * 		- play a shooting sound
+	 * 		- damage the pathogen
+	 * 		- if the target dies, reset the target
+	 * if there isn't a target, set the tower to use the default image (reset the animation)
+	 * @param pathogens - a list of all that pathogens that are on the screen
+	 */
 	@Override
-	public String toString()
-	{
-		return "Tower{" +
-				"tileLocX=" + tileLocX +
-				", tileLocY=" + tileLocY +
-				", radius=" + radius +
-				", damage=" + damage +
-				'}';
-	}
-
 	public void shootPathogen(ArrayList<Pathogen> pathogens)
 	{
 		findTarget(pathogens);
 
 		if(target != null)
 		{
-			target.setHealth(target.getHealth() - damage);
-
-			System.out.println(target.getTileX() + " : " + target.getTileY());
-
-			// Create and animate a bullet
-			Bullet laser = new Bullet(gc, tileLocX * Tile.TILE_WIDTH,
-					tileLocY * Tile.TILE_HEIGHT,
-					target.getTileX() * Tile.TILE_WIDTH,
-					target.getTileY() * Tile.TILE_HEIGHT);
-
-			laser.update();
-			if(bullets.size() == 0)
-				bullets.add(laser);
-			animateBullet.setCycleCount(Timeline.INDEFINITE);
-			animateBullet.play();
+			// Animate the tower
+			if(imageCounter == 1)
+			{
+				img = defaultImage;
+				imageCounter = 2;
+			}
+			else
+			{
+				img = shootImage;
+				imageCounter = 1;
+			}
 
 			//Play Music
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -162,9 +188,19 @@ public abstract class Tower extends GameObject implements TowerIF
 			MediaPlayer player = new MediaPlayer(soundFile);
 			player.play();
 
+			//Damage the target
+			target.setHealth(target.getHealth() - damage);
+
+			// reset the target if it dies
 			if(target.getHealth() <= 0)
 				target = null;
 		}
+		// Reset the tower image if it isn't shooting
+		else
+		{
+			imageCounter = 1;
+		}
+		update();
 	}
 
 	/**
@@ -218,5 +254,15 @@ public abstract class Tower extends GameObject implements TowerIF
 				}
 			}
 		}
+	}
+
+	/**
+	 * Draw the tower to the width and height of a tile, rather than 30x30
+	 */
+	@Override
+	public void update()
+	{
+		if(img != null)
+			gc.drawImage(img, x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 	}
 }

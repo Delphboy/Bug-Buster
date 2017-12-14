@@ -10,7 +10,10 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Created by stc765 on 30/11/17.
+ * This class provides a central control point allowing different UI components to communicate
+ * This class is used to implement the MVC Design Pattern
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public class Controller implements EventHandler
 {
@@ -19,11 +22,19 @@ public class Controller implements EventHandler
 
     private TowerFactory towerFactory = new TowerFactory();
 
+    /**
+     * Create a new Controller object
+     * @param parent
+     */
     public Controller(GameScreen parent)
     {
         this.parent = parent;
     }
 
+    /**
+     * Method used to handle any events that occur in the parent
+     * @param event
+     */
     @Override
     public void handle(Event event)
     {
@@ -59,19 +70,19 @@ public class Controller implements EventHandler
         else if(event.getSource()== parent.getTowerShop().getBuyNextVaccineBtn())
         {
             Player playerInstance = Player.getInstance();
-            if(playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
+            if(playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("flu"))
             {
                 if(playerInstance.getCurrency() >= 100)
                 {
-                    playerInstance.setCurrentVaccine("MMR");
+                    playerInstance.setCurrentImmunisationLevel("MMR");
                     playerInstance.setCurrency(playerInstance.getCurrency() - 100);
                 }
             }
-            else if(playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
+            else if(playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("MMR"))
             {
                 if(playerInstance.getCurrency() >= 250)
                 {
-                    playerInstance.setCurrentVaccine("Smallpox");
+                    playerInstance.setCurrentImmunisationLevel("Smallpox");
                     playerInstance.setCurrency(playerInstance.getCurrency() - 250);
                 }
             }
@@ -97,6 +108,10 @@ public class Controller implements EventHandler
         updateUI();
     }
 
+    /**
+     * A specific method to handle any mouse events detected by the handle() method
+     * @param clickedTile
+     */
     private void handleMouseEvent(Point2D clickedTile)
     {
         Tower towerLocations[][] = parent.getWorldView().getTowerLocations();
@@ -122,11 +137,21 @@ public class Controller implements EventHandler
         }
     }
 
+    /**
+     * Create a tower and temporarily store it
+     * @param towerToMake
+     */
     private void createTower(int towerToMake)
     {
         unplacedTower = towerFactory.createProduct(towerToMake);
     }
 
+    /**
+     * get the location of a mouse click
+     * @param mouseX
+     * @param mouseY
+     * @return
+     */
     private Point2D getTileClickedLocation(double mouseX, double mouseY)
     {
         Point2D tileLoc = new Point2D(((int)mouseX / Tile.TILE_WIDTH), ((int)mouseY / Tile.TILE_HEIGHT));
@@ -136,10 +161,12 @@ public class Controller implements EventHandler
         return tileLoc;
     }
 
+    /**
+     * Update the header bar
+     */
     private void updateUI()
     {
         HeaderBarComponent.getInstance().update();
-//        parent.getWorldView().update();
     }
 
 }

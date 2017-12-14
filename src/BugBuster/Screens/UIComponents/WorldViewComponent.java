@@ -6,27 +6,26 @@ import BugBuster.Player;
 import BugBuster.BugBuster;
 import BugBuster.Screens.WinScreen;
 import BugBuster.Tile;
-import BugBuster.Towers.Bullet;
 import BugBuster.Towers.Tower;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A class to represent the World View
+ * A class to render the world to the player
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class WorldViewComponent extends Pane implements ComponentIF
 {
 	Canvas canvas;
@@ -41,6 +40,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	private boolean isRoundActive = false;
 	private ArrayList<Integer> enemiesForRound = new ArrayList<>();
 
+	/**
+	 * Every half second, tell each tower on the map to shoot their targets
+	 */
 	Timeline towerShootTargetTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>()
 	{
 		@Override
@@ -52,6 +54,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		}
 	}));
 
+	/**
+	 * Spawn a new enemy once every second until no more enemies are in the spawn queue
+	 */
 	Timeline pathogenSpawnTimeline = new Timeline(new KeyFrame(Duration
 			.seconds(1), new EventHandler<ActionEvent>()
 	{
@@ -64,6 +69,13 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		}
 	}));
 
+	/**
+	 * The AnimationTimer acts as the main game loop.
+	 * Process the pathogens, moving them through the map
+	 * Toggle whether or not the "start round" button is enables
+	 * Update the header bar
+	 * Remove any dead pathogen
+	 */
 	AnimationTimer gameLoopTimer = new AnimationTimer()
 	{
 		@Override
@@ -76,9 +88,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 						.getTileX() * Tile.TILE_WIDTH, p.getTileY() * Tile.TILE_HEIGHT);
 
 				p.navigate(worldMap);
-
 				p.attack();
 
+				// Handle a dead pathogen
 				if(p.getHealth() <= 0)
 				{
 					pathogensForRemoval.add(p);
@@ -106,13 +118,19 @@ public class WorldViewComponent extends Pane implements ComponentIF
 			OptionsComponent oc = OptionsComponent.getInstance();
 			oc.getStartRoundBtn().setDisable(isRoundActive);
 
+			// Update the header bar
 			HeaderBarComponent.getInstance().update();
 
+			// remove any dead pathogens
 			if(pathogens != null)
 				pathogens.removeAll(pathogensForRemoval);
 		}
 	};
 
+	/**
+	 * Create a new world view component based on which map is selected
+	 * @param mapNum
+	 */
 	public WorldViewComponent(int mapNum)
 	{
 		canvas = new Canvas(800, 600);
@@ -132,6 +150,10 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		pathogenSpawnTimeline.play();
 	}
 
+	/**
+	 * Return a 2D array of the tower locations
+	 * @return Tower[][] towerLocations
+	 */
 	public Tower[][] getTowerLocations()
 	{
 		return towerLocations;
@@ -179,8 +201,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	public void drawTile(Image img, int xPos, int yPos)
 	{
 		gc.drawImage(img, xPos, yPos, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
-//		System.out.println("Tile drawn at: " + xPos + ":" + yPos +
-//		"\t" + ((int)(xPos / Tile.TILE_WIDTH)) + ":" + ((int)(yPos / Tile.TILE_HEIGHT)));
 	}
 
 	/**
@@ -355,9 +375,12 @@ public class WorldViewComponent extends Pane implements ComponentIF
 	@Override
 	public void update()
 	{
-		debugTowers();
+
 	}
 
+	/**
+	 * delete key elements from the component and stop the timers
+	 */
 	@Override
 	public void killComponent()
 	{
@@ -371,8 +394,6 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		towers = null;
 
 		enemiesForRound = null;
-//		factoryTimer = null;
-//		factoryTimerTask = null;
 	}
 
 	/**
@@ -398,6 +419,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		return false;
 	}
 
+	/**
+	 * Based on which round is playing, load the enemies that will be played
+	 */
 	public void startRound()
 	{
 		Random rnd = new Random();
@@ -518,6 +542,9 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		isRoundActive = true;
 	}
 
+	/**
+	 * Use the Pathogen Factory to load the enemies that are being played in the round
+	 */
 	private void playRound()
 	{
 		//ie) round has just finished
@@ -541,25 +568,15 @@ public class WorldViewComponent extends Pane implements ComponentIF
 		}
 	}
 
-	/**
-	 * Print locations of towers
-	 */
-	private void debugTowers()
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			for (int j = 0; j < 12; j++)
-			{
-				if(towerLocations[i][j] != null)
-					System.out.println(towerLocations[i][j]);
-			}
-		}
-	}
 
+	/**
+	 * Stop the timers and set them to null
+	 */
 	public void killTimers()
 	{
 		towerShootTargetTimeline.stop();
 		pathogenSpawnTimeline.stop();
+		gameLoopTimer.stop();
 
 		if(gameLoopTimer != null)
 			gameLoopTimer.stop();

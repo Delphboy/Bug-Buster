@@ -6,8 +6,20 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
+/**
+ * A class to represent the Vaccine Tower
+ * This class builds on the behaviour implemented in the abstract Tower class
+ * A Vaccine specific findTarget() method has been added to ensure a vaccine only shoots Virues the
+ * player has the immunisation against
+ * Vaccine specific upgrade methods have also been added
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class Vaccine extends Tower implements TowerIF
 {
+	/**
+	 * Create a new vaccine object
+	 */
 	public Vaccine()
 	{
 		super("Vaccine", 1, 5);
@@ -15,9 +27,17 @@ public class Vaccine extends Tower implements TowerIF
 				"against more pathogens, you will need\nmore immunisations. Make sure you\nimmunise" +
 				" yourself against: \n - The Flu\n - MMR Viruses\n - Smallpox";
 		cost = 50;
-		img = new Image("resources/vaccine-tower.png");
+		defaultImage = new Image("resources/vaccine-tower.png");
+		shootImage = new Image("resources/vaccine-tower-shoot.png");
+		img = defaultImage;
 	}
 
+	/**
+	 * Run the findTarget() method in Tower, then check the target is a virus, and that the player
+	 * has immunisation against the virus. Set the target to 'null' if the play doesn't have
+	 * immunisation or if the target is a bacteria
+	 * @param pathogens
+	 */
 	@Override
 	protected void findTarget(ArrayList<Pathogen> pathogens)
 	{
@@ -30,13 +50,12 @@ public class Vaccine extends Tower implements TowerIF
 		}
 		else
 		{
-			System.out.println("VACCINE DEBUG: " + target );
-			if(playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
+			if(playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("flu"))
 			{
 				if(target instanceof Flu == false)
 					target = null;
 			}
-			else if(playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
+			else if(playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("MMR"))
 			{
 				if(target instanceof SmallPox)
 					target = null;
@@ -48,6 +67,9 @@ public class Vaccine extends Tower implements TowerIF
 		}
 	}
 
+	/**
+	 * Add specific upgrade tower range method
+	 */
 	@Override
 	public void upgradeTowerRange()
 	{
@@ -57,8 +79,14 @@ public class Vaccine extends Tower implements TowerIF
 			radius += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - radius * 5);
 		}
+
+		if(radius == 3)
+			maxRadiusAchieved = true;
 	}
 
+	/**
+	 * Add specific upgrade tower damage method
+	 */
 	@Override
 	public void upgradeTowerDamage()
 	{
@@ -68,6 +96,9 @@ public class Vaccine extends Tower implements TowerIF
 			damage += 1;
 			playerInstance.setCurrency(playerInstance.getCurrency() - damage * 10);
 		}
+
+		if(damage == 10)
+			maxDamageAchieved = true;
 	}
 
 }

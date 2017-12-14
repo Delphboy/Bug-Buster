@@ -1,9 +1,11 @@
 package BugBuster;
 
 /**
- * Created by stc765 on 28/11/17.
+ * This interface defines the methods an object must provide to utilise the Factory Design Pattern
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public interface FactoryIF
 {
-    public Object createProduct(int discriminator) throws InterruptedException;
+    Object createProduct(int discriminator) throws InterruptedException;
 }

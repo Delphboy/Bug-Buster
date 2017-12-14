@@ -10,11 +10,21 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the TutorialScreen
+ * This screen displays the tutorial image, and a button allowing the user to return to the "Main
+ * Menu" screen
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class TutorialScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
 
+	/**
+	 * Create a new TutorialScreen
+	 */
 	public TutorialScreen()
 	{
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
@@ -41,6 +51,9 @@ public class TutorialScreen extends Pane implements ScreenIF
 		getChildren().addAll(canvas, buttonReturnToMenu);
 	}
 
+	/**
+	 * Set the canvas and graphicsContext to null
+	 */
 	@Override
 	public void killScreen()
 	{

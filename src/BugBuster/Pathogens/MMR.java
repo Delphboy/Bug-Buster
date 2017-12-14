@@ -5,8 +5,19 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
+/**
+ * A class to represent a bacteria pathogen
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class MMR extends Pathogen
 {
+	/**
+	 * Create a new MMR object (Measles virus)
+	 * @param gc
+	 * @param x
+	 * @param y
+	 */
 	public MMR(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
@@ -16,17 +27,5 @@ public class MMR extends Pathogen
 		setTileLocation(lastDir);
 
 		update();
-	}
-
-	@Override
-	public void attack()
-	{
-		super.attack();
-	}
-
-	@Override
-	public void move()
-	{
-		super.move();
 	}
 }

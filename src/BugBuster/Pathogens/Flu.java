@@ -3,10 +3,19 @@ package BugBuster.Pathogens;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-
+/**
+ * A class to represent a Flu pathogen
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class Flu extends Pathogen
 {
+	/**
+	 * Create a new Flu object
+	 * @param gc
+	 * @param x
+	 * @param y
+	 */
 	public Flu(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
@@ -15,17 +24,5 @@ public class Flu extends Pathogen
 		setTileLocation(lastDir);
 
 		update();
-	}
-
-	@Override
-	public void attack()
-	{
-		super.attack();
-	}
-
-	@Override
-	public void move()
-	{
-		super.move();
 	}
 }

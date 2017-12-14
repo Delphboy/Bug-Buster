@@ -9,6 +9,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the HeaderBarComponent
+ * This UI module displays information about the player, such as remaining health and how many apples they have
+ * This UI component utilises the Singleton Design Pattern
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class HeaderBarComponent extends Pane implements ComponentIF
 {
 	Canvas canvas;
@@ -19,10 +26,16 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 	Label waveInfoLabel;
 	Label currencyLabel;
 
-	public Player player;
+	private Player player;
 
+	// Make a static self pointer to utilise the Singleton Design Patter
 	private static HeaderBarComponent instance;
 
+	/**
+	 * Return a pointer to the instance of the UI component that exists. If no instance exists,
+	 * create one.
+	 * @return
+	 */
 	public static HeaderBarComponent getInstance()
 	{
 		if (instance == null)
@@ -32,6 +45,11 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 		return instance;
 	}
 
+	/**
+	 * Create a new HeaderBarComponent
+	 * The constructor has been made private to in order to utilse the Singleton Design Pattern
+	 * The instance of the component should be accessed using getInstance()
+	 */
 	private HeaderBarComponent()
 	{
 		player = Player.getInstance();
@@ -64,6 +82,9 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 		getChildren().add(currencyLabel);
 	}
 
+	/**
+	 * Update the UI component so it displays the most up to date information
+	 */
 	@Override
 	public void update()
 	{
@@ -83,6 +104,9 @@ public class HeaderBarComponent extends Pane implements ComponentIF
 		}
 	}
 
+	/**
+	 * Used to destroy the component when it is no longer needed
+	 */
 	@Override
 	public void killComponent()
 	{

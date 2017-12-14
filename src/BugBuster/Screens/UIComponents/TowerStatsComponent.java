@@ -1,6 +1,5 @@
 package BugBuster.Screens.UIComponents;
 
-import BugBuster.Player;
 import BugBuster.Towers.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,9 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
-
+/**
+ * A class to represent the Tower Stats UI Component
+ * Holds all the buttons and labels used to display information about a selected tower and to allow
+ * the player to upgrade the tower
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class TowerStatsComponent extends Pane implements ComponentIF
 {
+	//Create a static self pointer to implement the Singleton Design Pattern
 	private static TowerStatsComponent instance = null;
 	private Tower towerToDisplay;
 
@@ -23,6 +29,11 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 	Button upgradeRangeButton;
 	Button upgradeDamageButton;
 
+	/**
+	 * Return a pointer to the static instance of the class. If such an instance doesn't exist, create
+	 * one
+	 * @return a reference to a static instance of the class
+	 */
 	public static TowerStatsComponent getInstance()
 	{
 		if (instance == null)
@@ -33,6 +44,10 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		return instance;
 	}
 
+	/**
+	 * Create a new TowerStatsComponent
+	 * Constructor made private to ensure only one instance is created
+	 */
 	private TowerStatsComponent()
 	{
 		setWidth(250);
@@ -58,17 +73,17 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 
 		// Output details about the science behind the tower
 		aboutTowerLabel = new Label("");
-		aboutTowerLabel.setFont(new Font("Cooper Black", 12));
+		aboutTowerLabel.setFont(new Font("Cooper Black", 10));
 		aboutTowerLabel.setLayoutX(10);
 		aboutTowerLabel.setLayoutY(140);
 
 		// Set the increase damage button
 		upgradeDamageButton = new Button("+1 Damage");
-		upgradeDamageButton.setFont(new Font("Cooper Black", 12));
-		upgradeDamageButton.setLayoutX(160);
+		upgradeDamageButton.setFont(new Font("Cooper Black", 10));
+		upgradeDamageButton.setLayoutX(140);
 		upgradeDamageButton.setLayoutY(50);
-		upgradeDamageButton.setMinSize(85, 30);
-		upgradeDamageButton.setMaxSize(85, 30);
+		upgradeDamageButton.setMinSize(100, 30);
+		upgradeDamageButton.setMaxSize(100, 30);
 		upgradeDamageButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -81,12 +96,12 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		});
 
 		// Set the increase damage button
-		upgradeRangeButton = new Button("+1 Range");
+		upgradeRangeButton = new Button("+1");
 		upgradeRangeButton.setFont(new Font("Cooper Black", 12));
-		upgradeRangeButton.setLayoutX(160);
+		upgradeRangeButton.setLayoutX(140);
 		upgradeRangeButton.setLayoutY(100);
-		upgradeRangeButton.setMinSize(85, 30);
-		upgradeRangeButton.setMaxSize(85, 30);
+		upgradeRangeButton.setMinSize(100, 30);
+		upgradeRangeButton.setMaxSize(100, 30);
 		upgradeRangeButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -114,6 +129,11 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 		update();
 	}
 
+	/**
+	 * Update the display to show details about the tower
+	 * Update the values in the upgrade buttons
+	 * Toggle whether or not the buttons are enabled
+	 */
 	@Override
 	public void update()
 	{
@@ -125,10 +145,14 @@ public class TowerStatsComponent extends Pane implements ComponentIF
 			rangeLabel.setText("Range: " + towerToDisplay.getRadius());
 			damageLabel.setText("Damage: " + towerToDisplay.getDamage());
 
+			upgradeRangeButton.setText("+1    " + (towerToDisplay.getRadius() * 5) + " apples");
+			upgradeDamageButton.setText("+1    " + (towerToDisplay.getDamage() * 5) + " apples");
+
 			rangeLabel.setDisable(false);
 			damageLabel.setDisable(false);
-			upgradeDamageButton.setDisable(false);
-			upgradeRangeButton.setDisable(false);
+
+			upgradeRangeButton.setDisable(towerToDisplay.isMaxRadiusAchieved());
+			upgradeDamageButton.setDisable(towerToDisplay.isMaxDamageAchieved());
 		}
 		else
 		{

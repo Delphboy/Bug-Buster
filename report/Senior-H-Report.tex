@@ -1,0 +1,82 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[margin=1.0in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{url, lipsum}
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+\usepackage{natbib}
+
+\usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
+%\setcounter{tocdepth}{1}
+%\setcounter{secnumdepth}{5}
+\graphicspath{/images/}
+
+%-------------------------------------------------------------------------------
+% HEADER & FOOTER
+%-------------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength\headheight{15pt}
+\fancyhead[L]{Henry Senior }
+\fancyhead[R]{Student ID: @00454779}
+\fancyfoot[R]{Page \thepage\ of \pageref{LastPage}}
+
+%-------------------------------------------------------------------------------
+% TITLE PAGE
+%-------------------------------------------------------------------------------
+\begin{document}
+	
+	\title{ \normalsize \textsc{Software Projects with Agile Techniques}
+		\\ [2.0cm]
+		\HRule{0.5pt} \\
+		\LARGE \textbf{\uppercase{Semester One Assessment 1}}
+		\HRule{2pt} \\ [0.5cm]}
+	
+	\date{6th December, 2017}
+	
+	\author{
+		Henry Senior \\ \\
+		Student ID: @00454779 \\ 
+		Username: STC765 \\
+		CRN: 34129
+	}
+	
+\maketitle
+\newpage
+
+\section*{Executive Summary}
+\addcontentsline{toc}{section}{Executive Summary}
+The aim of this report was to model a given system using the industry standard Universal Modelling Language (UML) notation. Outlined in the report are all the Use Cases of the system (including Textual Use Cases), a Static Model of the system, and two Activity Diagrams which show in detail the sequences taken in certain Use Cases. The report highlights how UML provides different approaches to modelling the system. It also details how different methods may be more applicable that others depending on which aspect of the system is being modelled. 
+
+\tableofcontents
+\newpage
+\input{Report-Sections/introduction.tex}
+\newpage
+\input{Report-Sections/use-cases.tex}
+\newpage
+\input{Report-Sections/static-model.tex}
+\input{Report-Sections/activity-diagram.tex}
+
+\section{Conclusion}
+Through using UML, I found that it was possible to represent separate aspects of the system in different perspectives. By using modelling techniques such as a Use Case diagram, it was possible to show how different actors would interact with the system. However, as Use Cases do not represent individual components that make up the system, I soon found that I also required a Static Model. Whilst a Static Model will not show how the system is interacted with by users, it provides a clear and visual way of demonstrating how different modules within the system interact with one another. A Static Model also shows the relationships between the classes. In order to bring the Use Cases together with a Static Model, I chose to demonstrate how the system flows when in use with Activity Diagrams. Doing so joins together both the technical model of the system and the user focussed Use Cases. 
+\\
+By providing all three diagrams, the report provides a holistic overview of the power plant's central storage warehouse. This should allow other system designers to understand how the system would work and allow them to take the UML diagrams and implement the system as outlined in the scenario. 
+\newpage
+\bibliographystyle{agsm}
+\begin{thebibliography}{9}
+	\bibitem{UML-Distilled}
+	Fowler M, Kendall S. 1999. UML Distilled: a brief guide to the standard object modelling language. 2nd Ed. Addison Wesley. 
+
+	\bibitem{Lectures}
+	Bass, J. 2017. Software Projects with Agile Techniques Lecture Notes. University of Salford
+\end{thebibliography}
+
+\end{document}          

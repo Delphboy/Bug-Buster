@@ -13,11 +13,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the LossScreen
+ * This class outlines the screen players will see if they lose a game
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class LossScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
 
+	/**
+	 * Create a new loss screen
+	 */
 	public LossScreen()
 	{
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
@@ -56,6 +65,9 @@ public class LossScreen extends Pane implements ScreenIF
 		getChildren().addAll(canvas, buttonReturnToMenu, applesLeftLabel, roundsCompletedLabel);
 	}
 
+	/**
+	 * Set the canvas and graphicsContext to null
+	 */
 	@Override
 	public void killScreen()
 	{

@@ -10,11 +10,21 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the MapSelectionScreen
+ * This screen displays the three maps that the use can select. A game screen object is created
+ * based off the user's seleciton of map.
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class MapSelectionScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
 
+	/**
+	 * Create a new MapSelectionScreen
+	 */
 	public MapSelectionScreen()
 	{
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
@@ -94,6 +104,9 @@ public class MapSelectionScreen extends Pane implements ScreenIF
 				buttonRightMap);
 	}
 
+	/**
+	 * Set the canvas and graphicsContext to null;
+	 */
 	@Override
 	public void killScreen()
 	{

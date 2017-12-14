@@ -4,16 +4,30 @@ import BugBuster.FactoryIF;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Created by stc765 on 28/11/17.
+ * A class to represent the PathogenFactory
+ * This class utilises the Factory Design Pattern
+ * The factory will create a pathogen based on a given value
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public class PathogenFactory implements FactoryIF
 {
     private GraphicsContext graphicsContext;
+
+    /**
+     * Create a new PathogenFactory object
+     * @param gc
+     */
     public PathogenFactory(GraphicsContext gc)
     {
         graphicsContext = gc;
     }
 
+    /**
+     * Create a pathogen that corresponds the the given discriminator
+     * @param discriminator
+     * @return the requested pathogen
+     */
     @Override
     public Pathogen createProduct(int discriminator)
     {

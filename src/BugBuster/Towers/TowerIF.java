@@ -1,14 +1,16 @@
 package BugBuster.Towers;
 
 import BugBuster.Pathogens.Pathogen;
-
 import java.util.ArrayList;
 
 /**
- * Created by stc765 on 22/11/17.
+ * An interface to represent a Tower
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public interface TowerIF
 {
+    void shootPathogen(ArrayList<Pathogen> pathogens);
     void upgradeTowerRange();
     void upgradeTowerDamage();
 }

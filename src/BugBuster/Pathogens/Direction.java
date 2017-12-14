@@ -1,7 +1,9 @@
 package BugBuster.Pathogens;
 
 /**
- * Created by stc765 on 05/12/17.
+ * An enum to represent all the different directions that a pathogen can travel
+ * @author Henry Senior
+ * @version 1.0.0
  */
 public enum Direction implements CommandIF
 {

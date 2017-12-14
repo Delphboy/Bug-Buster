@@ -12,11 +12,22 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the MainMenuScreen
+ * This class is the main screen that players will be greated with once the game loads. Provides a
+ * button based menu system, allowing the player to navigate to the "how to play" screen or a "map
+ * selection" screen.
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class MainMenuScreen extends Pane implements ScreenIF
 {
 	Canvas canvas;
 	GraphicsContext graphicsContext;
 
+	/**
+	 * Create a new MainMenuScreen
+	 */
 	public MainMenuScreen()
 	{
 		canvas = new Canvas(BugBuster.STAGE_WIDTH, BugBuster.STAGE_HEIGHT);
@@ -75,6 +86,9 @@ public class MainMenuScreen extends Pane implements ScreenIF
 		getChildren().addAll(canvas, buttonStartGame, buttonHowToPlay, buttonExitGame);
 	}
 
+	/**
+	 * Set the canvas and graphicsContext to null;
+	 */
 	@Override
 	public void killScreen()
 	{

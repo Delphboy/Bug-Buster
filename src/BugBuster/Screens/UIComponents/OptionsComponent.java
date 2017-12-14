@@ -10,12 +10,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the OptionsComponent
+ * This UI component holds the "Main Menu" button and the "Start Round" button
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class OptionsComponent extends Pane implements ComponentIF
 {
+	//Have a static self pointer to implement the Singleton Design Pattern
 	private static OptionsComponent instance;
 	Button mainMenuBtn;
 	Button startRoundBtn;
 
+	/**
+	 * Returns a pointer to the static instance of the UI Component, if no instance exists, create
+	 * one
+	 * @return
+	 */
 	public static OptionsComponent getInstance()
 	{
 		if (instance == null)
@@ -25,6 +37,9 @@ public class OptionsComponent extends Pane implements ComponentIF
 		return instance;
 	}
 
+	/**
+	 * Create a new OptionsComponent
+	 */
 	private OptionsComponent()
 	{
 		setWidth(250);
@@ -74,11 +89,10 @@ public class OptionsComponent extends Pane implements ComponentIF
 		startRoundBtn = null;
 	}
 
-	public Button getMainMenuBtn()
-	{
-		return mainMenuBtn;
-	}
-
+	/**
+	 * Return a pointer to the start round button
+	 * @return startRoundBtn
+	 */
 	public Button getStartRoundBtn()
 	{
 		return startRoundBtn;

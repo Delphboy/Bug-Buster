@@ -2,18 +2,22 @@ package BugBuster.Screens.UIComponents;
 
 import BugBuster.Player;
 import BugBuster.Towers.Antibiotics;
-import BugBuster.Towers.Tower;
 import BugBuster.Towers.Vaccine;
 import BugBuster.Towers.WhiteBloodCell;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
+/**
+ * A class to represent the Tower Shop UI Component
+ * Holds all the buttons used to buy towers and vaccine upgrades
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class TowerShopComponent extends Pane implements ComponentIF
 {
+	// Make a static self pointer to implement the Singleton Design Patter
 	private static TowerShopComponent instance;
 
 	Button buyWhiteBloodCellBtn;
@@ -21,6 +25,10 @@ public class TowerShopComponent extends Pane implements ComponentIF
 	Button buyVaccineBtn;
 	Button buyNextVaccineBtn;
 
+	/**
+	 * Return a pointer to the static instance of the UI component. If no instance exists, create one
+	 * @return a static instance of TowerShopComponent
+	 */
 	public static TowerShopComponent getInstance()
 	{
 		if (instance == null)
@@ -30,6 +38,10 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		return instance;
 	}
 
+	/**
+	 * Create a new TowerShopComponent object
+	 * The constructor is private so only one instance can be created
+	 */
 	private TowerShopComponent()
 	{
 		WhiteBloodCell blankWhiteBloodCell= new WhiteBloodCell();
@@ -83,14 +95,17 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		update();
 	}
 
+	/**
+	 * Update the Vaccine immunisation button
+	 */
 	@Override
 	public void update()
 	{
 		Player playerInstance = Player.getInstance();
-		if (playerInstance.getCurrentVaccine().equalsIgnoreCase("flu"))
+		if (playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("flu"))
 		{
 			buyNextVaccineBtn.setText("Buy MMR Immunisation\n100 apples");
-		} else if (playerInstance.getCurrentVaccine().equalsIgnoreCase("MMR"))
+		} else if (playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("MMR"))
 		{
 			buyNextVaccineBtn.setText("Buy Smallpox Immunisation\n250 apples");
 		}
@@ -100,9 +115,12 @@ public class TowerShopComponent extends Pane implements ComponentIF
 			buyNextVaccineBtn.setDisable(true);
 		}
 		buyNextVaccineBtn.setTooltip(new Tooltip("Current Immunisation " +
-				"level: " + Player.getInstance().getCurrentVaccine()));
+				"level: " + Player.getInstance().getCurrentImmunisationLevel()));
 	}
 
+	/**
+	 * delete the instance and all fields
+	 */
 	@Override
 	public void killComponent()
 	{
@@ -113,21 +131,37 @@ public class TowerShopComponent extends Pane implements ComponentIF
 		buyNextVaccineBtn = null;
 	}
 
+	/**
+	 * return the BuyWhiteBloodCell button for use in the controller
+	 * @return buyWhiteBloodCellBtn
+	 */
 	public Button getBuyWhiteBloodCellBtn()
 	{
 		return buyWhiteBloodCellBtn;
 	}
 
+	/**
+	 * return the BuyAntiBiotics button for use in the controller
+	 * @return buyAntiBioticsBtn
+	 */
 	public Button getBuyAntiBioticsBtn()
 	{
 		return buyAntiBioticsBtn;
 	}
 
+	/**
+	 * return the BuyVaccine button for use in the controller
+	 * @return buyVaccineBtn
+	 */
 	public Button getBuyVaccineBtn()
 	{
 		return buyVaccineBtn;
 	}
 
+	/**
+	 * return the BuyNextVaccine button for use in the controller
+	 * @return buyNextVaccineBtn
+	 */
 	public Button getBuyNextVaccineBtn()
 	{
 		return buyNextVaccineBtn;

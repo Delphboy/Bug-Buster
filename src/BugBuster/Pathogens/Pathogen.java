@@ -18,6 +18,12 @@ public abstract class Pathogen extends GameObject
 	protected Direction lastDir = Direction.RIGHT;
 	protected MoveCommand directionQueue = new MoveCommand();
 
+	/**
+	 * Create a new pathogen by making a game object and giving the pathogen some base values.
+	 * @param gc
+	 * @param x
+	 * @param y
+	 */
 	public Pathogen(GraphicsContext gc, double x, double y)
 	{
 		super(gc, x, y);
@@ -155,7 +161,7 @@ public abstract class Pathogen extends GameObject
 	 * Use the movement operations created by the buildRoute() method to
 	 * navigate the pathogen through the world
 	 */
-	public void move()
+	protected void move()
 	{
 		Direction operation = (Direction)directionQueue.peek();
 
@@ -168,21 +174,18 @@ public abstract class Pathogen extends GameObject
 		{
 			case UP:
 				y -= 1;
-				update();
 				break;
 			case DOWN:
 				y += 1;
-				update();
 				break;
 			case LEFT:
 				x -= 1;
-				update();
 				break;
 			case RIGHT:
 				x += 1;
-				update();
 				break;
 		}
+		update();
 
 		moveCount += 1;
 
@@ -220,7 +223,7 @@ public abstract class Pathogen extends GameObject
 	 * @return TRUE : when pathogen is on a tile
 	 * @return FALSE : When pathogen isn't on the tile
 	 */
-	public boolean isOnTile(int tileX, int tileY)
+	protected boolean isOnTile(int tileX, int tileY)
 	{
 		return ((x >= tileX * Tile.TILE_WIDTH) &&
 				( x <= (tileX + 1) * Tile.TILE_WIDTH) &&

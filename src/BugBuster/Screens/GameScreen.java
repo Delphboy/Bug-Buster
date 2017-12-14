@@ -21,6 +21,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * A class to represent the GameScreen
+ * This class loads the different UI components and plays the game sound track
+ * The class also loads the controller object, which is used to process operations between the User
+ * Interface (View) and the Towers/Pathogens (Model) as part of the MVC Design Pattern
+ * @author Henry Senior
+ * @version 1.0.0
+ */
 public class GameScreen extends Pane implements ScreenIF
 {
 	TowerShopComponent towerShop;
@@ -31,6 +39,10 @@ public class GameScreen extends Pane implements ScreenIF
 
     Controller controller;
 
+	/**
+	 * Create a new gamescreen. Use the mapNum to load the correct game map
+	 * @param mapNum
+	 */
 	public GameScreen(int mapNum)
 	{
 		towerShop = TowerShopComponent.getInstance();
@@ -95,36 +107,49 @@ public class GameScreen extends Pane implements ScreenIF
 		worldView.setOnMouseClicked(controller);
 	}
 
+	/**
+	 * Return TowerShopComponent module, used by the Controller object as part of the MVC Design
+	 * Pattern
+	 * @return TowerShopComponent
+	 */
     public TowerShopComponent getTowerShop()
     {
         return towerShop;
     }
 
+	/**
+	 * Return TowerStatsComponent module, used by the Controller object as part of the MVC Design
+	 * Pattern
+	 * @return TowerStatsComponent
+	 */
     public TowerStatsComponent getTowerStats()
     {
         return towerStats;
     }
 
-    public HeaderBarComponent getHeaderBar()
-    {
-        return headerBar;
-    }
-
+	/**
+	 * Return OptionsComponent module, used by the Controller object as part of the MVC Design
+	 * Pattern
+	 * @return OptionsComponent
+	 */
     public OptionsComponent getOptionsBar()
     {
         return optionsBar;
     }
 
+	/**
+	 * Return WorldViewComponent module, used by the Controller object as part of the MVC Design
+	 * Pattern
+	 * @return ViewComponent
+	 */
     public WorldViewComponent getWorldView()
     {
         return worldView;
     }
 
-	public void setTowerStats(TowerStatsComponent towerStats)
-	{
-		this.towerStats = towerStats;
-	}
-
+	/**
+	 * kill the timers in world view and kill each UI Component
+	 */
 	@Override
 	public void killScreen()
 	{
