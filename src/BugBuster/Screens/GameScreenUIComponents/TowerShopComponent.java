@@ -1,4 +1,4 @@
-package BugBuster.Screens.UIComponents;
+package BugBuster.Screens.GameScreenUIComponents;
 
 import BugBuster.Player;
 import BugBuster.Towers.Antibiotics;

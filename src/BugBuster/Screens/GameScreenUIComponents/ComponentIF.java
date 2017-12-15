@@ -1,4 +1,4 @@
-package BugBuster.Screens.UIComponents;
+package BugBuster.Screens.GameScreenUIComponents;
 
 /**
  * An interface to define a UI Component

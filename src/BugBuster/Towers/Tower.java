@@ -2,7 +2,7 @@ package BugBuster.Towers;
 
 import BugBuster.*;
 import BugBuster.Pathogens.Pathogen;
-import BugBuster.Screens.UIComponents.Tile;
+import BugBuster.Screens.GameScreenUIComponents.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;

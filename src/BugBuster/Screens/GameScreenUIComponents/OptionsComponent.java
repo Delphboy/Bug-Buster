@@ -1,4 +1,4 @@
-package BugBuster.Screens.UIComponents;
+package BugBuster.Screens.GameScreenUIComponents;
 
 import BugBuster.BugBuster;
 import BugBuster.Player;

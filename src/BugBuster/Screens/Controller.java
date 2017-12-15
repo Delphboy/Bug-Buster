@@ -1,7 +1,7 @@
 package BugBuster.Screens;
 
 import BugBuster.Player;
-import BugBuster.Screens.UIComponents.*;
+import BugBuster.Screens.GameScreenUIComponents.*;
 import BugBuster.Towers.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;

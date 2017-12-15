@@ -4,7 +4,7 @@ import BugBuster.GameObject;
 import BugBuster.Player;
 import BugBuster.BugBuster;
 import BugBuster.Screens.LossScreen;
-import BugBuster.Screens.UIComponents.Tile;
+import BugBuster.Screens.GameScreenUIComponents.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 

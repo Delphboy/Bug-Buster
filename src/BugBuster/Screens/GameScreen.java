@@ -1,6 +1,6 @@
 package BugBuster.Screens;
 
-import BugBuster.Screens.UIComponents.*;
+import BugBuster.Screens.GameScreenUIComponents.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
