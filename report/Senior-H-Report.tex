@@ -14,11 +14,11 @@
 \maketitle
 
 \section*{Introduction}
-When designing and creating software, it is common to think about the end user experience. However, it is also important to consider what software development consultant Kevlin Henney describes as the \textit{``Programmer Experience''}. \cite{FizzBuzz}. This refers to the readability, maintainability, and reusability of the source code. He argues that if programmers cannot understand the source code, then they cannot use it effectively. However, as Gamma \textit{et al} (commonly known as The Gang of Four or GoF) state \textit{`Designing object-oriented software is hard, and designing reusable object-oriented software is even harder.'} \cite{GoF-Book}. This report explains and evaluates the design decisions taken during the creation of my educational game, Bug Busters, and how they impacted on the; usability, efficiency, reliability, maintainability, and reusability of the source code. 
+When designing and creating software, it is common to think about the end user experience. However, it is also important to consider what software development consultant Kevlin Henney describes as the, \textit{``Programmer Experience''}. \cite{FizzBuzz}. This refers to the readability, maintainability, and reusability of the source code. He argues that if programmers cannot understand the source code, then they cannot use it effectively. However, as Gamma \textit{et al} (commonly known as The Gang of Four or GoF) state \textit{`Designing object-oriented software is hard, and designing reusable object-oriented software is even harder.'} \cite{GoF-Book}. This report both explains and evaluates the design decisions taken during the creation of my educational game, Bug Busters, and how they impacted on the; usability, efficiency, reliability, maintainability, and reusability of the source code. 
 
 \section*{Design}
 \subsection*{Use Case Diagrams}
-Use case diagrams provide a way of representing the scenarios that are connected by a common goal \cite{UML-Distilled}. Creating use case diagrams is a key part of Responsibility Driven Design as it allows the system architect to go from an abstract brief such as \textit{`a tower defence game where the user plays as the immune system'} to a more concrete understanding of what the final product should offer. 
+Use case diagrams provide a way of representing the scenarios that are connected by a common goal \cite{UML-Distilled}. Creating use case diagrams is a key part of Responsibility Driven Design as it allows the system architect to move from an abstract brief such as \textit{`a tower defence game where the user plays as the immune system'} to a more concrete understanding of what the final product should offer. 
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=7cm, origin=h]{images/Use-Case.jpg}
@@ -27,16 +27,16 @@ Use case diagrams provide a way of representing the scenarios that are connected
 	\end{center}
 \end{figure}
 \\
-By creating a use case diagram, I was able to focus on key features that the game should have. As it was a tower defence game, a lot of the key use cases revolve around the user's interaction with the towers. The fun of tower defence comes from selecting where you think certain towers would be best placed to defend from the oncoming waves. It was a natural decision to ensure the user could purchase towers and select where they are placed throughout the map. It also became clear that users should be able to upgrade towers to a certain level. To increase replay value and offer different levels of difficulty, the decision was taken to offer a selection of maps.
+Creating a use case diagram enabled me to focus on the key features of the game. As it was a tower defence game, many of the key use cases revolve around the user's interaction with the towers. The fun of tower defence comes from selecting where you think certain towers would be best placed for defence. It was a natural decision to ensure the user could purchase towers and select where they are placed throughout the map. It also became clear that users should be able to upgrade towers to a certain level. To increase replay value and offer different levels of difficulty, the decision was taken to offer a selection of maps.
 
 
 \subsection*{Software Components and Sequence Diagrams}
-After creating a use case diagram it was possible to decide on the main modules that would make up the game. It became clear that there would be different screens, and these would me grouped into one module. In order to decouple the user interface of the game screen from the screen itself and increase the cohesion the different parts of the user interface have with the other modules, the individual components that make up the user interface were grouped into a second component. The third component would house all the classes that make up the towers and the fourth component would be made up of the pathogen classes. 
+After creating a use case diagram it was possible to decide on the main modules that would make up the game. It became clear that there would be different screens, and these would be grouped into one module. In order to decouple the user interface of the game screen from the screen itself and increase the cohesion the different parts of the user interface have with the other modules, the individual components that make up the user interface were grouped into a second component. The third component would house all the classes that make up the towers and the fourth component would be made up of the pathogen classes. 
 \\
 Sequence Diagrams are especially good at showing the flow between different components when a use case is being executed. A sequence diagram has been used to show the dynamic interaction between software components for the `select map' use case. 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[width=12cm, origin=h]{images/Sequence-Diagram.jpg}
+		\includegraphics[width=12cm, origin=h]{images/Sequence-Diagram2.png}
 		\\
 		\caption{A sequence diagram drawn in Visual Paradigm}
 	\end{center}
@@ -54,9 +54,9 @@ The class diagram shows a detailed overview of the game and shows the relationsh
 \end{figure}
 
 \subsection*{Design Choices}
-When designing the game, focus was placed on ensuring low coupling between the different classes that make up the game as well as ensuring high cohesion between an object and it's behaviours. This was a conscience choice that aimed to improve the programmer experience.
+When designing the game, focus was placed on ensuring low coupling between the different classes that make up the game as well as ensuring high cohesion between an object and it's behaviours. This was a conscious choice that aimed to improve the \textit{`programmer experience'}.
 \\
-One of the design choices I made in order to achieve a good programmer experience was to break the sections of the user interface that are used by the GameScreen object into individual UI components. By providing the components with a common interface, \textit{ComponentIF}, I was able to ensure the components could be interacted with in universal ways. This reduced the coupling within the user interface. This made it very easy to make changes to the user interface without those changes having effects on other portions of the interface. To make the separation of the user interface components and screens explicitly clear for future developers, the classes that inherrit from ComponentIF together are grouped in a package, alongside the interface. 
+One of the design choices I made in order to achieve a good programmer experience was to break the sections of the user interface that are used by the GameScreen object into individual UI components. By providing the components with a common interface, \textit{ComponentIF}, I was able to ensure the components could be interacted with in universal ways therefore reducing the coupling within the user interface. This made it very easy to make changes to the user interface without those changes having effects on other portions of the interface. To make the separation of the user interface components and screens explicitly clear for future developers, the classes that inherrit from ComponentIF together are grouped in a package, alongside the interface. 
 
 \section*{Design Patterns}
 Design Patterns originate from structural architecture and refer to generalised solutions to common problems. It was found by Gamma \textit{et al} that a similar approach could be applied to object oriented software design. \cite{GoF-Book}. The software design patterns used in the project are outlined below, with detail and critique on the implementation.
@@ -90,7 +90,7 @@ One design that was considered and then rejected was the use of the null object 
 
 \section*{Future Improvements}
 \subsection*{Interpreter Design Pattern}
-In the current implementation, the map and the enemies that the player face are both hard coded into the game. Whilst this is removes the need for map files, it tightly couples the map and rounds into the game's source code. A better design decision would have been to implement an interpreter design pattern. The interpreter pattern allows for a language to be defined alongside it's grammar using Backus-Naur Form\cite{GoF-Book}. These rules can then be used to interpret a string that follows these rules. Using the interpreter pattern it would be possible to decouple the map files and the enemies that are played each round to separate files. This would also allow for the users to create their own maps if they so wish. 
+In the current implementation, the map and the enemies that the player face are both hard coded into the game. Whilst this removes the need for map files, it tightly couples the map and rounds into the game's source code. A better design decision would have been to implement an interpreter design pattern. The interpreter pattern allows for a language to be defined alongside it's grammar using Backus-Naur Form\cite{GoF-Book}. These rules can then be used to interpret a string that follows these rules. Using the interpreter pattern it would be possible to decouple the map files and the enemies that are played each round to separate files. This would also allow for the users to create their own maps if they so wish. 
 
 \subsection*{Prototype Design Pattern}
 Through the implementation of a prototype design pattern, the game could clone instances of the bacteria pathogens as they move through the screen. This would help teach the end user that bacteria can multiply, but viruses cannot. The prototype design pattern allows for objects to be cloned and then edited\cite{GoF-Book} - which would allow for a bacteria object to be cloned, but be given a different graphic, signifying that it had been cloned. 
