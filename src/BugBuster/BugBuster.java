@@ -76,7 +76,7 @@ public class BugBuster extends Application
 	 * Create a new scene using the given Parent object. This scene is then used by the stage
 	 * @param newParent
 	 */
-	public static void updateScene(Parent newParent)
+	public static void updateScene(ScreenIF newParent)
 	{
 		if (scene != null)
 		{
@@ -85,7 +85,7 @@ public class BugBuster extends Application
 			((ScreenIF) oldPane).killScreen();
 		}
 
-		scene = new Scene(newParent, STAGE_WIDTH, STAGE_HEIGHT);
+		scene = new Scene((Parent)newParent, STAGE_WIDTH, STAGE_HEIGHT);
 		window.setScene(scene);
 	}
 }

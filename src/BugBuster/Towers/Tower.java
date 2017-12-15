@@ -2,6 +2,7 @@ package BugBuster.Towers;
 
 import BugBuster.*;
 import BugBuster.Pathogens.Pathogen;
+import BugBuster.Screens.UIComponents.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -16,19 +17,21 @@ import java.util.ArrayList;
  */
 public abstract class Tower extends GameObject implements TowerIF
 {
-	protected String type;
-	protected String aboutMessage;
-	protected int tileLocX;
-	protected int tileLocY;
-	protected int radius;
+	String type;
+	String aboutMessage;
+
 	protected int damage;
-	protected int cost = 10;
-	protected int imageCounter = 1;
-	protected boolean maxRadiusAchieved;
-	protected boolean maxDamageAchieved;
-	protected Image defaultImage;
-	protected Image shootImage;
-	protected Pathogen target;
+	int tileLocX;
+	int tileLocY;
+	int radius;
+	int cost = 10;
+	int imageCounter = 1;
+
+	boolean maxRadiusAchieved;
+	boolean maxDamageAchieved;
+	Image defaultImage;
+	Image shootImage;
+	Pathogen target;
 
 	/**
 	 * Create a new tower

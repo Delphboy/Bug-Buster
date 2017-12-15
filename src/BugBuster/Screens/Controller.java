@@ -1,6 +1,6 @@
-package BugBuster;
+package BugBuster.Screens;
 
-import BugBuster.Screens.GameScreen;
+import BugBuster.Player;
 import BugBuster.Screens.UIComponents.*;
 import BugBuster.Towers.*;
 import javafx.event.Event;
@@ -17,9 +17,8 @@ import javafx.scene.input.MouseEvent;
  */
 public class Controller implements EventHandler
 {
-    GameScreen parent;
-    Tower unplacedTower = null;
-
+    private GameScreen parent;
+    private Tower unplacedTower = null;
     private TowerFactory towerFactory = new TowerFactory();
 
     /**
@@ -69,7 +68,7 @@ public class Controller implements EventHandler
 
         else if(event.getSource()== parent.getTowerShop().getBuyNextVaccineBtn())
         {
-            Player playerInstance = Player.getInstance();
+            BugBuster.Player playerInstance = BugBuster.Player.getInstance();
             if(playerInstance.getCurrentImmunisationLevel().equalsIgnoreCase("flu"))
             {
                 if(playerInstance.getCurrency() >= 100)

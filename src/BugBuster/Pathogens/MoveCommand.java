@@ -18,18 +18,10 @@ public class MoveCommand implements QueueIF, CommandIF
      * The command that is to be added to the queue
      * @param d
      */
+    @Override
     public void addCommand(CommandIF d)
     {
         queue.add(d);
-    }
-
-    /**
-     * Return the queue of commands
-     * @return a queue of commands
-     */
-    public ArrayList<CommandIF> getQueue()
-    {
-        return queue;
     }
 
     /**
@@ -50,16 +42,6 @@ public class MoveCommand implements QueueIF, CommandIF
     public CommandIF peek()
     {
         return queue.get(0);
-    }
-
-    /**
-     * Add a command to the queue
-     * @param item
-     */
-    @Override
-    public void put(CommandIF item)
-    {
-        queue.add(item);
     }
 
     /**

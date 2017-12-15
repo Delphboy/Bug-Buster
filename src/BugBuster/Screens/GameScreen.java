@@ -1,25 +1,10 @@
 package BugBuster.Screens;
 
-import BugBuster.Controller;
-import BugBuster.Player;
 import BugBuster.Screens.UIComponents.*;
-import BugBuster.Towers.Tower;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
-import javax.annotation.PreDestroy;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * A class to represent the GameScreen

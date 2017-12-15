@@ -1,5 +1,6 @@
-package BugBuster;
+package BugBuster.Screens.UIComponents;
 
+import BugBuster.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -14,7 +15,6 @@ public class Tile extends GameObject
     public static final int TILE_WIDTH = 50;
     public static final int TILE_HEIGHT = 50;
 
-    Image tileImg;
     int posX;
     int posY;
     boolean isWalkable, isEndTile;
@@ -31,7 +31,6 @@ public class Tile extends GameObject
         super(gc, posX * Tile.TILE_WIDTH, posY * TILE_HEIGHT);
         this.posX = posX;
         this.posY = posY;
-        tileImg = new Image(imgLoc);
         img = new Image(imgLoc);
         this.isWalkable = isWalkable;
         isEndTile = false;
@@ -57,33 +56,6 @@ public class Tile extends GameObject
     {
         if(img != null)
             gc.drawImage(img, x, y, TILE_WIDTH, TILE_HEIGHT);
-    }
-
-    /**
-     * Get the X position of the tile in the tile array
-     * @return posX
-     */
-    public int getPosX()
-    {
-        return posX;
-    }
-
-    /**
-     * Get the Y position of the tile in the tile array
-     * @return posY
-     */
-    public int getPosY()
-    {
-        return posY;
-    }
-
-    /**
-     * Get the image displayed on the tile
-     * @return tileImg
-     */
-    public Image getTileImg()
-    {
-        return tileImg;
     }
 
     /**

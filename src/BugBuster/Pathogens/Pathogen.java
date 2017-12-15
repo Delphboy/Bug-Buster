@@ -4,19 +4,16 @@ import BugBuster.GameObject;
 import BugBuster.Player;
 import BugBuster.BugBuster;
 import BugBuster.Screens.LossScreen;
-import BugBuster.Screens.UIComponents.HeaderBarComponent;
-import BugBuster.Tile;
+import BugBuster.Screens.UIComponents.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public abstract class Pathogen extends GameObject
 {
-	public boolean isForRemoval = false;
-	protected int health, damage, tileX, tileY;
-
-	protected int endTileX, endTileY, moveCount = 0;
-	protected Direction lastDir = Direction.RIGHT;
-	protected MoveCommand directionQueue = new MoveCommand();
+	int health, damage;
+	private int tileX, tileY, endTileX, endTileY, moveCount = 0;
+	Direction lastDir = Direction.RIGHT;
+	private MoveCommand directionQueue = new MoveCommand();
 
 	/**
 	 * Create a new pathogen by making a game object and giving the pathogen some base values.
@@ -77,7 +74,6 @@ public abstract class Pathogen extends GameObject
 	{
 		if(isOnTile(endTileX, endTileY))
 		{
-			isForRemoval = true;
 			Player player = Player.getInstance();
 			player.setHealth(player.getHealth() - damage);
 			health = 0;
@@ -105,7 +101,7 @@ public abstract class Pathogen extends GameObject
 	 * of movement operations is built. This is achieved by implementing the Command Pattern
 	 * @param world
 	 */
-	protected void buildRoute(Tile[][] world)
+	private void buildRoute(Tile[][] world)
 	{
 		int scannedX = tileX;
 		int scannedY = tileY;
@@ -161,7 +157,7 @@ public abstract class Pathogen extends GameObject
 	 * Use the movement operations created by the buildRoute() method to
 	 * navigate the pathogen through the world
 	 */
-	protected void move()
+	private void move()
 	{
 		Direction operation = (Direction)directionQueue.peek();
 
@@ -202,7 +198,7 @@ public abstract class Pathogen extends GameObject
 	 * IF pathogen is going LEFT or UP, add 30 to the x and y to account for
 	 * width and height of the pathogen.
 	 */
-	protected void setTileLocation(Direction lastDir)
+	void setTileLocation(Direction lastDir)
 	{
 		if(lastDir == Direction.LEFT || lastDir == Direction.UP)
 		{
@@ -223,7 +219,7 @@ public abstract class Pathogen extends GameObject
 	 * @return TRUE : when pathogen is on a tile
 	 * @return FALSE : When pathogen isn't on the tile
 	 */
-	protected boolean isOnTile(int tileX, int tileY)
+	private boolean isOnTile(int tileX, int tileY)
 	{
 		return ((x >= tileX * Tile.TILE_WIDTH) &&
 				( x <= (tileX + 1) * Tile.TILE_WIDTH) &&

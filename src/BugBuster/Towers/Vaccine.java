@@ -62,7 +62,7 @@ public class Vaccine extends Tower implements TowerIF
 			}
 			else
 			{
-				System.out.println("WE HAVE A TARGET!" + target);
+				// Do nothing as a target has been detected
 			}
 		}
 	}

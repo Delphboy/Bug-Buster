@@ -20,8 +20,8 @@ public class OptionsComponent extends Pane implements ComponentIF
 {
 	//Have a static self pointer to implement the Singleton Design Pattern
 	private static OptionsComponent instance;
-	Button mainMenuBtn;
-	Button startRoundBtn;
+	private Button mainMenuBtn;
+	private Button startRoundBtn;
 
 	/**
 	 * Returns a pointer to the static instance of the UI Component, if no instance exists, create
